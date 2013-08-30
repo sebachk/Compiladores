@@ -33,6 +33,8 @@ public class AnalizadorLexico {
 			e.printStackTrace();
 		}
 		 
+		Method metodo = this.getClass().getMethod(arg0, arg1)
+		
 	}
 	
 	public Token GetToken(){
