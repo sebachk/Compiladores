@@ -1,8 +1,10 @@
+package compiler;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+
 
 import accionesSemanticas.AccionSemantica;
 
@@ -33,7 +35,7 @@ public class AnalizadorLexico {
 		 
 	}
 	
-	public String getStringToken(){
+	public Token GetToken(){
 		
 		while(estado_actual!=ESTADOFINAL){
 			int caracter=-1;
@@ -48,7 +50,7 @@ public class AnalizadorLexico {
 				int indice=hash((char)caracter);
 				if(indice!=-1){
 					acc_Actual = acciones[estado_actual][indice];
-					acc_Actual.Execute();
+					acc_Actual.Execute(lector);
 					estado_actual=estados[estado_actual][indice];
 					
 				}
@@ -59,13 +61,13 @@ public class AnalizadorLexico {
 			return null;
 		
 		}
-		return acc_Actual.getCadena();
+		return acc_Actual.getToken();
 	}
 	
 	
-	public Token getToken(){
-		String sToken= this.getStringToken();
-		
+	public int getToken(){
+	//(	String sToken= this.getStringToken();
+		 return 0;
 		
 	}
 	
