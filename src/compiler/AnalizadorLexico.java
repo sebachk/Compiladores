@@ -5,6 +5,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import accionesSemanticas.TokenCreator;
+
 
 import accionesSemanticas.AccionSemantica;
 
@@ -14,7 +16,6 @@ public class AnalizadorLexico {
 	private final static int  ESTADOFINAL=-1;
 	int [][] estados;
 	int estado_actual;
-	
 	
 	AccionSemantica [][] acciones;
 	AccionSemantica acc_Actual;
@@ -37,7 +38,7 @@ public class AnalizadorLexico {
 	}
 	
 	public Token GetToken(){
-		
+		TokenCreator tc = new TokenCreator();
 		while(estado_actual!=ESTADOFINAL){
 			int caracter=-1;
 			try {
@@ -47,11 +48,11 @@ public class AnalizadorLexico {
 				e.printStackTrace();
 			}
 			
-			if(caracter!=-1){
+			if(caracter!=-1){// -1 final de linea
 				int indice=hash((char)caracter);
 				if(indice!=-1){
 					acc_Actual = acciones[estado_actual][indice];
-					acc_Actual.Execute(lector);
+					acc_Actual.Execute(lector,(char)caracter,tc);
 					estado_actual=estados[estado_actual][indice];
 					
 				}
@@ -62,14 +63,7 @@ public class AnalizadorLexico {
 			return null;
 		
 		}
-		return acc_Actual.getToken();
-	}
-	
-	
-	public int getToken(){
-	//(	String sToken= this.getStringToken();
-		 return 0;
-		
+		return tc.createToken();
 	}
 	
 	public static int hash(char indice){

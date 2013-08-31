@@ -2,11 +2,11 @@ package accionesSemanticas;
 
 import java.io.FileReader;
 
-import compiler.Token;
+//import compiler.Token;
 
-public abstract class AccionSemantica {
+public interface AccionSemantica {
 
-	private String cadena;
+	/*private String cadena;
 	private Token tok;
 	public String getCadena(){
 		return cadena;
@@ -16,5 +16,6 @@ public abstract class AccionSemantica {
 	public Token getToken(){
 		return tok;
 	}
-	public abstract void Execute(FileReader lector);
+	*/
+	public abstract void Execute(FileReader f, char c, TokenCreator tc);
 }
