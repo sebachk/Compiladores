@@ -18,7 +18,7 @@ public class ASFinCTE implements AccionSemantica{
 					//Error lexico
 				}
 				int posicion=Estructuras.addTupla(cadena);
-				tc.createToken(cadena,posicion);
+				tc.createToken(Estructuras.CTE,posicion);
 				
 				
 			} catch (IOException e) {e.printStackTrace();}

@@ -21,15 +21,19 @@ public class ASFinId implements AccionSemantica {
 				if(cadena.equals(pr[i])){
 					//Es una palabra reservada
 					tc.createToken(cadena,-1);
+					return;
 				}
 					
 			}
-			if(cadena.length()>15)
+			if(cadena.length()>15){
+
+				System.out.println("WARNING: El identificador "+cadena+" tiene un nombre muy largo, sera truncado");
 				cadena=cadena.substring(0, 14)+"~";
+			}
 			int posicion=Estructuras.enTupla(cadena);
 			if(posicion==-1)
 				posicion=Estructuras.addTupla(cadena);
-			tc.createToken(cadena,posicion);
+			tc.createToken(Estructuras.ID,posicion);
 			
 		} catch (IOException e) {e.printStackTrace();}
 	}

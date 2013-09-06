@@ -16,6 +16,7 @@ public class AnalizadorLexico {
 	private final static int  ESTADOFINAL=-1;
 	private final static int  ESTADOERROR=-2;
 	
+	public static int LineasContadas;
 	public final static String [] PALABRAS_RESERVADAS={"if","then","else","begin","end","print","function","return","uint","loop","until"};
 	int [][] estados;
 	int estado_actual;
@@ -108,6 +109,7 @@ public class AnalizadorLexico {
 	
 	public AnalizadorLexico(File txt){
 		estado_actual=0;
+		LineasContadas=0;
 		try {
 			lector = new FileReader(txt);
 		} catch (FileNotFoundException e) {
@@ -135,6 +137,9 @@ public class AnalizadorLexico {
 					acc_Actual = acciones[estado_actual][indice];
 					acc_Actual.Execute(lector,(char)caracter,tc);
 					estado_actual=estados[estado_actual][indice];
+					
+					if((char)caracter=='\n')
+						LineasContadas++;
 					
 				}
 				else{

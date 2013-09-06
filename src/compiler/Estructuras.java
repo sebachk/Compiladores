@@ -5,6 +5,40 @@ public class Estructuras {
 	/** Esta clase contiene todas las estructuras globales que se necesitan**/
 	
 	
+	public static final String ID="ID";
+	public static final String CTE="CTE";
+	public static final String IF ="if";
+	public static final String THEN ="then";
+	public static final String ELSE ="else";
+	public static final String FUNCTION ="function";
+	public static final String BEGIN ="begin";
+	public static final String END ="end";
+	public static final String RETURN="return";
+	public static final String UNTIL="until";
+	public static final String LOOP="loop";
+	public static final String UINT ="uint";
+	public static final String PRINT ="print";
+	public static final String MAS="+";
+	public static final String MENOS="-";
+	public static final String POR ="*";
+	public static final String DIV="/";
+	public static final String PAR_IZQ="(";
+	public static final String PAR_DER=")";
+	public static final String MENOR="<";
+	public static final String MAYOR=">";
+	public static final String ASIG="=";
+	public static final String IGUAL="==";
+	public static final String MENOR_IGUAL="<=";
+	public static final String MAYOR_IGUAL=">=";
+	public static final String COMA=",";
+	public static final String PCOMA=";";
+	public static final String DISTINTO="!=";
+	public static final String CADENA="CADENA";
+	public static final String ERROR="ERROR";
+	public static final String WARNING="WARNING";
+	
+	
+	
 	public static Vector<TuplaTS> Tabla_Simbolos=new Vector<TuplaTS>();
 	public static final Hashtable<String, Integer> Tabla_Token=new Hashtable<>();
 	
@@ -39,6 +73,8 @@ public class Estructuras {
 		Tabla_Token.put("!=", 27);
 		Tabla_Token.put("==", 28);
 		Tabla_Token.put("CADENA", 29);
+		Tabla_Token.put(this.ERROR, 30);
+		Tabla_Token.put(this.WARNING, 31);
 		
 	}
 	
@@ -61,4 +97,14 @@ public class Estructuras {
 		Integer resultado=Tabla_Token.get(key);
 		return (int)resultado;
 	}
+	
+	public void PrintTablaS(){
+		System.out.println("Tabla de simbolos:");
+		System.out.println("Nombre");
+		for(int i =0;i<Tabla_Simbolos.size();i++){
+			System.out.println(Tabla_Simbolos.elementAt(i).print());
+		}
+	}
+	
+	
 }
