@@ -5,6 +5,11 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import accionesSemanticas.ASConsumidora;
+import accionesSemanticas.ASFinCadena;
+import accionesSemanticas.ASFinId;
+import accionesSemanticas.ASInicializadora;
+import accionesSemanticas.ASOperador;
 import accionesSemanticas.TokenCreator;
 
 
@@ -104,6 +109,54 @@ public class AnalizadorLexico {
 				estados[4][j]=ESTADOERROR;
 		}
 		estados[5][16]=ESTADOERROR;
+		
+		
+		acciones[0][0]=new ASInicializadora();
+		acciones[0][1]=acciones[0][0];
+		acciones[0][1]=acciones[0][1];
+		acciones[0][3]=acciones[0][1];
+		acciones[0][4]=acciones[0][1];
+		acciones[0][5]=acciones[0][1];
+		acciones[0][6]=acciones[0][1];
+		acciones[0][7]=acciones[0][1];
+		acciones[0][8]=new ASOperador();
+		acciones[0][9]=acciones[0][9];
+		acciones[0][10]=acciones[0][9];
+		acciones[0][11]=acciones[0][9];
+		acciones[0][12]=acciones[0][9];
+		acciones[0][13]=acciones[0][9];
+		acciones[0][14]=acciones[0][9];
+		acciones[0][15]=new ASConsumidora();
+		acciones[0][16]=acciones[0][15];
+		acciones[1][0]=acciones[0][15];
+		acciones[1][1]=acciones[0][15];
+		acciones[1][2]=new ASFinId();
+		acciones[1][3]=acciones[1][2];
+		acciones[1][4]=acciones[1][2];
+		acciones[1][5]=acciones[1][2];
+		acciones[1][6]=acciones[1][2];
+		acciones[1][7]=acciones[1][2];
+		acciones[1][8]=acciones[1][2];
+		acciones[1][9]=acciones[1][2];
+		acciones[1][10]=acciones[1][2];
+		acciones[1][11]=acciones[1][2];
+		acciones[1][12]=acciones[1][2];
+		acciones[1][13]=acciones[1][2];
+		acciones[1][14]=acciones[1][2];
+		acciones[1][15]=acciones[1][2];
+		acciones[1][16]=acciones[1][2];
+		acciones[2][0]=;
+		acciones[][];
+		acciones[][];
+		acciones[][];
+		acciones[][];
+		acciones[][];
+		acciones[][];
+		acciones[][];
+		acciones[][];
+		
+		
+		
 		
 	}
 	
