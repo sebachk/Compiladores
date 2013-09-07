@@ -1,5 +1,7 @@
 package compiler;
-
+/**
+ * Clase que representa una dupla de un identificador y la posicion en la tabla de simbolos
+ */
 public class Token {
 	private int identif_tt;
 	private int indice_ts;

@@ -38,7 +38,10 @@ public class AnalizadorLexico {
 	AccionSemantica acc_Actual;
 	BufferedInputStream lector;
 	
-	
+	/**
+	 * Carga las matrices de Estados y de Acciones Semanticas
+	 * Las matrices podrian variar de un tipo de lenguaje a otro (CUAK!)
+	 */
 	private void llenarEstados(){
 		estados = new int[9][17];
 
@@ -284,96 +287,77 @@ public class AnalizadorLexico {
 		llenarEstados();
 		try {
 			lector = new BufferedInputStream(new FileInputStream(txt));
-			if(lector.markSupported()){
-			}
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		 
-		
+			if(lector.markSupported()){}
+			} 
+		catch (FileNotFoundException e) {e.printStackTrace();}
 	}
 	
+	/**
+	 * Pone en funcionamiento el Analizador Lexico. Recorre el archivo y genera un Token
+	 * Se mueve en la matriz de Estados y de Acciones Semanticas
+	 * @return
+	 */
 	public Token GetToken(){
 		TokenCreator tc = new TokenCreator();
 		estado_actual=0;
 		while(estado_actual!=ESTADOFINAL && estado_actual!=ESTADOERROR){
 			int caracter=-1;
-			try {
-				caracter = lector.read();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 			
-			if(caracter!=-1){// -1 final de linea
+			try {caracter = lector.read();} 
+			catch (IOException e) {e.printStackTrace();}
+			
+			if(caracter!=-1){// NO ES FIN DE LINEA?
 				int indice=hash((char)caracter);
-				if(indice!=-1){
+				if(indice!=-1){ // CARACTER VALIDO
 					acc_Actual = acciones[estado_actual][indice];
 					acc_Actual.Execute(lector,(char)caracter,tc);
 					estado_actual=estados[estado_actual][indice];
 					
 					if((char)caracter=='\n')
 						LineasContadas++;
-					
 				}
-				else{
+				else{ //CARACTER INVALIDO
 					System.out.println("Caracter leido: "+caracter+" "+(char)caracter );
 					System.out.println("Estado actual: "+estado_actual+" ");
-					return null;
-					
-					//CARACTER INVALIDO
+					return null;				
 				}
 			}
-			else{
-				return null;	
-			}
-			
-		}
+			else {return null;} // FIN DE LINEA	
+		} // END WHILE
 		return tc.GetToken();
 	}
 	
+	/**
+	 * Dado un indice devuelve el tipo de caracter (como int): letra, digito, comparador, signo, etc.
+	 * Cada tipo tiene un numero asignado que es el retorno.
+	 * Se usa para cambiar de estado en el Automata
+	 * @param indice
+	 * @return
+	 */
 	public static int hash(char indice){
-		if(indice>='A' && indice<='z'){
-			return 0; //Retorna letra
-		}
+		if(indice>='A' && indice<='z') return 0; //Es letra
 		
-		if(indice>='0' && indice<='9')
-			return 1;//Retorna digito
+		if(indice>='0' && indice<='9') return 1;//Es digito
 		
-		if(indice=='>')
-			return 2;
-		if(indice=='<')
-			return 3;
-		if(indice=='=')
-			return 4;
-		if(indice=='!')
-			return 5;
-		if(indice=='\'')
-			return 6;
-		if(indice=='(')
-			return 7;
-		if(indice==',')
-			return 8;
-		if(indice==';')
-			return 9;
-		if(indice==')')
-			return 10;
-		if(indice=='+')
-			return 11;
-		if(indice=='-')
-			return 12;
-		if(indice=='*')
-			return 13;
-		if(indice=='/')
-			return 14;
-		if(indice==(char)13 || indice==(char)32 || indice==(char)9)
-			return 15;
-		if(indice==(char)10)
-			return 16;
+		if(indice=='>') return 2;
+		if(indice=='<') return 3;
+		if(indice=='=') return 4;
+		if(indice=='!') return 5;
+		if(indice=='\'') return 6;
+		if(indice=='(') return 7;
+		if(indice==',') return 8;
+		if(indice==';') return 9;
+		if(indice==')') return 10;
+		if(indice=='+') return 11;
+		if(indice=='-') return 12;
+		if(indice=='*') return 13;
+		if(indice=='/') return 14;
+		if(indice==(char)13 || indice==(char)32 || indice==(char)9) return 15; //Retorno de carro || Espacio || Tab
+		if(indice==(char)10) return 16; // Caracter NL
 		
 		System.out.println((int)indice);
-		return -1;
+		
+		return -1; //Caracter Desconocido
 	}
 	
 	

@@ -2,7 +2,10 @@ package accionesSemanticas;
 import compiler.Estructuras;
 import compiler.Token;
 
-
+/**
+ * Creador de Tokens. Almacena internamente los caracteres que el AL va leyendo
+ *
+ */
 public class TokenCreator {
 	private String cadena;
 	private Token token;
