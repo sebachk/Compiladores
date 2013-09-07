@@ -9,7 +9,9 @@ public class AnalizadorSintactico {
 	
 	public static boolean pueda_tokenear(AnalizadorLexico AL){
 		t = AL.GetToken();
+		
 		if (t == null) return false;
+		if(t.esError())return false;
 		return true;
 	}
 }

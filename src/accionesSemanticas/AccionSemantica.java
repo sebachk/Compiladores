@@ -1,5 +1,6 @@
 package accionesSemanticas;
 
+import java.io.BufferedInputStream;
 import java.io.FileReader;
 
 //import compiler.Token;
@@ -17,5 +18,5 @@ public interface AccionSemantica {
 		return tok;
 	}
 	*/
-	public abstract void Execute(FileReader f, char c, TokenCreator tc);
+	public abstract void Execute(BufferedInputStream f, char c, TokenCreator tc);
 }

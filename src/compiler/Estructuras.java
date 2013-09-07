@@ -3,8 +3,8 @@ import java.util.*;
 
 public class Estructuras {
 	/** Esta clase contiene todas las estructuras globales que se necesitan**/
-	// TABLA DE TOKENS
-	//*************************************************************
+	
+	
 	public static final String ID="ID";
 	public static final String CTE="CTE";
 	public static final String IF ="if";
@@ -37,7 +37,11 @@ public class Estructuras {
 	public static final String ERROR="ERROR";
 	public static final String WARNING="WARNING";
 	
+	
+	
+	public static Vector<TuplaTS> Tabla_Simbolos=new Vector<TuplaTS>();
 	public static final Hashtable<String, Integer> Tabla_Token=new Hashtable<>();
+	
 	
 	public Estructuras(){
 		Tabla_Token.put("ID",1 );
@@ -71,16 +75,11 @@ public class Estructuras {
 		Tabla_Token.put("CADENA", 29);
 		Tabla_Token.put(this.ERROR, 30);
 		Tabla_Token.put(this.WARNING, 31);
+		
 	}
 	
-	public static int getValorToken(String key){
-		Integer resultado=Tabla_Token.get(key);
-		return (int)resultado;
-	}
 	
-	// ESTRUCTURA TABLA DE SIMBOLOS
-	//******************************************************************
-	public static Vector<TuplaTS> Tabla_Simbolos=new Vector<TuplaTS>();
+	
 	
 	public static int enTupla(String cadena){
 		for(int i=0;i<Tabla_Simbolos.size();i++){
@@ -95,6 +94,11 @@ public class Estructuras {
 		nueva.valor=cadena;
 		Tabla_Simbolos.add(nueva);
 		return Tabla_Simbolos.size()-1;
+	}
+	
+	public static int getValorToken(String key){
+		Integer resultado=Tabla_Token.get(key);
+		return (int)resultado;
 	}
 	
 	public void PrintTablaS(){

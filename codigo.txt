@@ -1,4 +1,4 @@
-if plazo >= 30 then
+if plazo >= 6560000 then
 	tasa = base + recargo /100;
 else
-	tasa = base;
+	tasa = !firuletemayoraquincecaracteres;
