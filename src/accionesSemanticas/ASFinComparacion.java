@@ -1,12 +1,13 @@
 package accionesSemanticas;
 
+import java.io.BufferedInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 
 public class ASFinComparacion implements AccionSemantica{
 
 	@Override
-	public void Execute(FileReader f, char c, TokenCreator tc) {
+	public void Execute(BufferedInputStream f, char c, TokenCreator tc) {
 		try {
 		if(c=='='){
 				f.mark(0);

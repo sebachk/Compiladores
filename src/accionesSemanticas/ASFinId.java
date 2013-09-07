@@ -1,5 +1,6 @@
 package accionesSemanticas;
 
+import java.io.BufferedInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Vector;
@@ -12,7 +13,7 @@ public class ASFinId implements AccionSemantica {
 	
 	String[] pr=AnalizadorLexico.PALABRAS_RESERVADAS;
 	@Override
-	public void Execute(FileReader f, char c, TokenCreator tc) {
+	public void Execute(BufferedInputStream f, char c, TokenCreator tc) {
 		try {
 			f.reset();
 			

@@ -1,5 +1,7 @@
 package compiler;
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -34,7 +36,7 @@ public class AnalizadorLexico {
 	
 	AccionSemantica [][] acciones;
 	AccionSemantica acc_Actual;
-	FileReader lector;
+	BufferedInputStream lector;
 	
 	
 	private void llenarEstados(){
@@ -119,19 +121,19 @@ public class AnalizadorLexico {
 		
 		acciones[0][0]=new ASInicializadora();
 		acciones[0][1]=acciones[0][0];
-		acciones[0][1]=acciones[0][1];
+		acciones[0][2]=acciones[0][1];
 		acciones[0][3]=acciones[0][1];
 		acciones[0][4]=acciones[0][1];
 		acciones[0][5]=acciones[0][1];
 		acciones[0][6]=acciones[0][1];
 		acciones[0][7]=acciones[0][1];
 		acciones[0][8]=new ASOperador();
-		acciones[0][9]=acciones[0][9];
-		acciones[0][10]=acciones[0][9];
-		acciones[0][11]=acciones[0][9];
-		acciones[0][12]=acciones[0][9];
-		acciones[0][13]=acciones[0][9];
-		acciones[0][14]=acciones[0][9];
+		acciones[0][9]=acciones[0][8];
+		acciones[0][10]=acciones[0][8];
+		acciones[0][11]=acciones[0][8];
+		acciones[0][12]=acciones[0][8];
+		acciones[0][13]=acciones[0][8];
+		acciones[0][14]=acciones[0][8];
 		acciones[0][15]=new ASConsumidora();
 		acciones[0][16]=acciones[0][15];
 		acciones[1][0]=acciones[0][15];
@@ -281,7 +283,9 @@ public class AnalizadorLexico {
 		LineasContadas=0;
 		llenarEstados();
 		try {
-			lector = new FileReader(txt);
+			lector = new BufferedInputStream(new FileInputStream(txt));
+			if(lector.markSupported()){
+			}
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -292,7 +296,8 @@ public class AnalizadorLexico {
 	
 	public Token GetToken(){
 		TokenCreator tc = new TokenCreator();
-		while(estado_actual!=ESTADOFINAL){
+		estado_actual=0;
+		while(estado_actual!=ESTADOFINAL && estado_actual!=ESTADOERROR){
 			int caracter=-1;
 			try {
 				caracter = lector.read();
@@ -313,6 +318,8 @@ public class AnalizadorLexico {
 					
 				}
 				else{
+					System.out.println("Caracter leido: "+caracter+" "+(char)caracter );
+					System.out.println("Estado actual: "+estado_actual+" ");
 					return null;
 					
 					//CARACTER INVALIDO
@@ -360,11 +367,12 @@ public class AnalizadorLexico {
 			return 13;
 		if(indice=='/')
 			return 14;
-		if(indice==' ' || indice=='	')
+		if(indice==(char)13 || indice==(char)32 || indice==(char)9)
 			return 15;
-		if(indice=='\n')
+		if(indice==(char)10)
 			return 16;
 		
+		System.out.println((int)indice);
 		return -1;
 	}
 	

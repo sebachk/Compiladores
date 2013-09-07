@@ -22,4 +22,9 @@ public class Token {
 		this.indice_ts = indice_ts;
 	}
 	
+	public boolean esError(){
+		return getIdentif_tt()==Estructuras.Tabla_Token.get(Estructuras.ERROR);
+		
+	}
+	
 }
