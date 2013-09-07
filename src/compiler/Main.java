@@ -9,7 +9,7 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		Estructuras tablas = new Estructuras();
-		File archivo = new File("archivo.txt");
+		File archivo = new File("codigo.txt");
 		AnalizadorLexico AL = new AnalizadorLexico(archivo);
 		
 		while(AnalizadorSintactico.pueda_tokenear(AL)){
