@@ -1,0 +1,4 @@
+if plazo >= 30 then
+	tasa = base + recargo /100;
+else
+	tasa = base;
