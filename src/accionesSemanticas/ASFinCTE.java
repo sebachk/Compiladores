@@ -4,6 +4,7 @@ import java.io.BufferedInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 
+import compiler.AnalizadorLexico;
 import compiler.Estructuras;
 
 public class ASFinCTE implements AccionSemantica{
@@ -16,7 +17,7 @@ public class ASFinCTE implements AccionSemantica{
 				String cadena=tc.getString();
 				int valor= Integer.parseInt(cadena);
 				if(valor<0 || valor>Math.pow(2, 16)-1){
-					int pos=Estructuras.addTupla("El entero se encuentra fuera del rango permitido");
+					int pos=Estructuras.addTupla("Linea "+AnalizadorLexico.LineasContadas+": El entero se encuentra fuera del rango permitido");
 					tc.createToken(Estructuras.ERROR,pos);
 				}
 				else{

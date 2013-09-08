@@ -283,7 +283,7 @@ public class AnalizadorLexico {
 	
 	public AnalizadorLexico(File txt){
 		estado_actual=0;
-		LineasContadas=0;
+		LineasContadas=1;
 		llenarEstados();
 		try {
 			lector = new BufferedInputStream(new FileInputStream(txt));

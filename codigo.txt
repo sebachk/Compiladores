@@ -1,4 +1,6 @@
-if plazo >= 6560000 then
-	tasa = base + recargo /100;
+if plazo >= 656 then
+	tasa = base + recargo /100 + 'cacareame esta';
 else
-	tasa = !firuletemayoraquincecaracteres;
+(*Esto es un comentario
+Multilinea*)
+	tasa != firuletemayoraquincecaracteres;
