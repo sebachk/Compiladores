@@ -1,3 +1,7 @@
+package compiler;
+
+import java.io.File;
+
 //### This file created by BYACC 1.8(/Java extension  1.15)
 //### Java capabilities added 7 Jan 97, Bob Jamison
 //### Updated : 27 Nov 97  -- Bob Jamison, Joe Nieten
@@ -27,6 +31,19 @@ boolean yydebug;        //do I want debug output?
 int yynerrs;            //number of errors so far
 int yyerrflag;          //was there an error?
 int yychar;             //the current working character
+AnalizadorLexico AL;
+//########### IMPLEMENTACIONES DE YYLEX, YYERROR
+int yylex(){
+	Token t = AL.GetToken();
+	if (t != null){
+		System.out.println("Token= "+t.getIdentif_tt());
+		return t.getIdentif_tt();}
+	return 0;
+}
+
+void yyerror(String e){
+	System.out.println(e);
+}
 
 //########## MESSAGES ##########
 //###############################################################
@@ -595,7 +612,8 @@ public void run()
  */
 public Parser()
 {
-  //nothing to do
+	File archivo = new File("Docs/codigo.txt");
+	AL = new AnalizadorLexico(archivo);
 }
 
 
