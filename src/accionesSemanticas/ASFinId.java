@@ -15,6 +15,8 @@ public class ASFinId implements AccionSemantica {
 	@Override
 	public void Execute(BufferedInputStream f, char c, TokenCreator tc) {
 		try {
+			
+			
 			f.reset();
 			
 			String cadena=tc.getString();
@@ -35,6 +37,10 @@ public class ASFinId implements AccionSemantica {
 			if(posicion==-1)
 				posicion=Estructuras.addTupla(cadena);
 			tc.createToken(Estructuras.ID,posicion);
+			
+			
+			
+			
 			
 		} catch (IOException e) {e.printStackTrace();}
 	}
