@@ -9,7 +9,7 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		Estructuras tablas = new Estructuras();
-		File archivo = new File("codigo.txt");
+		File archivo = new File("Docs/codigo.txt");
 		AnalizadorLexico AL = new AnalizadorLexico(archivo);
 		int p=4;
 		String cadena ="NDD";

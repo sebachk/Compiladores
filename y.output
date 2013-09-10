@@ -1,71 +1,74 @@
-   0  $accept : coso $end
+   0  $accept : declaracion $end
 
-   1  coso : sentencia_declar_funcion
-   2       | bloque_sent
+   1  declaracion : sentencia_declar_funcion
+   2              | bloque_sent
 
-   3  bloque_sent : sentencia
+   3  bloque_sent : sentencia_ejec
    4              | bloque_funcion
 
-   5  lista_sent : sentencia lista_sent
-   6             | sentencia
+   5  lista_sent : sentencia_ejec lista_sent
+   6             | sentencia_ejec
 
-   7  sentencia : sentencia_ejec
-   8            | sentencia_declarativa_tipo
+   7  sentencia_ejec : asignacion
+   8                 | if '(' cond ')' then bloque_if
+   9                 | print '(' cadena ')' ';'
+  10                 | llamada_funcion ';'
+  11                 | return expresion ';'
+  12                 | loop bloque_sent until cond
 
-   9  sentencia_ejec : asignacion
-  10                 | if '(' cond ')' then bloque_if
-  11                 | print '(' cadena ')' ';'
-  12                 | ID '(' lista_parametros ')' ';'
-  13                 | return expresion ';'
-  14                 | loop bloque_sent until cond
+  13  llamada_funcion : ID '(' lista_parametros ')'
 
-  15  sentencia_declarativa_tipo : tipo lista_var
+  14  sentencia_declarativa_tipo : tipo lista_var
 
-  16  lista_var : ID lista_var
-  17            | ID ';'
+  15  lista_var : ID lista_var
+  16            | ID ';'
 
-  18  bloque_if : bloque_sent
-  19            | bloque_sent else bloque_sent
+  17  bloque_if : bloque_sent
+  18            | bloque_sent else bloque_sent
 
-  20  cond : expresion comparador expresion
+  19  cond : expresion comparador expresion
 
-  21  comparador : '<'
-  22             | '>'
-  23             | '<' '='
-  24             | '>' '='
-  25             | '=' '='
-  26             | '!' '='
+  20  comparador : '<'
+  21             | '>'
+  22             | '<' '='
+  23             | '>' '='
+  24             | '=' '='
+  25             | '!' '='
 
-  27  sentencia_declar_funcion : function ID '(' parametros ')' bloque_funcion
+  26  sentencia_declar_funcion : function ID '(' parametros ')' bloque_funcion
 
-  28  parametros : tipo parametro
-  29             | tipo parametro parametros
+  27  parametros : tipo parametro
+  28             | tipo parametro parametros
 
-  30  lista_parametros : parametro lista_parametros
-  31                   | parametro
+  29  lista_parametros : parametro lista_parametros
+  30                   | parametro
 
-  32  parametro : ID
+  31  parametro : ID
 
-  33  bloque_funcion : begin lista_sent end
+  32  bloque_funcion : begin lista_sent end
+  33                 | begin lista_sent_declar lista_sent end
 
-  34  asignacion : ID '=' expresion ';'
+  34  lista_sent_declar : sentencia_declarativa_tipo lista_sent_declar
+  35                    | sentencia_declarativa_tipo
 
-  35  expresion : expresion '+' termino
-  36            | expresion '-' termino
-  37            | termino
+  36  asignacion : ID '=' expresion ';'
 
-  38  termino : termino '*' factor
-  39          | termino '/' factor
-  40          | factor
+  37  expresion : expresion '+' termino
+  38            | expresion '-' termino
+  39            | termino
 
-  41  factor : ID
-  42         | CTE
-  43         | '(' expresion ')'
+  40  termino : termino '*' factor
+  41          | termino '/' factor
+  42          | factor
 
-  44  tipo : uint
+  43  factor : ID
+  44         | CTE
+  45         | llamada_funcion
+
+  46  tipo : uint
 
 state 0
-	$accept : . coso $end  (0)
+	$accept : . declaracion $end  (0)
 
 	ID  shift 1
 	if  shift 2
@@ -74,84 +77,83 @@ state 0
 	function  shift 5
 	begin  shift 6
 	loop  shift 7
-	uint  shift 8
 	.  error
 
-	coso  goto 9
-	sentencia_declar_funcion  goto 10
-	bloque_sent  goto 11
-	sentencia  goto 12
-	bloque_funcion  goto 13
-	sentencia_ejec  goto 14
-	sentencia_declarativa_tipo  goto 15
-	asignacion  goto 16
-	tipo  goto 17
+	declaracion  goto 8
+	sentencia_declar_funcion  goto 9
+	bloque_sent  goto 10
+	sentencia_ejec  goto 11
+	bloque_funcion  goto 12
+	asignacion  goto 13
+	llamada_funcion  goto 14
 
 
 state 1
-	sentencia_ejec : ID . '(' lista_parametros ')' ';'  (12)
-	asignacion : ID . '=' expresion ';'  (34)
+	llamada_funcion : ID . '(' lista_parametros ')'  (13)
+	asignacion : ID . '=' expresion ';'  (36)
 
-	'('  shift 18
-	'='  shift 19
+	'('  shift 15
+	'='  shift 16
 	.  error
 
 
 state 2
-	sentencia_ejec : if . '(' cond ')' then bloque_if  (10)
+	sentencia_ejec : if . '(' cond ')' then bloque_if  (8)
 
-	'('  shift 20
+	'('  shift 17
 	.  error
 
 
 state 3
-	sentencia_ejec : print . '(' cadena ')' ';'  (11)
+	sentencia_ejec : print . '(' cadena ')' ';'  (9)
 
-	'('  shift 21
+	'('  shift 18
 	.  error
 
 
 state 4
-	sentencia_ejec : return . expresion ';'  (13)
+	sentencia_ejec : return . expresion ';'  (11)
 
-	ID  shift 22
-	CTE  shift 23
-	'('  shift 24
+	ID  shift 19
+	CTE  shift 20
 	.  error
 
-	expresion  goto 25
-	termino  goto 26
-	factor  goto 27
+	llamada_funcion  goto 21
+	expresion  goto 22
+	termino  goto 23
+	factor  goto 24
 
 
 state 5
-	sentencia_declar_funcion : function . ID '(' parametros ')' bloque_funcion  (27)
+	sentencia_declar_funcion : function . ID '(' parametros ')' bloque_funcion  (26)
 
-	ID  shift 28
+	ID  shift 25
 	.  error
 
 
 state 6
-	bloque_funcion : begin . lista_sent end  (33)
+	bloque_funcion : begin . lista_sent end  (32)
+	bloque_funcion : begin . lista_sent_declar lista_sent end  (33)
 
 	ID  shift 1
 	if  shift 2
 	print  shift 3
 	return  shift 4
 	loop  shift 7
-	uint  shift 8
+	uint  shift 26
 	.  error
 
-	sentencia  goto 29
-	lista_sent  goto 30
-	sentencia_ejec  goto 14
-	sentencia_declarativa_tipo  goto 15
-	asignacion  goto 16
-	tipo  goto 17
+	sentencia_ejec  goto 27
+	lista_sent  goto 28
+	asignacion  goto 13
+	llamada_funcion  goto 14
+	sentencia_declarativa_tipo  goto 29
+	tipo  goto 30
+	lista_sent_declar  goto 31
 
 
 state 7
-	sentencia_ejec : loop . bloque_sent until cond  (14)
+	sentencia_ejec : loop . bloque_sent until cond  (12)
 
 	ID  shift 1
 	if  shift 2
@@ -159,83 +161,60 @@ state 7
 	return  shift 4
 	begin  shift 6
 	loop  shift 7
-	uint  shift 8
 	.  error
 
-	bloque_sent  goto 31
-	sentencia  goto 12
-	bloque_funcion  goto 13
-	sentencia_ejec  goto 14
-	sentencia_declarativa_tipo  goto 15
-	asignacion  goto 16
-	tipo  goto 17
+	bloque_sent  goto 32
+	sentencia_ejec  goto 11
+	bloque_funcion  goto 12
+	asignacion  goto 13
+	llamada_funcion  goto 14
 
 
 state 8
-	tipo : uint .  (44)
-
-	.  reduce 44
-
-
-state 9
-	$accept : coso . $end  (0)
+	$accept : declaracion . $end  (0)
 
 	$end  accept
 
 
-state 10
-	coso : sentencia_declar_funcion .  (1)
+state 9
+	declaracion : sentencia_declar_funcion .  (1)
 
 	.  reduce 1
 
 
-state 11
-	coso : bloque_sent .  (2)
+state 10
+	declaracion : bloque_sent .  (2)
 
 	.  reduce 2
 
 
-state 12
-	bloque_sent : sentencia .  (3)
+state 11
+	bloque_sent : sentencia_ejec .  (3)
 
 	.  reduce 3
 
 
-state 13
+state 12
 	bloque_sent : bloque_funcion .  (4)
 
 	.  reduce 4
 
 
-state 14
-	sentencia : sentencia_ejec .  (7)
+state 13
+	sentencia_ejec : asignacion .  (7)
 
 	.  reduce 7
 
 
-state 15
-	sentencia : sentencia_declarativa_tipo .  (8)
+state 14
+	sentencia_ejec : llamada_funcion . ';'  (10)
 
-	.  reduce 8
-
-
-state 16
-	sentencia_ejec : asignacion .  (9)
-
-	.  reduce 9
-
-
-state 17
-	sentencia_declarativa_tipo : tipo . lista_var  (15)
-
-	ID  shift 32
+	';'  shift 33
 	.  error
 
-	lista_var  goto 33
 
-
-state 18
-	sentencia_ejec : ID '(' . lista_parametros ')' ';'  (12)
+state 15
+	llamada_funcion : ID '(' . lista_parametros ')'  (13)
 
 	ID  shift 34
 	.  error
@@ -244,83 +223,479 @@ state 18
 	parametro  goto 36
 
 
-state 19
-	asignacion : ID '=' . expresion ';'  (34)
+state 16
+	asignacion : ID '=' . expresion ';'  (36)
 
-	ID  shift 22
-	CTE  shift 23
-	'('  shift 24
+	ID  shift 19
+	CTE  shift 20
 	.  error
 
+	llamada_funcion  goto 21
 	expresion  goto 37
-	termino  goto 26
-	factor  goto 27
+	termino  goto 23
+	factor  goto 24
 
 
-state 20
-	sentencia_ejec : if '(' . cond ')' then bloque_if  (10)
+state 17
+	sentencia_ejec : if '(' . cond ')' then bloque_if  (8)
 
-	ID  shift 22
-	CTE  shift 23
-	'('  shift 24
+	ID  shift 19
+	CTE  shift 20
 	.  error
 
 	cond  goto 38
+	llamada_funcion  goto 21
 	expresion  goto 39
-	termino  goto 26
-	factor  goto 27
+	termino  goto 23
+	factor  goto 24
 
 
-state 21
-	sentencia_ejec : print '(' . cadena ')' ';'  (11)
+state 18
+	sentencia_ejec : print '(' . cadena ')' ';'  (9)
 
 	cadena  shift 40
 	.  error
 
 
-state 22
-	factor : ID .  (41)
+state 19
+	llamada_funcion : ID . '(' lista_parametros ')'  (13)
+	factor : ID .  (43)
 
-	.  reduce 41
+	'('  shift 15
+	$end  reduce 43
+	ID  reduce 43
+	if  reduce 43
+	else  reduce 43
+	print  reduce 43
+	return  reduce 43
+	end  reduce 43
+	loop  reduce 43
+	until  reduce 43
+	')'  reduce 43
+	';'  reduce 43
+	'<'  reduce 43
+	'>'  reduce 43
+	'='  reduce 43
+	'!'  reduce 43
+	'+'  reduce 43
+	'-'  reduce 43
+	'*'  reduce 43
+	'/'  reduce 43
+
+
+state 20
+	factor : CTE .  (44)
+
+	.  reduce 44
+
+
+state 21
+	factor : llamada_funcion .  (45)
+
+	.  reduce 45
+
+
+state 22
+	sentencia_ejec : return expresion . ';'  (11)
+	expresion : expresion . '+' termino  (37)
+	expresion : expresion . '-' termino  (38)
+
+	';'  shift 41
+	'+'  shift 42
+	'-'  shift 43
+	.  error
 
 
 state 23
-	factor : CTE .  (42)
+	expresion : termino .  (39)
+	termino : termino . '*' factor  (40)
+	termino : termino . '/' factor  (41)
+
+	'*'  shift 44
+	'/'  shift 45
+	$end  reduce 39
+	ID  reduce 39
+	if  reduce 39
+	else  reduce 39
+	print  reduce 39
+	return  reduce 39
+	end  reduce 39
+	loop  reduce 39
+	until  reduce 39
+	')'  reduce 39
+	';'  reduce 39
+	'<'  reduce 39
+	'>'  reduce 39
+	'='  reduce 39
+	'!'  reduce 39
+	'+'  reduce 39
+	'-'  reduce 39
+
+
+state 24
+	termino : factor .  (42)
 
 	.  reduce 42
 
 
-state 24
-	factor : '(' . expresion ')'  (43)
-
-	ID  shift 22
-	CTE  shift 23
-	'('  shift 24
-	.  error
-
-	expresion  goto 41
-	termino  goto 26
-	factor  goto 27
-
-
 state 25
-	sentencia_ejec : return expresion . ';'  (13)
-	expresion : expresion . '+' termino  (35)
-	expresion : expresion . '-' termino  (36)
+	sentencia_declar_funcion : function ID . '(' parametros ')' bloque_funcion  (26)
 
-	';'  shift 42
-	'+'  shift 43
-	'-'  shift 44
+	'('  shift 46
 	.  error
 
 
 state 26
-	expresion : termino .  (37)
-	termino : termino . '*' factor  (38)
-	termino : termino . '/' factor  (39)
+	tipo : uint .  (46)
 
-	'*'  shift 45
-	'/'  shift 46
+	.  reduce 46
+
+
+state 27
+	lista_sent : sentencia_ejec . lista_sent  (5)
+	lista_sent : sentencia_ejec .  (6)
+
+	ID  shift 1
+	if  shift 2
+	print  shift 3
+	return  shift 4
+	loop  shift 7
+	end  reduce 6
+
+	sentencia_ejec  goto 27
+	lista_sent  goto 47
+	asignacion  goto 13
+	llamada_funcion  goto 14
+
+
+state 28
+	bloque_funcion : begin lista_sent . end  (32)
+
+	end  shift 48
+	.  error
+
+
+state 29
+	lista_sent_declar : sentencia_declarativa_tipo . lista_sent_declar  (34)
+	lista_sent_declar : sentencia_declarativa_tipo .  (35)
+
+	uint  shift 26
+	ID  reduce 35
+	if  reduce 35
+	print  reduce 35
+	return  reduce 35
+	loop  reduce 35
+
+	sentencia_declarativa_tipo  goto 29
+	tipo  goto 30
+	lista_sent_declar  goto 49
+
+
+state 30
+	sentencia_declarativa_tipo : tipo . lista_var  (14)
+
+	ID  shift 50
+	.  error
+
+	lista_var  goto 51
+
+
+state 31
+	bloque_funcion : begin lista_sent_declar . lista_sent end  (33)
+
+	ID  shift 1
+	if  shift 2
+	print  shift 3
+	return  shift 4
+	loop  shift 7
+	.  error
+
+	sentencia_ejec  goto 27
+	lista_sent  goto 52
+	asignacion  goto 13
+	llamada_funcion  goto 14
+
+
+state 32
+	sentencia_ejec : loop bloque_sent . until cond  (12)
+
+	until  shift 53
+	.  error
+
+
+state 33
+	sentencia_ejec : llamada_funcion ';' .  (10)
+
+	.  reduce 10
+
+
+state 34
+	parametro : ID .  (31)
+
+	.  reduce 31
+
+
+state 35
+	llamada_funcion : ID '(' lista_parametros . ')'  (13)
+
+	')'  shift 54
+	.  error
+
+
+state 36
+	lista_parametros : parametro . lista_parametros  (29)
+	lista_parametros : parametro .  (30)
+
+	ID  shift 34
+	')'  reduce 30
+
+	lista_parametros  goto 55
+	parametro  goto 36
+
+
+state 37
+	asignacion : ID '=' expresion . ';'  (36)
+	expresion : expresion . '+' termino  (37)
+	expresion : expresion . '-' termino  (38)
+
+	';'  shift 56
+	'+'  shift 42
+	'-'  shift 43
+	.  error
+
+
+state 38
+	sentencia_ejec : if '(' cond . ')' then bloque_if  (8)
+
+	')'  shift 57
+	.  error
+
+
+state 39
+	cond : expresion . comparador expresion  (19)
+	expresion : expresion . '+' termino  (37)
+	expresion : expresion . '-' termino  (38)
+
+	'<'  shift 58
+	'>'  shift 59
+	'='  shift 60
+	'!'  shift 61
+	'+'  shift 42
+	'-'  shift 43
+	.  error
+
+	comparador  goto 62
+
+
+state 40
+	sentencia_ejec : print '(' cadena . ')' ';'  (9)
+
+	')'  shift 63
+	.  error
+
+
+state 41
+	sentencia_ejec : return expresion ';' .  (11)
+
+	.  reduce 11
+
+
+state 42
+	expresion : expresion '+' . termino  (37)
+
+	ID  shift 19
+	CTE  shift 20
+	.  error
+
+	llamada_funcion  goto 21
+	termino  goto 64
+	factor  goto 24
+
+
+state 43
+	expresion : expresion '-' . termino  (38)
+
+	ID  shift 19
+	CTE  shift 20
+	.  error
+
+	llamada_funcion  goto 21
+	termino  goto 65
+	factor  goto 24
+
+
+state 44
+	termino : termino '*' . factor  (40)
+
+	ID  shift 19
+	CTE  shift 20
+	.  error
+
+	llamada_funcion  goto 21
+	factor  goto 66
+
+
+state 45
+	termino : termino '/' . factor  (41)
+
+	ID  shift 19
+	CTE  shift 20
+	.  error
+
+	llamada_funcion  goto 21
+	factor  goto 67
+
+
+state 46
+	sentencia_declar_funcion : function ID '(' . parametros ')' bloque_funcion  (26)
+
+	uint  shift 26
+	.  error
+
+	tipo  goto 68
+	parametros  goto 69
+
+
+state 47
+	lista_sent : sentencia_ejec lista_sent .  (5)
+
+	.  reduce 5
+
+
+state 48
+	bloque_funcion : begin lista_sent end .  (32)
+
+	.  reduce 32
+
+
+state 49
+	lista_sent_declar : sentencia_declarativa_tipo lista_sent_declar .  (34)
+
+	.  reduce 34
+
+
+state 50
+	lista_var : ID . lista_var  (15)
+	lista_var : ID . ';'  (16)
+
+	ID  shift 50
+	';'  shift 70
+	.  error
+
+	lista_var  goto 71
+
+
+state 51
+	sentencia_declarativa_tipo : tipo lista_var .  (14)
+
+	.  reduce 14
+
+
+state 52
+	bloque_funcion : begin lista_sent_declar lista_sent . end  (33)
+
+	end  shift 72
+	.  error
+
+
+state 53
+	sentencia_ejec : loop bloque_sent until . cond  (12)
+
+	ID  shift 19
+	CTE  shift 20
+	.  error
+
+	cond  goto 73
+	llamada_funcion  goto 21
+	expresion  goto 39
+	termino  goto 23
+	factor  goto 24
+
+
+state 54
+	llamada_funcion : ID '(' lista_parametros ')' .  (13)
+
+	.  reduce 13
+
+
+state 55
+	lista_parametros : parametro lista_parametros .  (29)
+
+	.  reduce 29
+
+
+state 56
+	asignacion : ID '=' expresion ';' .  (36)
+
+	.  reduce 36
+
+
+state 57
+	sentencia_ejec : if '(' cond ')' . then bloque_if  (8)
+
+	then  shift 74
+	.  error
+
+
+state 58
+	comparador : '<' .  (20)
+	comparador : '<' . '='  (22)
+
+	'='  shift 75
+	ID  reduce 20
+	CTE  reduce 20
+
+
+state 59
+	comparador : '>' .  (21)
+	comparador : '>' . '='  (23)
+
+	'='  shift 76
+	ID  reduce 21
+	CTE  reduce 21
+
+
+state 60
+	comparador : '=' . '='  (24)
+
+	'='  shift 77
+	.  error
+
+
+state 61
+	comparador : '!' . '='  (25)
+
+	'='  shift 78
+	.  error
+
+
+state 62
+	cond : expresion comparador . expresion  (19)
+
+	ID  shift 19
+	CTE  shift 20
+	.  error
+
+	llamada_funcion  goto 21
+	expresion  goto 79
+	termino  goto 23
+	factor  goto 24
+
+
+state 63
+	sentencia_ejec : print '(' cadena ')' . ';'  (9)
+
+	';'  shift 80
+	.  error
+
+
+state 64
+	expresion : expresion '+' termino .  (37)
+	termino : termino . '*' factor  (40)
+	termino : termino . '/' factor  (41)
+
+	'*'  shift 44
+	'/'  shift 45
 	$end  reduce 37
 	ID  reduce 37
 	if  reduce 37
@@ -330,7 +705,6 @@ state 26
 	end  reduce 37
 	loop  reduce 37
 	until  reduce 37
-	uint  reduce 37
 	')'  reduce 37
 	';'  reduce 37
 	'<'  reduce 37
@@ -341,429 +715,87 @@ state 26
 	'-'  reduce 37
 
 
-state 27
-	termino : factor .  (40)
+state 65
+	expresion : expresion '-' termino .  (38)
+	termino : termino . '*' factor  (40)
+	termino : termino . '/' factor  (41)
+
+	'*'  shift 44
+	'/'  shift 45
+	$end  reduce 38
+	ID  reduce 38
+	if  reduce 38
+	else  reduce 38
+	print  reduce 38
+	return  reduce 38
+	end  reduce 38
+	loop  reduce 38
+	until  reduce 38
+	')'  reduce 38
+	';'  reduce 38
+	'<'  reduce 38
+	'>'  reduce 38
+	'='  reduce 38
+	'!'  reduce 38
+	'+'  reduce 38
+	'-'  reduce 38
+
+
+state 66
+	termino : termino '*' factor .  (40)
 
 	.  reduce 40
 
 
-state 28
-	sentencia_declar_funcion : function ID . '(' parametros ')' bloque_funcion  (27)
-
-	'('  shift 47
-	.  error
-
-
-state 29
-	lista_sent : sentencia . lista_sent  (5)
-	lista_sent : sentencia .  (6)
-
-	ID  shift 1
-	if  shift 2
-	print  shift 3
-	return  shift 4
-	loop  shift 7
-	uint  shift 8
-	end  reduce 6
-
-	sentencia  goto 29
-	lista_sent  goto 48
-	sentencia_ejec  goto 14
-	sentencia_declarativa_tipo  goto 15
-	asignacion  goto 16
-	tipo  goto 17
-
-
-state 30
-	bloque_funcion : begin lista_sent . end  (33)
-
-	end  shift 49
-	.  error
-
-
-state 31
-	sentencia_ejec : loop bloque_sent . until cond  (14)
-
-	until  shift 50
-	.  error
-
-
-state 32
-	lista_var : ID . lista_var  (16)
-	lista_var : ID . ';'  (17)
-
-	ID  shift 32
-	';'  shift 51
-	.  error
-
-	lista_var  goto 52
-
-
-state 33
-	sentencia_declarativa_tipo : tipo lista_var .  (15)
-
-	.  reduce 15
-
-
-state 34
-	parametro : ID .  (32)
-
-	.  reduce 32
-
-
-state 35
-	sentencia_ejec : ID '(' lista_parametros . ')' ';'  (12)
-
-	')'  shift 53
-	.  error
-
-
-state 36
-	lista_parametros : parametro . lista_parametros  (30)
-	lista_parametros : parametro .  (31)
-
-	ID  shift 34
-	')'  reduce 31
-
-	lista_parametros  goto 54
-	parametro  goto 36
-
-
-state 37
-	asignacion : ID '=' expresion . ';'  (34)
-	expresion : expresion . '+' termino  (35)
-	expresion : expresion . '-' termino  (36)
-
-	';'  shift 55
-	'+'  shift 43
-	'-'  shift 44
-	.  error
-
-
-state 38
-	sentencia_ejec : if '(' cond . ')' then bloque_if  (10)
-
-	')'  shift 56
-	.  error
-
-
-state 39
-	cond : expresion . comparador expresion  (20)
-	expresion : expresion . '+' termino  (35)
-	expresion : expresion . '-' termino  (36)
-
-	'<'  shift 57
-	'>'  shift 58
-	'='  shift 59
-	'!'  shift 60
-	'+'  shift 43
-	'-'  shift 44
-	.  error
-
-	comparador  goto 61
-
-
-state 40
-	sentencia_ejec : print '(' cadena . ')' ';'  (11)
-
-	')'  shift 62
-	.  error
-
-
-state 41
-	expresion : expresion . '+' termino  (35)
-	expresion : expresion . '-' termino  (36)
-	factor : '(' expresion . ')'  (43)
-
-	')'  shift 63
-	'+'  shift 43
-	'-'  shift 44
-	.  error
-
-
-state 42
-	sentencia_ejec : return expresion ';' .  (13)
-
-	.  reduce 13
-
-
-state 43
-	expresion : expresion '+' . termino  (35)
-
-	ID  shift 22
-	CTE  shift 23
-	'('  shift 24
-	.  error
-
-	termino  goto 64
-	factor  goto 27
-
-
-state 44
-	expresion : expresion '-' . termino  (36)
-
-	ID  shift 22
-	CTE  shift 23
-	'('  shift 24
-	.  error
-
-	termino  goto 65
-	factor  goto 27
-
-
-state 45
-	termino : termino '*' . factor  (38)
-
-	ID  shift 22
-	CTE  shift 23
-	'('  shift 24
-	.  error
-
-	factor  goto 66
-
-
-state 46
-	termino : termino '/' . factor  (39)
-
-	ID  shift 22
-	CTE  shift 23
-	'('  shift 24
-	.  error
-
-	factor  goto 67
-
-
-state 47
-	sentencia_declar_funcion : function ID '(' . parametros ')' bloque_funcion  (27)
-
-	uint  shift 8
-	.  error
-
-	tipo  goto 68
-	parametros  goto 69
-
-
-state 48
-	lista_sent : sentencia lista_sent .  (5)
-
-	.  reduce 5
-
-
-state 49
-	bloque_funcion : begin lista_sent end .  (33)
-
-	.  reduce 33
-
-
-state 50
-	sentencia_ejec : loop bloque_sent until . cond  (14)
-
-	ID  shift 22
-	CTE  shift 23
-	'('  shift 24
-	.  error
-
-	cond  goto 70
-	expresion  goto 39
-	termino  goto 26
-	factor  goto 27
-
-
-state 51
-	lista_var : ID ';' .  (17)
-
-	.  reduce 17
-
-
-state 52
-	lista_var : ID lista_var .  (16)
-
-	.  reduce 16
-
-
-state 53
-	sentencia_ejec : ID '(' lista_parametros ')' . ';'  (12)
-
-	';'  shift 71
-	.  error
-
-
-state 54
-	lista_parametros : parametro lista_parametros .  (30)
-
-	.  reduce 30
-
-
-state 55
-	asignacion : ID '=' expresion ';' .  (34)
-
-	.  reduce 34
-
-
-state 56
-	sentencia_ejec : if '(' cond ')' . then bloque_if  (10)
-
-	then  shift 72
-	.  error
-
-
-state 57
-	comparador : '<' .  (21)
-	comparador : '<' . '='  (23)
-
-	'='  shift 73
-	ID  reduce 21
-	CTE  reduce 21
-	'('  reduce 21
-
-
-state 58
-	comparador : '>' .  (22)
-	comparador : '>' . '='  (24)
-
-	'='  shift 74
-	ID  reduce 22
-	CTE  reduce 22
-	'('  reduce 22
-
-
-state 59
-	comparador : '=' . '='  (25)
-
-	'='  shift 75
-	.  error
-
-
-state 60
-	comparador : '!' . '='  (26)
-
-	'='  shift 76
-	.  error
-
-
-state 61
-	cond : expresion comparador . expresion  (20)
-
-	ID  shift 22
-	CTE  shift 23
-	'('  shift 24
-	.  error
-
-	expresion  goto 77
-	termino  goto 26
-	factor  goto 27
-
-
-state 62
-	sentencia_ejec : print '(' cadena ')' . ';'  (11)
-
-	';'  shift 78
-	.  error
-
-
-state 63
-	factor : '(' expresion ')' .  (43)
-
-	.  reduce 43
-
-
-state 64
-	expresion : expresion '+' termino .  (35)
-	termino : termino . '*' factor  (38)
-	termino : termino . '/' factor  (39)
-
-	'*'  shift 45
-	'/'  shift 46
-	$end  reduce 35
-	ID  reduce 35
-	if  reduce 35
-	else  reduce 35
-	print  reduce 35
-	return  reduce 35
-	end  reduce 35
-	loop  reduce 35
-	until  reduce 35
-	uint  reduce 35
-	')'  reduce 35
-	';'  reduce 35
-	'<'  reduce 35
-	'>'  reduce 35
-	'='  reduce 35
-	'!'  reduce 35
-	'+'  reduce 35
-	'-'  reduce 35
-
-
-state 65
-	expresion : expresion '-' termino .  (36)
-	termino : termino . '*' factor  (38)
-	termino : termino . '/' factor  (39)
-
-	'*'  shift 45
-	'/'  shift 46
-	$end  reduce 36
-	ID  reduce 36
-	if  reduce 36
-	else  reduce 36
-	print  reduce 36
-	return  reduce 36
-	end  reduce 36
-	loop  reduce 36
-	until  reduce 36
-	uint  reduce 36
-	')'  reduce 36
-	';'  reduce 36
-	'<'  reduce 36
-	'>'  reduce 36
-	'='  reduce 36
-	'!'  reduce 36
-	'+'  reduce 36
-	'-'  reduce 36
-
-
-state 66
-	termino : termino '*' factor .  (38)
-
-	.  reduce 38
-
-
 state 67
-	termino : termino '/' factor .  (39)
+	termino : termino '/' factor .  (41)
 
-	.  reduce 39
+	.  reduce 41
 
 
 state 68
-	parametros : tipo . parametro  (28)
-	parametros : tipo . parametro parametros  (29)
+	parametros : tipo . parametro  (27)
+	parametros : tipo . parametro parametros  (28)
 
 	ID  shift 34
 	.  error
 
-	parametro  goto 79
+	parametro  goto 81
 
 
 state 69
-	sentencia_declar_funcion : function ID '(' parametros . ')' bloque_funcion  (27)
+	sentencia_declar_funcion : function ID '(' parametros . ')' bloque_funcion  (26)
 
-	')'  shift 80
+	')'  shift 82
 	.  error
 
 
 state 70
-	sentencia_ejec : loop bloque_sent until cond .  (14)
+	lista_var : ID ';' .  (16)
 
-	.  reduce 14
+	.  reduce 16
 
 
 state 71
-	sentencia_ejec : ID '(' lista_parametros ')' ';' .  (12)
+	lista_var : ID lista_var .  (15)
+
+	.  reduce 15
+
+
+state 72
+	bloque_funcion : begin lista_sent_declar lista_sent end .  (33)
+
+	.  reduce 33
+
+
+state 73
+	sentencia_ejec : loop bloque_sent until cond .  (12)
 
 	.  reduce 12
 
 
-state 72
-	sentencia_ejec : if '(' cond ')' then . bloque_if  (10)
+state 74
+	sentencia_ejec : if '(' cond ')' then . bloque_if  (8)
 
 	ID  shift 1
 	if  shift 2
@@ -771,126 +803,121 @@ state 72
 	return  shift 4
 	begin  shift 6
 	loop  shift 7
-	uint  shift 8
 	.  error
 
-	bloque_sent  goto 81
-	sentencia  goto 12
-	bloque_funcion  goto 13
-	sentencia_ejec  goto 14
-	sentencia_declarativa_tipo  goto 15
-	asignacion  goto 16
-	bloque_if  goto 82
-	tipo  goto 17
+	bloque_sent  goto 83
+	sentencia_ejec  goto 11
+	bloque_funcion  goto 12
+	asignacion  goto 13
+	bloque_if  goto 84
+	llamada_funcion  goto 14
 
 
-state 73
-	comparador : '<' '=' .  (23)
+state 75
+	comparador : '<' '=' .  (22)
+
+	.  reduce 22
+
+
+state 76
+	comparador : '>' '=' .  (23)
 
 	.  reduce 23
 
 
-state 74
-	comparador : '>' '=' .  (24)
+state 77
+	comparador : '=' '=' .  (24)
 
 	.  reduce 24
 
 
-state 75
-	comparador : '=' '=' .  (25)
+state 78
+	comparador : '!' '=' .  (25)
 
 	.  reduce 25
 
 
-state 76
-	comparador : '!' '=' .  (26)
-
-	.  reduce 26
-
-
-state 77
-	cond : expresion comparador expresion .  (20)
-	expresion : expresion . '+' termino  (35)
-	expresion : expresion . '-' termino  (36)
-
-	'+'  shift 43
-	'-'  shift 44
-	$end  reduce 20
-	ID  reduce 20
-	if  reduce 20
-	else  reduce 20
-	print  reduce 20
-	return  reduce 20
-	end  reduce 20
-	loop  reduce 20
-	until  reduce 20
-	uint  reduce 20
-	')'  reduce 20
-
-
-state 78
-	sentencia_ejec : print '(' cadena ')' ';' .  (11)
-
-	.  reduce 11
-
-
 state 79
-	parametros : tipo parametro .  (28)
-	parametros : tipo parametro . parametros  (29)
+	cond : expresion comparador expresion .  (19)
+	expresion : expresion . '+' termino  (37)
+	expresion : expresion . '-' termino  (38)
 
-	uint  shift 8
-	')'  reduce 28
-
-	tipo  goto 68
-	parametros  goto 83
+	'+'  shift 42
+	'-'  shift 43
+	$end  reduce 19
+	ID  reduce 19
+	if  reduce 19
+	else  reduce 19
+	print  reduce 19
+	return  reduce 19
+	end  reduce 19
+	loop  reduce 19
+	until  reduce 19
+	')'  reduce 19
 
 
 state 80
-	sentencia_declar_funcion : function ID '(' parametros ')' . bloque_funcion  (27)
+	sentencia_ejec : print '(' cadena ')' ';' .  (9)
+
+	.  reduce 9
+
+
+state 81
+	parametros : tipo parametro .  (27)
+	parametros : tipo parametro . parametros  (28)
+
+	uint  shift 26
+	')'  reduce 27
+
+	tipo  goto 68
+	parametros  goto 85
+
+
+state 82
+	sentencia_declar_funcion : function ID '(' parametros ')' . bloque_funcion  (26)
 
 	begin  shift 6
 	.  error
 
-	bloque_funcion  goto 84
+	bloque_funcion  goto 86
 
 
-81: shift/reduce conflict (shift 85, reduce 18) on else
-state 81
-	bloque_if : bloque_sent .  (18)
-	bloque_if : bloque_sent . else bloque_sent  (19)
-
-	else  shift 85
-	$end  reduce 18
-	ID  reduce 18
-	if  reduce 18
-	print  reduce 18
-	return  reduce 18
-	end  reduce 18
-	loop  reduce 18
-	until  reduce 18
-	uint  reduce 18
-
-
-state 82
-	sentencia_ejec : if '(' cond ')' then bloque_if .  (10)
-
-	.  reduce 10
-
-
+83: shift/reduce conflict (shift 87, reduce 17) on else
 state 83
-	parametros : tipo parametro parametros .  (29)
+	bloque_if : bloque_sent .  (17)
+	bloque_if : bloque_sent . else bloque_sent  (18)
 
-	.  reduce 29
+	else  shift 87
+	$end  reduce 17
+	ID  reduce 17
+	if  reduce 17
+	print  reduce 17
+	return  reduce 17
+	end  reduce 17
+	loop  reduce 17
+	until  reduce 17
 
 
 state 84
-	sentencia_declar_funcion : function ID '(' parametros ')' bloque_funcion .  (27)
+	sentencia_ejec : if '(' cond ')' then bloque_if .  (8)
 
-	.  reduce 27
+	.  reduce 8
 
 
 state 85
-	bloque_if : bloque_sent else . bloque_sent  (19)
+	parametros : tipo parametro parametros .  (28)
+
+	.  reduce 28
+
+
+state 86
+	sentencia_declar_funcion : function ID '(' parametros ')' bloque_funcion .  (26)
+
+	.  reduce 26
+
+
+state 87
+	bloque_if : bloque_sent else . bloque_sent  (18)
 
 	ID  shift 1
 	if  shift 2
@@ -898,26 +925,23 @@ state 85
 	return  shift 4
 	begin  shift 6
 	loop  shift 7
-	uint  shift 8
 	.  error
 
-	bloque_sent  goto 86
-	sentencia  goto 12
-	bloque_funcion  goto 13
-	sentencia_ejec  goto 14
-	sentencia_declarativa_tipo  goto 15
-	asignacion  goto 16
-	tipo  goto 17
+	bloque_sent  goto 88
+	sentencia_ejec  goto 11
+	bloque_funcion  goto 12
+	asignacion  goto 13
+	llamada_funcion  goto 14
 
 
-state 86
-	bloque_if : bloque_sent else bloque_sent .  (19)
+state 88
+	bloque_if : bloque_sent else bloque_sent .  (18)
 
-	.  reduce 19
-
-
-State 81 contains 1 shift/reduce conflict.
+	.  reduce 18
 
 
-27 terminals, 21 nonterminals
-45 grammar rules, 87 states
+State 83 contains 1 shift/reduce conflict.
+
+
+27 terminals, 22 nonterminals
+47 grammar rules, 89 states
