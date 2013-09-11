@@ -306,7 +306,7 @@ public class AnalizadorLexico {
 			try {caracter = lector.read();} 
 			catch (IOException e) {e.printStackTrace();}
 			
-			if(caracter!=-1){// NO ES FIN DE LINEA?
+			if(caracter!=-1){// NO ES FIN DE ARCHIVO?
 				int indice=hash((char)caracter);
 				if(indice!=-1){ // CARACTER VALIDO
 					acc_Actual = acciones[estado_actual][indice];
@@ -322,7 +322,7 @@ public class AnalizadorLexico {
 					return null;				
 				}
 			}
-			else {return null;} // FIN DE LINEA	
+			else {return null;} // FIN DE ARCHIVO	
 		} // END WHILE
 		return tc.GetToken();
 	}
@@ -359,7 +359,5 @@ public class AnalizadorLexico {
 		
 		return -1; //Caracter Desconocido
 	}
-	
-	
 	
 }

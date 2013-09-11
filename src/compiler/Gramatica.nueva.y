@@ -1,7 +1,6 @@
 
 %token ID , CTE, cadena , IF, THEN, ELSE, PRINT, RETURN, FUNCTION, BEGIN, END, LOOP, UNTIL, uint
 
-%right  else
 %%
 
 declaracion	: sentencia_declar_funcion
@@ -33,13 +32,8 @@ lista_var	: ID,lista_var
 			|ID
 			;
 			
-<<<<<<< HEAD
-bloque_if 	: bloque_sent %prec else
-			| bloque_sent else bloque_sent
-=======
 bloque_IF 	: bloque_sent
 			| bloque_sent ELSE bloque_sent
->>>>>>> 77c3def
 			;
 
 cond 	: expresion comparador expresion
@@ -95,6 +89,3 @@ factor 	: ID
 tipo 	:uint
 		;
 %%
-
-
-String prueba_Codigo_De_gramatica

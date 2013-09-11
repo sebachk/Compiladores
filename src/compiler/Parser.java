@@ -1,3 +1,7 @@
+package compiler;
+
+import java.io.File;
+
 //### This file created by BYACC 1.8(/Java extension  1.15)
 //### Java capabilities added 7 Jan 97, Bob Jamison
 //### Updated : 27 Nov 97  -- Bob Jamison, Joe Nieten
@@ -27,6 +31,19 @@ boolean yydebug;        //do I want debug output?
 int yynerrs;            //number of errors so far
 int yyerrflag;          //was there an error?
 int yychar;             //the current working character
+AnalizadorLexico AL;
+//########### IMPLEMENTACIONES DE YYLEX, YYERROR
+int yylex(){
+	Token t = AL.GetToken();
+	if (t != null){
+		System.out.println("Token= "+t.getIdentif_tt());
+		return t.getIdentif_tt();}
+	return 0;
+}
+
+void yyerror(String e){
+	System.out.println(e);
+}
 
 //########## MESSAGES ##########
 //###############################################################
@@ -337,13 +354,8 @@ final static String yyrule[] = {
 "lista_sent : sentencia_ejec lista_sent",
 "lista_sent : sentencia_ejec",
 "sentencia_ejec : asignacion ';'",
-<<<<<<< HEAD
-"sentencia_ejec : if '(' cond ')' then bloque_if",
-"sentencia_ejec : print '(' cadena ')' ';'",
-=======
 "sentencia_ejec : IF '(' cond ')' THEN bloque_IF",
 "sentencia_ejec : PRINT '(' cadena ')' ';'",
->>>>>>> 77c3def
 "sentencia_ejec : llamada_funcion ';'",
 "sentencia_ejec : RETURN expresion ';'",
 "sentencia_ejec : LOOP bloque_sent UNTIL cond",
@@ -351,13 +363,8 @@ final static String yyrule[] = {
 "sentencia_declarativa_tipo : tipo lista_var ';'",
 "lista_var : ID lista_var",
 "lista_var : ID",
-<<<<<<< HEAD
-"bloque_if : bloque_sent",
-"bloque_if : bloque_sent else bloque_sent",
-=======
 "bloque_IF : bloque_sent",
 "bloque_IF : bloque_sent ELSE bloque_sent",
->>>>>>> 77c3def
 "cond : expresion comparador expresion",
 "comparador : '<'",
 "comparador : '>'",
@@ -388,11 +395,6 @@ final static String yyrule[] = {
 "tipo : uint",
 };
 
-//#line 93 "Docs/Gramatica.nueva.y"
-
-
-String prueba_Codigo_De_gramatica
-//#line 314 "Parser.java"
 //###############################################################
 // method: yylexdebug : check lexer state
 //###############################################################
@@ -610,7 +612,8 @@ public void run()
  */
 public Parser()
 {
-  //nothing to do
+	File archivo = new File("Docs/codigo.txt");
+	AL = new AnalizadorLexico(archivo);
 }
 
 
