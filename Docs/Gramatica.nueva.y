@@ -1,6 +1,7 @@
 
 %token ID , CTE, cadena , if, then, else, print, return, function, begin, end, loop, until, uint
 
+%right  else
 %%
 
 declaracion	: sentencia_declar_funcion
@@ -32,7 +33,7 @@ lista_var	: ID,lista_var
 			|ID
 			;
 			
-bloque_if 	: bloque_sent
+bloque_if 	: bloque_sent %prec else
 			| bloque_sent else bloque_sent
 			;
 
@@ -89,3 +90,6 @@ factor 	: ID
 tipo 	:uint
 		;
 %%
+
+
+String prueba_Codigo_De_gramatica
