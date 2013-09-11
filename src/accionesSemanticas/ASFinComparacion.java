@@ -4,6 +4,9 @@ import java.io.BufferedInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 
+import ALexico.TokenCreator;
+
+
 public class ASFinComparacion implements AccionSemantica{
 
 	@Override

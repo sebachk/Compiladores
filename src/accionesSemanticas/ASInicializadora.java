@@ -4,6 +4,9 @@ import java.io.BufferedInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 
+import ALexico.TokenCreator;
+
+
 public class ASInicializadora implements AccionSemantica{
 	/**inicializa el arreglo y agrega el primer caracter**/
 	@Override
@@ -12,5 +15,4 @@ public class ASInicializadora implements AccionSemantica{
 		tc.clearString();
 		tc.addChar(c);
 	}
-
 }

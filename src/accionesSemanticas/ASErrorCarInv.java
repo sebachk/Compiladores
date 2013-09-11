@@ -3,8 +3,10 @@ package accionesSemanticas;
 import java.io.BufferedInputStream;
 import java.io.FileReader;
 
-import compiler.AnalizadorLexico;
-import compiler.Estructuras;
+import ALexico.AnalizadorLexico;
+import ALexico.Estructuras;
+import ALexico.TokenCreator;
+
 
 public class ASErrorCarInv implements AccionSemantica{
 

@@ -1,4 +1,4 @@
-package compiler;
+package ALexico;
 
 public class TuplaTS {
 	/**Tupla de la tabla de simbolos**/

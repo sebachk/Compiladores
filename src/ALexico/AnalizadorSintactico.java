@@ -1,4 +1,4 @@
-package compiler;
+package ALexico;
 
 public class AnalizadorSintactico {
 	public static Token t;

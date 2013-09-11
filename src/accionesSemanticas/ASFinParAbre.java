@@ -4,7 +4,9 @@ import java.io.BufferedInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 
-import compiler.Estructuras;
+import ALexico.Estructuras;
+import ALexico.TokenCreator;
+
 
 public class ASFinParAbre implements AccionSemantica{
 
@@ -14,7 +16,5 @@ public class ASFinParAbre implements AccionSemantica{
 		f.reset();
 		tc.createToken(tc.getString(),-1);
 		} catch (IOException e) {e.printStackTrace();}
-		
 	}
-
 }

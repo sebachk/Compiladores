@@ -1,6 +1,4 @@
-package accionesSemanticas;
-import compiler.Estructuras;
-import compiler.Token;
+package ALexico;
 
 /**
  * Creador de Tokens. Almacena internamente los caracteres que el AL va leyendo
@@ -22,12 +20,7 @@ public class TokenCreator {
 	
 	public void createToken(String chain,int indice){
 		token= new Token(Estructuras.getValorToken(chain),indice);
-		
-		
 	}
 	
-	public Token GetToken(){
-		return token;
-	
-	}
+	public Token GetToken(){return token;}
 }

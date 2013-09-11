@@ -4,6 +4,9 @@ import java.io.BufferedInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 
+import ALexico.TokenCreator;
+
+
 public class ASConsumidora implements AccionSemantica {
 	/**Agrega un caracter al arreglo. Consume el caracter**/
 	@Override

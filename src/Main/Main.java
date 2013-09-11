@@ -1,6 +1,9 @@
-package compiler;
+package Main;
 
 import java.io.File;
+
+import ALexico.Estructuras;
+import ASintactico.Parser;
 
 public class Main {
 

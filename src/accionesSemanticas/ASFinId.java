@@ -5,8 +5,10 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Vector;
 
-import compiler.AnalizadorLexico;
-import compiler.Estructuras;
+import ALexico.AnalizadorLexico;
+import ALexico.Estructuras;
+import ALexico.TokenCreator;
+
 
 public class ASFinId implements AccionSemantica {
 	/**Vuelve la marca hacia atras **/
@@ -15,10 +17,7 @@ public class ASFinId implements AccionSemantica {
 	@Override
 	public void Execute(BufferedInputStream f, char c, TokenCreator tc) {
 		try {
-			
-			
 			f.reset();
-			
 			String cadena=tc.getString();
 			for(int i=0;i<pr.length;i++){
 				if(cadena.equals(pr[i])){
@@ -26,7 +25,6 @@ public class ASFinId implements AccionSemantica {
 					tc.createToken(cadena,-1);
 					return;
 				}
-					
 			}
 			if(cadena.length()>15){
 
@@ -36,13 +34,7 @@ public class ASFinId implements AccionSemantica {
 			int posicion=Estructuras.enTupla(cadena);
 			if(posicion==-1)
 				posicion=Estructuras.addTupla(cadena);
-			tc.createToken(Estructuras.ID,posicion);
-			
-			
-			
-			
-			
+			tc.createToken(Estructuras.ID,posicion);	
 		} catch (IOException e) {e.printStackTrace();}
 	}
-
 }

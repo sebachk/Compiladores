@@ -1,4 +1,4 @@
-package compiler;
+package ALexico;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -18,7 +18,6 @@ import accionesSemanticas.ASFinId;
 import accionesSemanticas.ASFinParAbre;
 import accionesSemanticas.ASInicializadora;
 import accionesSemanticas.ASOperador;
-import accionesSemanticas.TokenCreator;
 
 
 import accionesSemanticas.AccionSemantica;

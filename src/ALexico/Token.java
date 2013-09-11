@@ -1,4 +1,4 @@
-package compiler;
+package ALexico;
 /**
  * Clase que representa una dupla de un identificador y la posicion en la tabla de simbolos
  */

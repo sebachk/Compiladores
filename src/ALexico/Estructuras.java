@@ -1,4 +1,4 @@
-package compiler;
+package ALexico;
 import java.util.*;
 
 /** Esta clase contiene todas las estructuras globales que se necesitan
