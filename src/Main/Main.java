@@ -31,7 +31,7 @@ public class Main {
 		*/
 		
 		Parser p = new Parser();
-		System.out.println(p.yyparse());
+		p.run();
 	}
 
 }
