@@ -12,9 +12,10 @@ public class ASFinParAbre implements AccionSemantica{
 
 	@Override
 	public void Execute(BufferedInputStream f, char c, TokenCreator tc) {
-		try {
-		f.reset();
-		tc.createToken(tc.getString(),-1);
-		} catch (IOException e) {e.printStackTrace();}
+		try{
+			f.reset();
+			tc.createToken(tc.getString(),-1);
+		} 
+		catch (IOException e) {e.printStackTrace();}
 	}
 }

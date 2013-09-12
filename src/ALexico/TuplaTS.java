@@ -1,11 +1,8 @@
 package ALexico;
-
+/**Tupla de la tabla de simbolos**/
 public class TuplaTS {
-	/**Tupla de la tabla de simbolos**/
 	
 	public String valor;
-	
-	
 	
 	public String print(){
 		String print="";

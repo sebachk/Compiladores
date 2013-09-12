@@ -189,7 +189,6 @@ public class AnalizadorLexico {
 		acciones[3][14]=acciones[3][0];
 		acciones[3][15]=acciones[3][0];
 		acciones[3][16]=acciones[3][0];
-		acciones[3][1]=acciones[3][0];
 		acciones[4][0]=new ASErrorCarInv();
 		acciones[4][1]=acciones[4][0];
 		acciones[4][2]=acciones[4][0];
