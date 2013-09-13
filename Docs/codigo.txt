@@ -1,0 +1,2 @@
+if (plazo !+ 656) then
+	tasa = base + recargo /100;

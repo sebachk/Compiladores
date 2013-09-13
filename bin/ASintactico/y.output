@@ -2,32 +2,32 @@
 
    1  declaracion : sentencia_declar_funcion
    2              | bloque_sent
-   3              |
 
-   4  bloque_sent : sentencia_ejec
-   5              | bloque_funcion
+   3  bloque_sent : sentencia_ejec
+   4              | bloque_funcion
 
-   6  lista_sent : sentencia_ejec lista_sent
-   7             | sentencia_ejec
+   5  lista_sent : sentencia_ejec lista_sent
+   6             | sentencia_ejec
 
-   8  sentencia_ejec : asignacion ';'
+   7  sentencia_ejec : asignacion ';'
 
-   9  $$1 :
+   8  $$1 :
 
-  10  sentencia_ejec : IF $$1 '(' cond ')' THEN bloque_IF
+   9  sentencia_ejec : IF $$1 '(' cond ')' THEN bloque_IF
 
-  11  $$2 :
+  10  $$2 :
 
-  12  sentencia_ejec : PRINT $$2 '(' cadena ')' ';'
-  13                 | llamada_funcion ';'
+  11  sentencia_ejec : PRINT $$2 '(' cadena ')' ';'
+  12                 | llamada_funcion ';'
 
-  14  $$3 :
+  13  $$3 :
 
-  15  sentencia_ejec : RETURN $$3 expresion ';'
+  14  sentencia_ejec : RETURN $$3 expresion ';'
 
-  16  $$4 :
+  15  $$4 :
 
-  17  sentencia_ejec : LOOP $$4 bloque_sent UNTIL cond
+  16  sentencia_ejec : LOOP $$4 bloque_sent UNTIL cond
+  17                 | ';'
 
   18  llamada_funcion : ID '(' lista_parametros ')'
   19                  | ID '(' ')'
@@ -67,25 +67,23 @@
   42                    | sentencia_declarativa_tipo
 
   43  asignacion : ID '=' expresion
-  44             | ""
 
-  45  expresion : expresion '+' termino
-  46            | expresion '-' termino
-  47            | termino
+  44  expresion : expresion '+' termino
+  45            | expresion '-' termino
+  46            | termino
 
-  48  termino : termino '*' factor
-  49          | termino '/' factor
-  50          | factor
+  47  termino : termino '*' factor
+  48          | termino '/' factor
+  49          | factor
 
-  51  factor : ID
-  52         | CTE
-  53         | llamada_funcion
+  50  factor : ID
+  51         | CTE
+  52         | llamada_funcion
 
-  54  tipo : uint
+  53  tipo : uint
 
 state 0
 	$accept : . declaracion $end  (0)
-	declaracion : .  (3)
 
 	ID  shift 1
 	IF  shift 2
@@ -94,8 +92,8 @@ state 0
 	FUNCTION  shift 5
 	BEGIN  shift 6
 	LOOP  shift 7
-	""  shift 8
-	$end  reduce 3
+	';'  shift 8
+	.  error
 
 	declaracion  goto 9
 	sentencia_declar_funcion  goto 10
@@ -117,28 +115,28 @@ state 1
 
 
 state 2
-	sentencia_ejec : IF . $$1 '(' cond ')' THEN bloque_IF  (10)
-	$$1 : .  (9)
+	sentencia_ejec : IF . $$1 '(' cond ')' THEN bloque_IF  (9)
+	$$1 : .  (8)
 
-	.  reduce 9
+	.  reduce 8
 
 	$$1  goto 18
 
 
 state 3
-	sentencia_ejec : PRINT . $$2 '(' cadena ')' ';'  (12)
-	$$2 : .  (11)
+	sentencia_ejec : PRINT . $$2 '(' cadena ')' ';'  (11)
+	$$2 : .  (10)
 
-	.  reduce 11
+	.  reduce 10
 
 	$$2  goto 19
 
 
 state 4
-	sentencia_ejec : RETURN . $$3 expresion ';'  (15)
-	$$3 : .  (14)
+	sentencia_ejec : RETURN . $$3 expresion ';'  (14)
+	$$3 : .  (13)
 
-	.  reduce 14
+	.  reduce 13
 
 	$$3  goto 20
 
@@ -161,7 +159,7 @@ state 6
 	RETURN  shift 4
 	LOOP  shift 7
 	uint  shift 22
-	""  shift 8
+	';'  shift 8
 	.  error
 
 	sentencia_ejec  goto 23
@@ -174,18 +172,18 @@ state 6
 
 
 state 7
-	sentencia_ejec : LOOP . $$4 bloque_sent UNTIL cond  (17)
-	$$4 : .  (16)
+	sentencia_ejec : LOOP . $$4 bloque_sent UNTIL cond  (16)
+	$$4 : .  (15)
 
-	.  reduce 16
+	.  reduce 15
 
 	$$4  goto 28
 
 
 state 8
-	asignacion : "" .  (44)
+	sentencia_ejec : ';' .  (17)
 
-	.  reduce 44
+	.  reduce 17
 
 
 state 9
@@ -207,26 +205,26 @@ state 11
 
 
 state 12
-	bloque_sent : sentencia_ejec .  (4)
+	bloque_sent : sentencia_ejec .  (3)
+
+	.  reduce 3
+
+
+state 13
+	bloque_sent : bloque_funcion .  (4)
 
 	.  reduce 4
 
 
-state 13
-	bloque_sent : bloque_funcion .  (5)
-
-	.  reduce 5
-
-
 state 14
-	sentencia_ejec : asignacion . ';'  (8)
+	sentencia_ejec : asignacion . ';'  (7)
 
 	';'  shift 29
 	.  error
 
 
 state 15
-	sentencia_ejec : llamada_funcion . ';'  (13)
+	sentencia_ejec : llamada_funcion . ';'  (12)
 
 	';'  shift 30
 	.  error
@@ -258,21 +256,21 @@ state 17
 
 
 state 18
-	sentencia_ejec : IF $$1 . '(' cond ')' THEN bloque_IF  (10)
+	sentencia_ejec : IF $$1 . '(' cond ')' THEN bloque_IF  (9)
 
 	'('  shift 41
 	.  error
 
 
 state 19
-	sentencia_ejec : PRINT $$2 . '(' cadena ')' ';'  (12)
+	sentencia_ejec : PRINT $$2 . '(' cadena ')' ';'  (11)
 
 	'('  shift 42
 	.  error
 
 
 state 20
-	sentencia_ejec : RETURN $$3 . expresion ';'  (15)
+	sentencia_ejec : RETURN $$3 . expresion ';'  (14)
 
 	ID  shift 35
 	CTE  shift 36
@@ -293,22 +291,22 @@ state 21
 
 
 state 22
-	tipo : uint .  (54)
+	tipo : uint .  (53)
 
-	.  reduce 54
+	.  reduce 53
 
 
 state 23
-	lista_sent : sentencia_ejec . lista_sent  (6)
-	lista_sent : sentencia_ejec .  (7)
+	lista_sent : sentencia_ejec . lista_sent  (5)
+	lista_sent : sentencia_ejec .  (6)
 
 	ID  shift 1
 	IF  shift 2
 	PRINT  shift 3
 	RETURN  shift 4
 	LOOP  shift 7
-	""  shift 8
-	END  reduce 7
+	';'  shift 8
+	END  reduce 6
 
 	sentencia_ejec  goto 23
 	lista_sent  goto 45
@@ -333,7 +331,7 @@ state 25
 	PRINT  reduce 42
 	RETURN  reduce 42
 	LOOP  reduce 42
-	""  reduce 42
+	';'  reduce 42
 
 	sentencia_declarativa_tipo  goto 25
 	tipo  goto 26
@@ -357,7 +355,7 @@ state 27
 	PRINT  shift 3
 	RETURN  shift 4
 	LOOP  shift 7
-	""  shift 8
+	';'  shift 8
 	.  error
 
 	sentencia_ejec  goto 23
@@ -367,7 +365,7 @@ state 27
 
 
 state 28
-	sentencia_ejec : LOOP $$4 . bloque_sent UNTIL cond  (17)
+	sentencia_ejec : LOOP $$4 . bloque_sent UNTIL cond  (16)
 
 	ID  shift 1
 	IF  shift 2
@@ -375,7 +373,7 @@ state 28
 	RETURN  shift 4
 	BEGIN  shift 6
 	LOOP  shift 7
-	""  shift 8
+	';'  shift 8
 	.  error
 
 	bloque_sent  goto 51
@@ -386,15 +384,15 @@ state 28
 
 
 state 29
-	sentencia_ejec : asignacion ';' .  (8)
+	sentencia_ejec : asignacion ';' .  (7)
 
-	.  reduce 8
+	.  reduce 7
 
 
 state 30
-	sentencia_ejec : llamada_funcion ';' .  (13)
+	sentencia_ejec : llamada_funcion ';' .  (12)
 
-	.  reduce 13
+	.  reduce 12
 
 
 state 31
@@ -430,49 +428,48 @@ state 34
 state 35
 	llamada_funcion : ID . '(' lista_parametros ')'  (18)
 	llamada_funcion : ID . '(' ')'  (19)
-	factor : ID .  (51)
+	factor : ID .  (50)
 
 	'('  shift 16
-	$end  reduce 51
-	ID  reduce 51
-	IF  reduce 51
-	ELSE  reduce 51
-	PRINT  reduce 51
-	RETURN  reduce 51
-	END  reduce 51
-	LOOP  reduce 51
-	UNTIL  reduce 51
-	MAY_IG  reduce 51
-	MEN_IG  reduce 51
-	DIST  reduce 51
-	IGUAL  reduce 51
-	';'  reduce 51
-	')'  reduce 51
-	'<'  reduce 51
-	'>'  reduce 51
-	""  reduce 51
-	'+'  reduce 51
-	'-'  reduce 51
-	'*'  reduce 51
-	'/'  reduce 51
+	$end  reduce 50
+	ID  reduce 50
+	IF  reduce 50
+	ELSE  reduce 50
+	PRINT  reduce 50
+	RETURN  reduce 50
+	END  reduce 50
+	LOOP  reduce 50
+	UNTIL  reduce 50
+	MAY_IG  reduce 50
+	MEN_IG  reduce 50
+	DIST  reduce 50
+	IGUAL  reduce 50
+	';'  reduce 50
+	')'  reduce 50
+	'<'  reduce 50
+	'>'  reduce 50
+	'+'  reduce 50
+	'-'  reduce 50
+	'*'  reduce 50
+	'/'  reduce 50
 
 
 state 36
-	factor : CTE .  (52)
+	factor : CTE .  (51)
+
+	.  reduce 51
+
+
+state 37
+	factor : llamada_funcion .  (52)
 
 	.  reduce 52
 
 
-state 37
-	factor : llamada_funcion .  (53)
-
-	.  reduce 53
-
-
 state 38
 	asignacion : ID '=' expresion .  (43)
-	expresion : expresion . '+' termino  (45)
-	expresion : expresion . '-' termino  (46)
+	expresion : expresion . '+' termino  (44)
+	expresion : expresion . '-' termino  (45)
 
 	'+'  shift 54
 	'-'  shift 55
@@ -480,42 +477,41 @@ state 38
 
 
 state 39
-	expresion : termino .  (47)
-	termino : termino . '*' factor  (48)
-	termino : termino . '/' factor  (49)
+	expresion : termino .  (46)
+	termino : termino . '*' factor  (47)
+	termino : termino . '/' factor  (48)
 
 	'*'  shift 56
 	'/'  shift 57
-	$end  reduce 47
-	ID  reduce 47
-	IF  reduce 47
-	ELSE  reduce 47
-	PRINT  reduce 47
-	RETURN  reduce 47
-	END  reduce 47
-	LOOP  reduce 47
-	UNTIL  reduce 47
-	MAY_IG  reduce 47
-	MEN_IG  reduce 47
-	DIST  reduce 47
-	IGUAL  reduce 47
-	';'  reduce 47
-	')'  reduce 47
-	'<'  reduce 47
-	'>'  reduce 47
-	""  reduce 47
-	'+'  reduce 47
-	'-'  reduce 47
+	$end  reduce 46
+	ID  reduce 46
+	IF  reduce 46
+	ELSE  reduce 46
+	PRINT  reduce 46
+	RETURN  reduce 46
+	END  reduce 46
+	LOOP  reduce 46
+	UNTIL  reduce 46
+	MAY_IG  reduce 46
+	MEN_IG  reduce 46
+	DIST  reduce 46
+	IGUAL  reduce 46
+	';'  reduce 46
+	')'  reduce 46
+	'<'  reduce 46
+	'>'  reduce 46
+	'+'  reduce 46
+	'-'  reduce 46
 
 
 state 40
-	termino : factor .  (50)
+	termino : factor .  (49)
 
-	.  reduce 50
+	.  reduce 49
 
 
 state 41
-	sentencia_ejec : IF $$1 '(' . cond ')' THEN bloque_IF  (10)
+	sentencia_ejec : IF $$1 '(' . cond ')' THEN bloque_IF  (9)
 
 	ID  shift 35
 	CTE  shift 36
@@ -529,16 +525,16 @@ state 41
 
 
 state 42
-	sentencia_ejec : PRINT $$2 '(' . cadena ')' ';'  (12)
+	sentencia_ejec : PRINT $$2 '(' . cadena ')' ';'  (11)
 
 	cadena  shift 60
 	.  error
 
 
 state 43
-	sentencia_ejec : RETURN $$3 expresion . ';'  (15)
-	expresion : expresion . '+' termino  (45)
-	expresion : expresion . '-' termino  (46)
+	sentencia_ejec : RETURN $$3 expresion . ';'  (14)
+	expresion : expresion . '+' termino  (44)
+	expresion : expresion . '-' termino  (45)
 
 	';'  shift 61
 	'+'  shift 54
@@ -559,9 +555,9 @@ state 44
 
 
 state 45
-	lista_sent : sentencia_ejec lista_sent .  (6)
+	lista_sent : sentencia_ejec lista_sent .  (5)
 
-	.  reduce 6
+	.  reduce 5
 
 
 state 46
@@ -601,7 +597,7 @@ state 50
 
 
 state 51
-	sentencia_ejec : LOOP $$4 bloque_sent . UNTIL cond  (17)
+	sentencia_ejec : LOOP $$4 bloque_sent . UNTIL cond  (16)
 
 	UNTIL  shift 68
 	.  error
@@ -620,7 +616,7 @@ state 53
 
 
 state 54
-	expresion : expresion '+' . termino  (45)
+	expresion : expresion '+' . termino  (44)
 
 	ID  shift 35
 	CTE  shift 36
@@ -632,7 +628,7 @@ state 54
 
 
 state 55
-	expresion : expresion '-' . termino  (46)
+	expresion : expresion '-' . termino  (45)
 
 	ID  shift 35
 	CTE  shift 36
@@ -644,7 +640,7 @@ state 55
 
 
 state 56
-	termino : termino '*' . factor  (48)
+	termino : termino '*' . factor  (47)
 
 	ID  shift 35
 	CTE  shift 36
@@ -655,7 +651,7 @@ state 56
 
 
 state 57
-	termino : termino '/' . factor  (49)
+	termino : termino '/' . factor  (48)
 
 	ID  shift 35
 	CTE  shift 36
@@ -666,7 +662,7 @@ state 57
 
 
 state 58
-	sentencia_ejec : IF $$1 '(' cond . ')' THEN bloque_IF  (10)
+	sentencia_ejec : IF $$1 '(' cond . ')' THEN bloque_IF  (9)
 
 	')'  shift 73
 	.  error
@@ -674,8 +670,8 @@ state 58
 
 state 59
 	cond : expresion . comparador expresion  (25)
-	expresion : expresion . '+' termino  (45)
-	expresion : expresion . '-' termino  (46)
+	expresion : expresion . '+' termino  (44)
+	expresion : expresion . '-' termino  (45)
 
 	MAY_IG  shift 74
 	MEN_IG  shift 75
@@ -691,16 +687,16 @@ state 59
 
 
 state 60
-	sentencia_ejec : PRINT $$2 '(' cadena . ')' ';'  (12)
+	sentencia_ejec : PRINT $$2 '(' cadena . ')' ';'  (11)
 
 	')'  shift 81
 	.  error
 
 
 state 61
-	sentencia_ejec : RETURN $$3 expresion ';' .  (15)
+	sentencia_ejec : RETURN $$3 expresion ';' .  (14)
 
-	.  reduce 15
+	.  reduce 14
 
 
 state 62
@@ -748,7 +744,7 @@ state 67
 
 
 state 68
-	sentencia_ejec : LOOP $$4 bloque_sent UNTIL . cond  (17)
+	sentencia_ejec : LOOP $$4 bloque_sent UNTIL . cond  (16)
 
 	ID  shift 35
 	CTE  shift 36
@@ -762,9 +758,37 @@ state 68
 
 
 state 69
-	expresion : expresion '+' termino .  (45)
-	termino : termino . '*' factor  (48)
-	termino : termino . '/' factor  (49)
+	expresion : expresion '+' termino .  (44)
+	termino : termino . '*' factor  (47)
+	termino : termino . '/' factor  (48)
+
+	'*'  shift 56
+	'/'  shift 57
+	$end  reduce 44
+	ID  reduce 44
+	IF  reduce 44
+	ELSE  reduce 44
+	PRINT  reduce 44
+	RETURN  reduce 44
+	END  reduce 44
+	LOOP  reduce 44
+	UNTIL  reduce 44
+	MAY_IG  reduce 44
+	MEN_IG  reduce 44
+	DIST  reduce 44
+	IGUAL  reduce 44
+	';'  reduce 44
+	')'  reduce 44
+	'<'  reduce 44
+	'>'  reduce 44
+	'+'  reduce 44
+	'-'  reduce 44
+
+
+state 70
+	expresion : expresion '-' termino .  (45)
+	termino : termino . '*' factor  (47)
+	termino : termino . '/' factor  (48)
 
 	'*'  shift 56
 	'/'  shift 57
@@ -785,54 +809,24 @@ state 69
 	')'  reduce 45
 	'<'  reduce 45
 	'>'  reduce 45
-	""  reduce 45
 	'+'  reduce 45
 	'-'  reduce 45
 
 
-state 70
-	expresion : expresion '-' termino .  (46)
-	termino : termino . '*' factor  (48)
-	termino : termino . '/' factor  (49)
-
-	'*'  shift 56
-	'/'  shift 57
-	$end  reduce 46
-	ID  reduce 46
-	IF  reduce 46
-	ELSE  reduce 46
-	PRINT  reduce 46
-	RETURN  reduce 46
-	END  reduce 46
-	LOOP  reduce 46
-	UNTIL  reduce 46
-	MAY_IG  reduce 46
-	MEN_IG  reduce 46
-	DIST  reduce 46
-	IGUAL  reduce 46
-	';'  reduce 46
-	')'  reduce 46
-	'<'  reduce 46
-	'>'  reduce 46
-	""  reduce 46
-	'+'  reduce 46
-	'-'  reduce 46
-
-
 state 71
-	termino : termino '*' factor .  (48)
+	termino : termino '*' factor .  (47)
+
+	.  reduce 47
+
+
+state 72
+	termino : termino '/' factor .  (48)
 
 	.  reduce 48
 
 
-state 72
-	termino : termino '/' factor .  (49)
-
-	.  reduce 49
-
-
 state 73
-	sentencia_ejec : IF $$1 '(' cond ')' . THEN bloque_IF  (10)
+	sentencia_ejec : IF $$1 '(' cond ')' . THEN bloque_IF  (9)
 
 	THEN  shift 86
 	.  error
@@ -888,7 +882,7 @@ state 80
 
 
 state 81
-	sentencia_ejec : PRINT $$2 '(' cadena ')' . ';'  (12)
+	sentencia_ejec : PRINT $$2 '(' cadena ')' . ';'  (11)
 
 	';'  shift 88
 	.  error
@@ -921,13 +915,13 @@ state 84
 
 
 state 85
-	sentencia_ejec : LOOP $$4 bloque_sent UNTIL cond .  (17)
+	sentencia_ejec : LOOP $$4 bloque_sent UNTIL cond .  (16)
 
-	.  reduce 17
+	.  reduce 16
 
 
 state 86
-	sentencia_ejec : IF $$1 '(' cond ')' THEN . bloque_IF  (10)
+	sentencia_ejec : IF $$1 '(' cond ')' THEN . bloque_IF  (9)
 
 	ID  shift 1
 	IF  shift 2
@@ -935,7 +929,7 @@ state 86
 	RETURN  shift 4
 	BEGIN  shift 6
 	LOOP  shift 7
-	""  shift 8
+	';'  shift 8
 	.  error
 
 	bloque_sent  goto 91
@@ -948,8 +942,8 @@ state 86
 
 state 87
 	cond : expresion comparador expresion .  (25)
-	expresion : expresion . '+' termino  (45)
-	expresion : expresion . '-' termino  (46)
+	expresion : expresion . '+' termino  (44)
+	expresion : expresion . '-' termino  (45)
 
 	'+'  shift 54
 	'-'  shift 55
@@ -962,14 +956,14 @@ state 87
 	END  reduce 25
 	LOOP  reduce 25
 	UNTIL  reduce 25
+	';'  reduce 25
 	')'  reduce 25
-	""  reduce 25
 
 
 state 88
-	sentencia_ejec : PRINT $$2 '(' cadena ')' ';' .  (12)
+	sentencia_ejec : PRINT $$2 '(' cadena ')' ';' .  (11)
 
-	.  reduce 12
+	.  reduce 11
 
 
 state 89
@@ -997,13 +991,13 @@ state 91
 	END  reduce 23
 	LOOP  reduce 23
 	UNTIL  reduce 23
-	""  reduce 23
+	';'  reduce 23
 
 
 state 92
-	sentencia_ejec : IF $$1 '(' cond ')' THEN bloque_IF .  (10)
+	sentencia_ejec : IF $$1 '(' cond ')' THEN bloque_IF .  (9)
 
-	.  reduce 10
+	.  reduce 9
 
 
 state 93
@@ -1015,7 +1009,7 @@ state 93
 	RETURN  shift 4
 	BEGIN  shift 6
 	LOOP  shift 7
-	""  shift 8
+	';'  shift 8
 	.  error
 
 	bloque_sent  goto 94
@@ -1031,5 +1025,5 @@ state 94
 	.  reduce 24
 
 
-31 terminals, 26 nonterminals
-55 grammar rules, 95 states
+30 terminals, 26 nonterminals
+54 grammar rules, 95 states
