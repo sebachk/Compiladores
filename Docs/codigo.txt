@@ -1,7 +1,0 @@
-begin
-if (plazo >= 656) then
-	tasa = base + recargo /100;	
-tasa=9;
-;
-;
-end

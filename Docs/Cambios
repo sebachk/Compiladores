@@ -1,7 +1,0 @@
-*se pedia que en las funciones las sentencias declarativas esten antes, cambie bloque funcion para que sea primero 
-lista de sentencias declarativas (0 o mas) y dsp las ejecutables.
-
-*Por el cambio anterior quedaba que sentencia : sent_ejecutable y nada mas, asi que elimine sentencia y se usa
-siempre la ejectuable
-
- 
