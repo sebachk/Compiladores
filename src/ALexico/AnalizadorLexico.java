@@ -115,7 +115,7 @@ public class AnalizadorLexico {
 		estados[8][14]=7;
 		estados[8][15]=7;
 		estados[8][16]=7;
-		for(int j=0;j<17;j++){
+		for(int j=0;j<18;j++){
 			if(j!=4)
 				estados[4][j]=ESTADOERROR;
 		}
