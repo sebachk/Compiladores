@@ -15,12 +15,9 @@ lista_declaraciones	: declaracion
 					;
 
 declaracion	: sentencia_declar_funcion {System.out.println("Linea "+Al.LineasContadas+": Sentencia declarativa de funcion");}
-			| bloque_prog
+			| bloque_sent
 			;
-		
-bloque_prog	:BEGIN bloque_sent END
-			;
-			
+
 bloque_sent	: sentencia_ejec
 			| bloque_funcion
 			;
@@ -44,7 +41,7 @@ llamada_funcion : ID '('lista_parametros')'
 sentencia_declarativa_tipo	: tipo lista_var';' {System.out.println("Linea "+Al.LineasContadas+": Sentencia declarativa de variables");}
 							;
 
-lista_var	: ID,lista_var
+lista_var	: ID ','lista_var
 			|ID
 			;
 			
@@ -68,14 +65,14 @@ sentencia_declar_funcion 	: FUNCTION ID '('parametros')' bloque_funcion
 							|FUNCTION ID '('')' bloque_funcion
 							;
 parametros	: tipo parametro
-			| tipo parametro , parametros
+			| tipo parametro ',' parametros
 			;
 
-lista_parametros 	: parametro, lista_parametros
+lista_parametros 	: parametro ',' lista_parametros
 					| parametro 
 					;
 
-parametro 	: ID
+parametro 	: expresion
 			;
 								
 bloque_funcion 	: BEGIN lista_sent END 
@@ -142,6 +139,8 @@ void yyBaseError(String e){
 void yyerror(String e){
 		
 	yyBaseError(e);	
+	System.err.println ("estado: "+yystate);
+	
 	System.err.println ("Token leído : "+yyname[yychar]);
 	System.err.print("Token(s) que se esperaba(n) : ");
 
@@ -185,4 +184,5 @@ public void Recuperarse()
 public void run()
 {
   System.out.println(yyparse());
+  Estructuras.PrintTablaS();
 }

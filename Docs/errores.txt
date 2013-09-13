@@ -1,9 +1,11 @@
+
+(*Este es el mismo codigo que codigo.txt pero tiene errores lexicos y sintacticos*)
 begin
 	function promedio(uint a, uint b)
 	begin
 		uint g;
 		g=a+b;
-		g=g/2;
+		g=g/*2;
 		return g;
 	end
 	
@@ -18,10 +20,10 @@ begin
 	
 	uint a,b,c;
 	uint d;
-	a=8;
+	a=8+'9';
 	
-	b = promedio (a+25*c,promedio(8,12));
-	if(d<b) then
+	b = promedio (a+25*c,promedio(8,12,));
+	if(d<b) thin
 		a=9;
 	
 	print('cadena1');
@@ -36,7 +38,7 @@ begin
 					c = b*4;
 					b=b+1;
 				end
-			until a>400;
+			until (a>400);
 		end
 		
 	end
