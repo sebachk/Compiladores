@@ -10,6 +10,7 @@ import java.io.InputStreamReader;
 import accionesSemanticas.ASConsumidora;
 import accionesSemanticas.ASErrorCadena;
 import accionesSemanticas.ASErrorCarInv;
+import accionesSemanticas.ASErrorComentario;
 import accionesSemanticas.ASFinCTE;
 import accionesSemanticas.ASFinCadena;
 import accionesSemanticas.ASFinComparacion;
@@ -42,9 +43,9 @@ public class AnalizadorLexico {
 	 * Las matrices podrian variar de un tipo de lenguaje a otro (CUAK!)
 	 */
 	private void llenarEstados(){
-		estados = new int[9][17];
+		estados = new int[9][18];
 
-		acciones = new AccionSemantica[9][17];
+		acciones = new AccionSemantica[9][18];
 		
 		for(int i=0;i<9;i++)
 			for(int j=0;j<17;j++){
@@ -275,6 +276,8 @@ public class AnalizadorLexico {
 		acciones[8][15]=acciones[1][0];
 		acciones[8][16]=acciones[1][0];
 		
+		acciones[7][17]= new ASErrorComentario();
+		acciones[8][17] = acciones [7][17];
 		
 		
 	}
@@ -290,6 +293,9 @@ public class AnalizadorLexico {
 		catch (FileNotFoundException e) {e.printStackTrace();}
 	}
 	
+	
+	boolean fin_de_arch = false;
+	
 	/**
 	 * Pone en funcionamiento el Analizador Lexico. Recorre el archivo y genera un Token
 	 * Se mueve en la matriz de Estados y de Acciones Semanticas
@@ -298,7 +304,7 @@ public class AnalizadorLexico {
 	public Token GetToken(){
 		TokenCreator tc = new TokenCreator();
 		estado_actual=0;
-		while(estado_actual!=ESTADOFINAL && estado_actual!=ESTADOERROR){
+		while(estado_actual!=ESTADOFINAL && estado_actual!=ESTADOERROR && !fin_de_arch){
 			int caracter=-1;
 			
 			try {caracter = lector.read();} 
@@ -311,7 +317,7 @@ public class AnalizadorLexico {
 					acc_Actual.Execute(lector,(char)caracter,tc);
 					estado_actual=estados[estado_actual][indice];
 					
-					if((char)caracter=='\n')
+					if(caracter == 10)
 						LineasContadas++;
 				}
 				else{ //CARACTER INVALIDO
@@ -320,7 +326,10 @@ public class AnalizadorLexico {
 					return null;				
 				}
 			}
-			else {return null;} // FIN DE ARCHIVO	
+			else{
+				fin_de_arch = true;
+				return null;
+			} // FIN DE ARCHIVO	
 		} // END WHILE
 		return tc.GetToken();
 	}
@@ -352,6 +361,7 @@ public class AnalizadorLexico {
 		if(indice=='/') return 14;
 		if(indice==(char)13 || indice==(char)32 || indice==(char)9) return 15; //Retorno de carro || Espacio || Tab
 		if(indice==(char)10) return 16; // Caracter NL
+		if(indice==(char)3) return 17;
 		
 		System.out.println((int)indice);
 		
