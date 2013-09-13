@@ -75,7 +75,7 @@ public class Estructuras {
 		Tabla_Token.put("!=", 273);
 		Tabla_Token.put("==", 274);
 		Tabla_Token.put("CADENA", 259);
-		Tabla_Token.put(this.ERROR, 30);
+		Tabla_Token.put(this.ERROR, 256);
 		Tabla_Token.put(this.WARNING, 31);
 		
 	}

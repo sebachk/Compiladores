@@ -8,11 +8,20 @@
 %right ELSE
 %%
 
+programa 	: BEGIN lista_declaraciones END
+			;
+lista_declaraciones	: declaracion
+					| declaracion lista_declaraciones
+					;
+
 declaracion	: sentencia_declar_funcion {System.out.println("Linea "+Al.LineasContadas+": Sentencia declarativa de funcion");}
-			| bloque_sent
+			| bloque_prog
 			;
 		
-bloque_sent	:	sentencia_ejec
+bloque_prog	:BEGIN bloque_sent END
+			;
+			
+bloque_sent	: sentencia_ejec
 			| bloque_funcion
 			;
 
@@ -26,6 +35,7 @@ sentencia_ejec 	: asignacion';'
 				| llamada_funcion';'{System.out.println("Linea "+Al.LineasContadas+": Sentencia de llamado de funcion");}
 				| RETURN {System.out.println("Linea "+Al.LineasContadas+": Sentencia 'return'");} expresion';' 
 				| LOOP {System.out.println("Linea "+Al.LineasContadas+": Sentencia de iteracion");} bloque_sent UNTIL cond 
+				|';'
 				;
 				
 llamada_funcion : ID '('lista_parametros')'
@@ -103,32 +113,43 @@ AnalizadorLexico Al = new ALexico.AnalizadorLexico(new File("Docs/codigo.txt"));
 
 
 int yylex(){
-	ALexico.Token t = Al.GetToken();
-
-	if(t!=null){
-	System.out.println("Token = "+ALexico.Estructuras.getStringToken(t.getIdentif_tt()));
-	yylval.ival=t.getIndice_ts();
-	return t.getIdentif_tt();
+	ALexico.Token t; 
+	int val= this.YYERRCODE;
+	while(val==this.YYERRCODE){
+		t = Al.GetToken();
+		if(t!=null){
+			System.out.println("Token = "+ALexico.Estructuras.getStringToken(t.getIdentif_tt()));
+			val =t.getIdentif_tt();
+			if(val!=this.YYERRCODE){
+				yylval.ival=t.getIndice_ts();
+				return t.getIdentif_tt();
+			}
+			else{
+				yyBaseError("Error lexico");
+				
+			}
+		}
+		else break;
 	}
 	yylval.ival=0;
 	return 0;
 }
-void yyerror(String e){
-	System.out.println(e,yystate,yychar);
+
+void yyBaseError(String e){
+	System.err.println (e+" en línea "+Al.LineasContadas+": ");
+     
 }
+void yyerror(String e){
+		
+	yyBaseError(e);	
+	System.err.println ("Token leído : "+yyname[yychar]);
+	System.err.print("Token(s) que se esperaba(n) : ");
 
+    String  nombresTokens = "" ;
 
-public void yyerror (String descripcion, int yystate, int token) 
-  {
-     System.err.println ("Error en línea "+Integer.toString(Al.LineasContadas)+" : "+descripcion);
-     System.err.println ("Token leído : "+yyname[token]);
-     System.err.print("Token(s) que se esperaba(n) : ");
+    int yyn ;
 
-     String  nombresTokens = "" ;
-
-     int yyn ;
-
-     // añadir en 'nombresTokens' los tokens que permitirian desplazar
+    // añadir en 'nombresTokens' los tokens que permitirian desplazar
      for( yychar = 0 ; yychar < YYMAXTOKEN ; yychar++ )
      {  yyn = yysindex[yystate] ;  
         if ((yyn != 0) && (yyn += yychar) >= 0 &&
@@ -147,9 +168,20 @@ public void yyerror (String descripcion, int yystate, int token)
      }
 
     System.err.println(nombresTokens);
+    
+    Recuperarse();
   }
 
-
+public void Recuperarse()
+{
+	Token t= Al.GetToken();
+	int tNumber = 1;
+	while(tNumber!=0 && tNumber!=this.END && tNumber!=(int)';'){
+		t =Al.GetToken();
+		if(t!=null)
+			tNumber= t.getIdentif_tt();
+	}
+}
 public void run()
 {
   System.out.println(yyparse());

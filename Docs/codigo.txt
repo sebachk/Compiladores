@@ -1,2 +1,19 @@
-if (plazo !+ 656) then
-	tasa = base + recargo /100;
+begin (*programa*)
+
+	begin (*bloque de programa*)
+	
+		begin(*bloque de sentencias *)
+			uint pepe;
+			pepe = 8;
+			print('pepe se creo');
+			if(pepe == 8) then
+				begin
+				loop
+					pepe= pepe +1;
+				until pepe>15
+				end
+			if (plazo != 656) then
+				tasa = base + recargo /100;
+		end
+	end
+end
