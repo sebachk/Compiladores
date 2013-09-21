@@ -82,9 +82,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.7"
-     inkscape:cx="506.9976"
-     inkscape:cy="496.25075"
+     inkscape:zoom="1.4"
+     inkscape:cx="437.36455"
+     inkscape:cy="128.93758"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -101,7 +101,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -771,7 +771,7 @@
        xml:space="preserve"
        id="flowRoot10030"
        style="font-size:22px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
-       transform="translate(612.85714,449.99999)"><flowRegion
+       transform="translate(561.42857,411.42856)"><flowRegion
          id="flowRegion10032"><rect
            id="rect10034"
            width="227.14285"
@@ -783,7 +783,7 @@
        xml:space="preserve"
        id="flowRoot9574-6-3"
        style="font-size:22px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
-       transform="translate(-67.359654,763.77323)"><flowRegion
+       transform="translate(-118.78823,725.2018)"><flowRegion
          id="flowRegion9576-8-3"><rect
            id="rect9578-5-4"
            width="140"
@@ -828,7 +828,7 @@
        xml:space="preserve"
        id="flowRoot10065-4"
        style="font-size:22px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
-       transform="translate(682.0026,297.91772)"><flowRegion
+       transform="translate(637.71689,303.632)"><flowRegion
          id="flowRegion10067-2"><rect
            id="rect10069-7"
            width="188.57143"
@@ -836,11 +836,11 @@
            x="-175.71428"
            y="689.50507"
            style="font-size:22px" /></flowRegion><flowPara
-         id="flowPara10071-7">c - (*)</flowPara></flowRoot>    <flowRoot
+         id="flowPara10071-7">c - (* EOF)</flowPara></flowRoot>    <flowRoot
        xml:space="preserve"
        id="flowRoot9574-6-3-1-9"
        style="font-size:22px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
-       transform="translate(42.150138,1060.0894)"><flowRegion
+       transform="translate(17.864424,1064.3751)"><flowRegion
          id="flowRegion9576-8-3-3-3"><rect
            id="rect9578-5-4-8-1"
            width="140"
@@ -878,36 +878,32 @@
              id="rect9578-5-4-8-6" /></flowRegion><flowPara
            style="fill:#ff0000"
            id="flowPara9580-7-1-7-0">AS2</flowPara></flowRoot>    </g>
-    <g
-       id="g3288"
-       transform="translate(-2.8571428,199.28571)">
-      <flowRoot
-         transform="translate(871.65597,49.120408)"
-         style="font-size:22px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
-         id="flowRoot10065-4-2"
-         xml:space="preserve"><flowRegion
-           id="flowRegion10067-2-4"><rect
-             style="font-size:22px"
-             y="689.50507"
-             x="-175.71428"
-             height="110"
-             width="188.57143"
-             id="rect10069-7-8" /></flowRegion><flowPara
-           id="flowPara10071-7-6">c - (¨)¨)</flowPara></flowRoot>      <flowRoot
-         transform="translate(229.78321,811.29213)"
-         style="font-size:22px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
-         id="flowRoot9574-6-3-1-9-5"
-         xml:space="preserve"><flowRegion
-           id="flowRegion9576-8-3-3-3-0"><rect
-             style="font-size:22px"
-             y="-49.066391"
-             x="470"
-             height="70"
-             width="140"
-             id="rect9578-5-4-8-1-9" /></flowRegion><flowPara
-           style="fill:#ff0000"
-           id="flowPara9580-7-1-7-9-0">AS2</flowPara></flowRoot>    </g>
-    <g
+    <flowRoot
+       xml:space="preserve"
+       id="flowRoot10065-4-2"
+       style="font-size:22px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       transform="translate(835.94169,251.97755)"><flowRegion
+         id="flowRegion10067-2-4"><rect
+           id="rect10069-7-8"
+           width="188.57143"
+           height="110"
+           x="-175.71428"
+           y="689.50507"
+           style="font-size:22px" /></flowRegion><flowPara
+         id="flowPara10071-7-6">c - (´)´ EOF)</flowPara></flowRoot>    <flowRoot
+       xml:space="preserve"
+       id="flowRoot9574-6-3-1-9-5"
+       style="font-size:22px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       transform="translate(226.92607,1010.5778)"><flowRegion
+         id="flowRegion9576-8-3-3-3-0"><rect
+           id="rect9578-5-4-8-1-9"
+           width="140"
+           height="70"
+           x="470"
+           y="-49.066391"
+           style="font-size:22px" /></flowRegion><flowPara
+         id="flowPara9580-7-1-7-9-0"
+         style="fill:#ff0000">AS2</flowPara></flowRoot>    <g
        id="g4792"
        transform="translate(42.857143,42.857143)">
       <flowRoot
@@ -1111,13 +1107,13 @@
            id="flowPara3318">AS9</flowPara></flowRoot>    </g>
     <path
        style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow2Lend-7)"
-       d="m 397.89858,770.57888 c 178.26305,3.63714 176.17069,-88.22859 168.45843,-130.26761"
+       d="M 397.89858,770.57888 C 433.81075,740.744 497.94057,654.93116 540.64272,630.31127"
        id="path3320"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cc" />
     <g
        id="g4527"
-       transform="translate(-105.71429,137.14285)">
+       transform="translate(-205.71429,158.57143)">
       <flowRoot
          transform="translate(-322.23866,537.40115)"
          style="font-size:22px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#ff0000;fill-opacity:1;stroke:none;font-family:Sans"
@@ -1221,5 +1217,68 @@
        id="path4602"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow2Lend-7)"
+       d="M 598.57143,920.93361 C 560,639.50504 560,639.50504 560,639.50504"
+       id="path3299"
+       inkscape:connector-curvature="0" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow2Lend-7)"
+       d="m 841.42857,912.36219 c 38.47159,-183.14404 -109.85873,-324.60339 -250,-301.42858"
+       id="path4281"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <g
+       id="g4508"
+       transform="translate(825.71429,-40)">
+      <text
+         sodipodi:linespacing="125%"
+         id="text4471"
+         y="732.36218"
+         x="-251.42857"
+         style="font-size:22px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+         xml:space="preserve"><tspan
+           y="732.36218"
+           x="-251.42857"
+           id="tspan4473"
+           sodipodi:role="line">EOF</tspan></text>
+      <text
+         sodipodi:linespacing="125%"
+         id="text4504"
+         y="750.93359"
+         x="-260"
+         style="font-size:22px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#ff0000;fill-opacity:1;stroke:none;font-family:Sans"
+         xml:space="preserve"><tspan
+           y="750.93359"
+           x="-260"
+           id="tspan4506"
+           sodipodi:role="line">AS12</tspan></text>
+    </g>
+    <g
+       id="g4508-4"
+       transform="translate(969.33189,-119.97774)">
+      <text
+         sodipodi:linespacing="125%"
+         id="text4471-0"
+         y="732.36218"
+         x="-251.42857"
+         style="font-size:22px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+         xml:space="preserve"><tspan
+           y="732.36218"
+           x="-251.42857"
+           id="tspan4473-9"
+           sodipodi:role="line">EOF</tspan></text>
+      <text
+         sodipodi:linespacing="125%"
+         id="text4504-4"
+         y="750.93359"
+         x="-260"
+         style="font-size:22px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#ff0000;fill-opacity:1;stroke:none;font-family:Sans"
+         xml:space="preserve"><tspan
+           y="750.93359"
+           x="-260"
+           id="tspan4506-8"
+           sodipodi:role="line">AS12</tspan></text>
+    </g>
   </g>
 </svg>
