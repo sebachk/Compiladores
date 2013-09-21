@@ -48,7 +48,7 @@ public class AnalizadorLexico {
 		acciones = new AccionSemantica[9][18];
 		
 		for(int i=0;i<9;i++)
-			for(int j=0;j<17;j++){
+			for(int j=0;j<18;j++){
 				estados[i][j]=-1;
 				acciones[i][j]=null;
 			}
@@ -120,6 +120,7 @@ public class AnalizadorLexico {
 				estados[4][j]=ESTADOERROR;
 		}
 		estados[5][16]=ESTADOERROR;
+		
 		
 		
 		acciones[0][0]=new ASInicializadora();
@@ -278,7 +279,8 @@ public class AnalizadorLexico {
 		
 		acciones[7][17]= new ASErrorComentario();
 		acciones[8][17] = acciones [7][17];
-		
+		for(int i=0; i<7; i++)
+			acciones[i][17] = acciones[1][16];
 		
 	}
 	
@@ -305,31 +307,27 @@ public class AnalizadorLexico {
 		TokenCreator tc = new TokenCreator();
 		estado_actual=0;
 		while(estado_actual!=ESTADOFINAL && estado_actual!=ESTADOERROR && !fin_de_arch){
-			int caracter=-1;
+			int caracter=-2;
 			
 			try {caracter = lector.read();} 
 			catch (IOException e) {e.printStackTrace();}
+		
+			int indice = hash((char)caracter); //POSICION COLUMNA EN MATRIZ
 			
-			if(caracter!=-1){// NO ES FIN DE ARCHIVO?
-				int indice=hash((char)caracter);
-				if(indice!=-1){ // CARACTER VALIDO
-					acc_Actual = acciones[estado_actual][indice];
-					acc_Actual.Execute(lector,(char)caracter,tc);
-					estado_actual=estados[estado_actual][indice];
-					
-					if(caracter == 10)
-						LineasContadas++;
-				}
-				else{ //CARACTER INVALIDO
-					System.out.println("Caracter leido: "+caracter+" "+(char)caracter );
-					System.out.println("Estado actual: "+estado_actual+" ");
-					return null;				
-				}
+			if(indice!=-1){ // CARACTER VALIDO
+				acc_Actual = acciones[estado_actual][indice];
+				acc_Actual.Execute(lector,(char)caracter,tc);
+				estado_actual=estados[estado_actual][indice];
+				
+				if(caracter == (int)'\n')
+					LineasContadas++;
 			}
-			else{
-				fin_de_arch = true;
-				return null;
-			} // FIN DE ARCHIVO	
+			else{ //CARACTER INVALIDO
+				System.out.println("Linea "+AnalizadorLexico.LineasContadas+": El Caracter leido "+(char)caracter+" no es valido" );
+				//System.out.println("Estado actual: "+estado_actual+" ");
+				return null;				
+			}
+			if(caracter == -1){fin_de_arch=true;}
 		} // END WHILE
 		return tc.GetToken();
 	}
@@ -342,9 +340,9 @@ public class AnalizadorLexico {
 	 * @return
 	 */
 	public static int hash(char indice){
-		if(indice>='A' && indice<='z') return 0; //Es letra
+		if(indice>='A' && indice<='z') return 0; //ES LETRA
 		
-		if(indice>='0' && indice<='9') return 1;//Es digito
+		if(indice>='0' && indice<='9') return 1;//ES DIGITO
 		
 		if(indice=='>') return 2;
 		if(indice=='<') return 3;
@@ -359,9 +357,9 @@ public class AnalizadorLexico {
 		if(indice=='-') return 12;
 		if(indice=='*') return 13;
 		if(indice=='/') return 14;
-		if(indice==(char)13 || indice==(char)32 || indice==(char)9) return 15; //Retorno de carro || Espacio || Tab
-		if(indice==(char)10) return 16; // Caracter NL
-		if(indice==(char)3) return 17;
+		if(indice==(char)13 || indice==(char)32 || indice==(char)9) return 15; //RETORNO DE CARRO || ESPACIO || TAB
+		if(indice==(char)10) return 16; // CARACTER NL
+		if(indice==(char)-1){return 17;} //CARACTER E0F
 		
 		System.out.println((int)indice);
 		

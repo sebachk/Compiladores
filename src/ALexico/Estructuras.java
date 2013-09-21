@@ -116,7 +116,7 @@ public class Estructuras {
 		return Tabla_Simbolos.size()-1;
 	}
 	
-	public void PrintTablaS(){
+	public static void PrintTablaS(){
 		System.out.println("Tabla de simbolos:");
 		System.out.println("Nombre");
 		for(int i =0;i<Tabla_Simbolos.size();i++){

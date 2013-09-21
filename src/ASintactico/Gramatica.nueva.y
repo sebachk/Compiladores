@@ -33,6 +33,7 @@ sentencia_ejec 	: asignacion';'
 				| RETURN {System.out.println("Linea "+Al.LineasContadas+": Sentencia 'return'");} expresion';' 
 				| LOOP {System.out.println("Linea "+Al.LineasContadas+": Sentencia de iteracion");} bloque_sent UNTIL cond 
 				|';'
+				| error';'
 				;
 				
 llamada_funcion : ID '('lista_parametros')'
