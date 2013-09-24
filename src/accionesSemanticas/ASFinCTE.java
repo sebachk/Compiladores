@@ -17,7 +17,7 @@ public class ASFinCTE implements AccionSemantica{
 				f.reset();
 				//Chequear Rango >0 <2^16-1;
 				String cadena=tc.getString();
-				if(!pasaRango(cadena)){
+				if(!DentroRango(cadena)){
 					int pos=Estructuras.addTupla("Linea "+AnalizadorLexico.LineasContadas+": El entero se encuentra fuera del rango permitido");
 					tc.createToken(Estructuras.ERROR,pos);
 				}
@@ -30,7 +30,7 @@ public class ASFinCTE implements AccionSemantica{
 	}
 	
 	
-	public boolean pasaRango(String cadena){
+	public boolean DentroRango(String cadena){
 		//Elimino los 0 a izq
 		int first=0;
 		for(int i=0;i<cadena.length();i++,first++){
@@ -40,7 +40,7 @@ public class ASFinCTE implements AccionSemantica{
 		}
 		cadena =cadena.substring(first);
 		
-		if (cadena.length()>5)	
+		if (cadena.length()>5)
 			return false;
 		if (cadena.length()<5)
 			return true;
@@ -49,9 +49,9 @@ public class ASFinCTE implements AccionSemantica{
 		int max[]={6,5,5,3,5};
 		
 		for(int i=0;i<max.length;i++){
-			if((int)cadena.charAt(i)>max[6])
+			if((int)cadena.charAt(i)>max[i])
 				return false;
-			if((int)cadena.charAt(i)>max[6])
+			if((int)cadena.charAt(i)>max[i])
 				return true;
 		}
 		return true;

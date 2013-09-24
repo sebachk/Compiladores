@@ -10,6 +10,7 @@
 
 programa 	: BEGIN lista_declaraciones END
 			;
+			
 lista_declaraciones	: declaracion
 					| declaracion lista_declaraciones
 					;
@@ -18,10 +19,24 @@ declaracion	: sentencia_declar_funcion {System.out.println("Linea "+Al.LineasCon
 			| bloque_sent
 			;
 
+sentencia_declar_funcion 	: FUNCTION ID '('parametros')' bloque_funcion
+							|FUNCTION ID '('')' bloque_funcion
+							|FUNCTION error ')'
+							;
+
 bloque_sent	: sentencia_ejec
 			| bloque_funcion
 			;
 
+bloque_funcion 	: BEGIN lista_sent END 
+				| BEGIN lista_sent_declar lista_sent END
+				| error END
+				;
+
+lista_sent_declar	: sentencia_declarativa_tipo lista_sent_declar
+					| sentencia_declarativa_tipo
+					;
+					
 lista_sent	: sentencia_ejec lista_sent
 			| sentencia_ejec
 			;
@@ -39,13 +54,16 @@ sentencia_ejec 	: asignacion';'
 llamada_funcion : ID '('lista_parametros')'
 				|ID '('')'
 				;
-sentencia_declarativa_tipo	: tipo lista_var';' {System.out.println("Linea "+Al.LineasContadas+": Sentencia declarativa de variables");}
+
+sentencia_declarativa_tipo	: tipo lista_var';' {System.out.println("Linea "+Al.LineasContadas+": Sentencia declarativa de variables");} 
+							| tipo error';'
 							;
 
 lista_var	: ID ','lista_var
-			|ID
+			|ID			
 			;
-			
+
+		
 bloque_IF 	: bloque_sent %prec ELSE  	
 			| bloque_sent ELSE bloque_sent
 			;
@@ -61,13 +79,11 @@ comparador 	: '<'
 			| IGUAL
 			| DIST
 			;
-
-sentencia_declar_funcion 	: FUNCTION ID '('parametros')' bloque_funcion
-							|FUNCTION ID '('')' bloque_funcion
-							;
-parametros	: tipo parametro
-			| tipo parametro ',' parametros
+							
+parametros	: tipo ID
+			| tipo ID ',' parametros
 			;
+
 
 lista_parametros 	: parametro ',' lista_parametros
 					| parametro 
@@ -75,14 +91,8 @@ lista_parametros 	: parametro ',' lista_parametros
 
 parametro 	: expresion
 			;
-								
-bloque_funcion 	: BEGIN lista_sent END 
-				| BEGIN lista_sent_declar lista_sent END
-				;
 
-lista_sent_declar	: sentencia_declarativa_tipo lista_sent_declar
-					| sentencia_declarativa_tipo
-					;
+
 
 asignacion 	:	ID'='expresion {System.out.println("Linea "+Al.LineasContadas+": Sentencia de asignacion");}
 			;
@@ -106,7 +116,7 @@ tipo 	:uint
 		;
 %%
 
-AnalizadorLexico Al = new ALexico.AnalizadorLexico(new File("Docs/codigo.txt"));
+AnalizadorLexico Al = new ALexico.AnalizadorLexico(new File("Docs/errores.txt"));
 
 
 
@@ -133,17 +143,17 @@ int yylex(){
 	return 0;
 }
 
-void yyBaseError(String e){
-	System.err.println (e+" en línea "+Al.LineasContadas+": ");
-     
+String yyBaseError(String e){
+	String err=e+" en línea "+Al.LineasContadas+": ";
+	return err;
 }
 void yyerror(String e){
 		
-	yyBaseError(e);	
-	System.err.println ("estado: "+yystate);
+	String error="";
+	error+=yyBaseError(e);	
 	
-	System.err.println ("Token leído : "+yyname[yychar]);
-	System.err.print("Token(s) que se esperaba(n) : ");
+	//System.err.println ("Token leído : "+yyname[yychar]);
+	error+="Token(s) que se esperaba(n) :";
 
     String  nombresTokens = "" ;
 
@@ -167,12 +177,13 @@ void yyerror(String e){
          }
      }
 
-    System.err.println(nombresTokens);
-    
-    Recuperarse();
+    error+=nombresTokens;
+    Estructuras.addError(error);
+   
+   
   }
 
-public void Recuperarse()
+/*public void Recuperarse()
 {
 	Token t= Al.GetToken();
 	int tNumber = 1;
@@ -181,7 +192,8 @@ public void Recuperarse()
 		if(t!=null)
 			tNumber= t.getIdentif_tt();
 	}
-}
+}*/
+
 public void run()
 {
   System.out.println(yyparse());

@@ -101,6 +101,8 @@ public class Estructuras {
 
 	public static Vector<TuplaTS> Tabla_Simbolos=new Vector<TuplaTS>();
 	
+	public static Vector<String> log_Sintactico = new Vector<String>();
+	
 	public static int enTupla(String cadena){
 		for(int i=0;i<Tabla_Simbolos.size();i++){
 			if(Tabla_Simbolos.get(i).valor.equals(cadena))
@@ -108,6 +110,11 @@ public class Estructuras {
 		}
 		return -1;
 	}
+	
+	public static void addError(String s){
+		log_Sintactico.add(s);
+	}
+	
 	
 	public static int addTupla(String cadena){
 		TuplaTS nueva= new TuplaTS();
@@ -122,6 +129,13 @@ public class Estructuras {
 		for(int i =0;i<Tabla_Simbolos.size();i++){
 			System.out.println(Tabla_Simbolos.elementAt(i).print());
 		}
+		System.out.println("Errores Sintácticos");
+		for(int i =0;i<log_Sintactico.size();i++){
+			System.out.println(log_Sintactico.elementAt(i));
+			System.out.println("--");
+		}
+		
+		
 	}
 	
 	

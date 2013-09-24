@@ -42,13 +42,16 @@ public class AnalizadorLexico {
 	 * Carga las matrices de Estados y de Acciones Semanticas
 	 * Las matrices podrian variar de un tipo de lenguaje a otro (CUAK!)
 	 */
+	private final int ANCHO=19;
+	private final int ALTO = 9;
+	
 	private void llenarEstados(){
-		estados = new int[9][18];
+		estados = new int[ALTO][ANCHO];
 
-		acciones = new AccionSemantica[9][18];
+		acciones = new AccionSemantica[ALTO][ANCHO];
 		
-		for(int i=0;i<9;i++)
-			for(int j=0;j<18;j++){
+		for(int i=0;i<ALTO;i++)
+			for(int j=0;j<ANCHO;j++){
 				estados[i][j]=-1;
 				acciones[i][j]=null;
 			}
@@ -120,6 +123,16 @@ public class AnalizadorLexico {
 				estados[4][j]=ESTADOERROR;
 		}
 		estados[5][16]=ESTADOERROR;
+		estados[0][18]=ESTADOERROR;
+		estados[1][18]=ESTADOERROR;
+		estados[2][18]=ESTADOERROR;
+		estados[3][18]=ESTADOERROR;
+		estados[4][18]=ESTADOERROR;
+		estados[5][18]=ESTADOERROR;
+		estados[6][18]=ESTADOERROR;
+		estados[7][18]=7;
+		estados[8][18]=7;
+		
 		
 		
 		
@@ -280,7 +293,12 @@ public class AnalizadorLexico {
 		acciones[7][17]= new ASErrorComentario();
 		acciones[8][17] = acciones [7][17];
 		for(int i=0; i<7; i++)
-			acciones[i][17] = acciones[1][16];
+			acciones[i][17] = acciones[i][16];
+		
+		for(int i=0; i<ALTO; i++)	
+			acciones[i][18]= acciones[4][0];
+		acciones[7][18] = acciones [1][0];
+		acciones[8][18] = acciones [1][0];
 		
 	}
 	
@@ -325,7 +343,9 @@ public class AnalizadorLexico {
 			else{ //CARACTER INVALIDO
 				System.out.println("Linea "+AnalizadorLexico.LineasContadas+": El Caracter leido "+(char)caracter+" no es valido" );
 				//System.out.println("Estado actual: "+estado_actual+" ");
-				return null;				
+				AccionSemantica acc=new ASErrorCarInv();
+				acc.Execute(lector, (char)caracter, tc);
+				return tc.GetToken();				
 			}
 			if(caracter == -1){fin_de_arch=true;}
 		} // END WHILE
@@ -363,7 +383,7 @@ public class AnalizadorLexico {
 		
 		System.out.println((int)indice);
 		
-		return -1; //Caracter Desconocido
+		return 18; //Caracter Desconocido
 	}
 	
 }
