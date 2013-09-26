@@ -1,16 +1,19 @@
 
 (*Este es el mismo codigo que codigo.txt pero tiene errores lexicos y sintacticos*)
 begin
-	function promedio(uint a, uint b)
+	function promedio (uint a, uint b)
 	begin
 		uint g;
-		g=a+b;
-		g=g/*2;
-		return g;
+		g=a+b
+		 loop
+			a=++d; 
+			until a<b
+		g=g*2;
+		return g--;
 	end
 	
 	function promedio()
-	begin
+	
 		print('esta es una funcino sin parametros');
 	end
 	
@@ -18,21 +21,21 @@ begin
 	(*aca comienza el programa
 	comentario multilinea*)
 	
-	uint a,b,c;
-	uint d;
+	uint a b,c;
+	uint d
 	a=8+'9';
 	
 	b = promedio (a+25*c,promedio(8,12,));
-	if(d<b) thin
+	if(d<b then
 		a=9;
 	
 	print('cadena1');
 	
-	loop b=b+1; until b ==30
+	loop b=b+1; unti b ==30
 		
 	if(a*b==230) then
 		begin
-			loop
+			
 				begin
 					a=c-2;
 					c = b*4;
