@@ -61,6 +61,7 @@ sentencia_ejec 	: sentencia_simple
 sentencia_simple: sent_correcta 
 				| sent_abierta {Estructuras.addError("syntax error en línea "+(Al.LineasContadas-1)+": falta el ;");} sent_correcta  
 				|sent_abierta {Estructuras.addError("syntax error en línea "+(Al.LineasContadas-1)+": falta el ;");} sentencia_comp
+				|';'
 				;
 				
 sent_abierta 	: PRINT {Estructuras.addLog("Línea "+Al.LineasContadas+": Sentencia 'print'");} '('cadena')' 
@@ -252,6 +253,6 @@ void yyerror(String e){
 
 public void run()
 {
-  System.out.println(yyparse());
+  yyparse();
   Estructuras.PrintTablaS();
 }

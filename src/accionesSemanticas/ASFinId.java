@@ -28,7 +28,7 @@ public class ASFinId implements AccionSemantica {
 			}
 			if(cadena.length()>15){
 
-				Estructuras.addError("Warning en linea"+AnalizadorLexico.LineasContadas+": WARNING: El identificador "+cadena+" tiene un nombre muy largo, sera truncado");
+				Estructuras.addError("Warning en linea"+AnalizadorLexico.LineasContadas+": El identificador "+cadena+" tiene un nombre muy largo, sera truncado");
 				cadena=cadena.substring(0, 14)+"~";
 			}
 			int posicion=Estructuras.enTupla(cadena);
