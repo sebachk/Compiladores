@@ -13,7 +13,8 @@ public class ASErrorComentario implements AccionSemantica {
 	@Override
 	public void Execute(BufferedInputStream f, char c, TokenCreator tc) {
 		f.mark(0);
-		int pos = Estructuras.addTupla("Linea"+AnalizadorLexico.LineasContadas+"Error: EOF leido en medio de un comentario");
+		Estructuras.addError("Error lexico en linea"+AnalizadorLexico.LineasContadas+"Error: EOF leido en medio de un comentario");
+		int pos = Estructuras.addTupla("error de comentario");
 		tc.createToken(Estructuras.ERROR, pos);
 	}
 }

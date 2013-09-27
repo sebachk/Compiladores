@@ -4,16 +4,17 @@ begin
 	function promedio (uint a, uint b)
 	begin
 		uint g;
-		g=a+b
+		g=a+b;
 		 loop
 			a=++d; 
 			until a<b
 		g=g*2;
-		return g--;
-	end
+		return g;
+	
 	
 	function promedio()
-	
+	begin
+	a=p++;
 		print('esta es una funcino sin parametros');
 	end
 	
@@ -35,7 +36,7 @@ begin
 		
 	if(a*b==230) then
 		begin
-			
+			loop
 				begin
 					a=c-2;
 					c = b*4;
@@ -46,4 +47,3 @@ begin
 		
 	end
 
-end

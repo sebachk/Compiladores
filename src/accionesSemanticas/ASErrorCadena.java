@@ -12,7 +12,8 @@ public class ASErrorCadena implements AccionSemantica{
 
 	@Override
 	public void Execute(BufferedInputStream f, char c, TokenCreator tc) {
-		int pos =Estructuras.addTupla("Linea "+AnalizadorLexico.LineasContadas+": No se admiten cadenas multilinea");
+		Estructuras.addError("Error lexico en linea "+AnalizadorLexico.LineasContadas+": No se admiten cadenas multilinea");
+		int pos = Estructuras.addTupla("Cadena erronea");
 		tc.createToken(Estructuras.ERROR, pos);
 	}
 
