@@ -103,6 +103,8 @@ public class Estructuras {
 	
 	public static Vector<String> log_Sintactico = new Vector<String>();
 	
+	public static Vector<String> log_general = new Vector<String>();
+	
 	public static int enTupla(String cadena){
 		for(int i=0;i<Tabla_Simbolos.size();i++){
 			if(Tabla_Simbolos.get(i).valor.equals(cadena))
@@ -115,6 +117,9 @@ public class Estructuras {
 		log_Sintactico.add(s);
 	}
 	
+	public static void addLog(String s){
+		log_general.add(s);
+	}
 	
 	public static int addTupla(String cadena){
 		TuplaTS nueva= new TuplaTS();
@@ -125,16 +130,30 @@ public class Estructuras {
 	
 	public static void PrintTablaS(){
 		System.out.println("Tabla de simbolos:");
+		System.out.println("จจจจจจจจจจจจจจจจจจ");
 		System.out.println("Nombre");
 		for(int i =0;i<Tabla_Simbolos.size();i++){
-			System.out.println(Tabla_Simbolos.elementAt(i).print());
+			System.out.println(i+": "+Tabla_Simbolos.elementAt(i).print());
 		}
-		System.out.println("Errores Sintแcticos");
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		
+		System.out.println("Log de Errores:");
+		System.out.println("จจจจจจจจจจจจจจจ");
 		for(int i =0;i<log_Sintactico.size();i++){
 			System.out.println(log_Sintactico.elementAt(i));
-			System.out.println("--");
+			System.out.println("---------------");
 		}
-		
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println("Log del Compilador:");
+		System.out.println("จจจจจจจจจจจจจจจจจจจ");
+		for(int i =0;i<log_general.size();i++){
+			System.out.println(log_general.elementAt(i));
+			System.out.println("**********************");
+		}
 		
 	}
 	

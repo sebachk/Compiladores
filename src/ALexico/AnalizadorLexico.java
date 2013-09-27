@@ -341,7 +341,6 @@ public class AnalizadorLexico {
 					LineasContadas++;
 			}
 			else{ //CARACTER INVALIDO
-				System.out.println("Linea "+AnalizadorLexico.LineasContadas+": El Caracter leido "+(char)caracter+" no es valido" );
 				//System.out.println("Estado actual: "+estado_actual+" ");
 				AccionSemantica acc=new ASErrorCarInv();
 				acc.Execute(lector, (char)caracter, tc);
@@ -381,7 +380,6 @@ public class AnalizadorLexico {
 		if(indice==(char)10) return 16; // CARACTER NL
 		if(indice==(char)-1){return 17;} //CARACTER E0F
 		
-		System.out.println((int)indice);
 		
 		return 18; //Caracter Desconocido
 	}

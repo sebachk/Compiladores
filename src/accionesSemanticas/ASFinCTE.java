@@ -18,7 +18,8 @@ public class ASFinCTE implements AccionSemantica{
 				//Chequear Rango >0 <2^16-1;
 				String cadena=tc.getString();
 				if(!DentroRango(cadena)){
-					int pos=Estructuras.addTupla("Linea "+AnalizadorLexico.LineasContadas+": El entero se encuentra fuera del rango permitido");
+					Estructuras.addError("Error lexico en linea "+AnalizadorLexico.LineasContadas+": El entero se encuentra fuera del rango permitido");
+					int pos=Estructuras.addTupla("Error CTE");
 					tc.createToken(Estructuras.ERROR,pos);
 				}
 				else{
