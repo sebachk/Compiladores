@@ -1,6 +1,7 @@
 %{
 	import ALexico.*;
 	import java.io.*;
+	import CodigoIntermedio.*;
 %}
 %token ID , CTE, cadena , IF, THEN, ELSE, PRINT, RETURN, FUNCTION, BEGIN, END, LOOP, UNTIL, uint 
 %token MAY_IG , MEN_IG, DIST ,IGUAL
@@ -60,8 +61,8 @@ sentencia_ejec 	: sentencia_simple
 				
 sentencia_simple: sent_correcta 
 				| sent_abierta {Estructuras.addError("syntax error en línea "+(Al.LineasContadas-1)+": falta el ;");} sent_correcta  
-				|sent_abierta {Estructuras.addError("syntax error en línea "+(Al.LineasContadas-1)+": falta el ;");} sentencia_comp
-				|';'
+				| sent_abierta {Estructuras.addError("syntax error en línea "+(Al.LineasContadas-1)+": falta el ;");} sentencia_comp
+				| ';'
 				;
 				
 sent_abierta 	: PRINT {Estructuras.addLog("Línea "+Al.LineasContadas+": Sentencia 'print'");} '('cadena')' 
@@ -106,8 +107,8 @@ llamada_funcion : ID '('lista_parametros')'
 				;
 
 
-lista_var	: ID ','lista_var
-			|ID			
+lista_var	:ID ','lista_var
+			|ID	
 			;
 
 		
@@ -117,16 +118,13 @@ bloque_IF 	: bloque_sent %prec ELSE
 			;
 	
 	
-cond 	: expresion comparador expresion 
-		;
-
-comparador 	: '<'
-			| '>'
-			| MEN_IG
-			| MAY_IG
-			| IGUAL
-			| DIST
-			;
+cond 	: expresion '<'  expresion {PI.addPolaco("<");} 
+		| expresion '>'  expresion {PI.addPolaco(">");}
+		| expresion MEN_IG expresion {PI.addPolaco("<=");}
+		| expresion MAY_IG expresion {PI.addPolaco(">=");}
+		| expresion IGUAL expresion {PI.addPolaco("==");}
+		| expresion DIST expresion {PI.addPolaco("!=");}
+		;		
 							
 parametros	: tipo ID
 			| tipo ID ',' parametros
@@ -142,21 +140,21 @@ parametro 	: expresion
 
 
 
-asignacion 	:	ID'='expresion {Estructuras.addLog("Linea "+Al.LineasContadas+": Sentencia de asignacion");}
+asignacion 	:	ID'='expresion {Estructuras.addLog("Linea "+Al.LineasContadas+": Sentencia de asignacion");} {PI.addPolaco($1.sval); PI.addPolaco("=");}
 			;
 		
-expresion 	: expresion '+' termino
-			| expresion '-' termino
+expresion 	: expresion '+' termino {PI.addPolaco("+");}
+			| expresion '-' termino {PI.addPolaco("-");}
 			| termino		
 			;
 	
-termino 	: termino '*' factor
-			| termino '/' factor
+termino 	: termino '*' factor {PI.addPolaco("*");}
+			| termino '/' factor {PI.addPolaco("/");}
 			| factor
 			;
 
-factor 	: ID
-		| CTE
+factor 	: ID {PI.addPolaco($1.sval);}
+		| CTE{PI.addPolaco($1.sval);}
 		| llamada_funcion
 		;
 
@@ -164,7 +162,8 @@ tipo 	:uint
 		;
 %%
 
-AnalizadorLexico Al = new ALexico.AnalizadorLexico(new File("Docs/errores.txt"));
+AnalizadorLexico Al = new ALexico.AnalizadorLexico(new File("Docs/codigo.txt"));
+PolacaInversa PI = new PolacaInversa();
 
 
 
@@ -176,7 +175,11 @@ int yylex(){
 		if(t!=null){
 			val =t.getIdentif_tt();
 			if(val!=this.YYERRCODE){
+				yylval= new ParserVal();
 				yylval.ival=t.getIndice_ts();
+				if(yylval.ival!=-1){
+					yylval.sval=Estructuras.Tabla_Simbolos.elementAt(yylval.ival).valor;
+					}
 				return t.getIdentif_tt();
 			}
 			else{
@@ -255,4 +258,5 @@ public void run()
 {
   yyparse();
   Estructuras.PrintTablaS();
+  PI.ImprimirPolaca();
 }
