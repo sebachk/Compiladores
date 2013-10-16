@@ -36,9 +36,9 @@ public class ASFinCTE implements AccionSemantica{
 		int first=0;
 		for(int i=0;i<cadena.length();i++,first++){
 			if(cadena.charAt(i)!='0')
-				break;
-			
+				break;	
 		}
+		
 		cadena =cadena.substring(first);
 		
 		if (cadena.length()>5)
