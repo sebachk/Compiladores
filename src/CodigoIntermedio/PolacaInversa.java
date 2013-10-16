@@ -25,6 +25,7 @@ public class PolacaInversa {
 		polaca = new String[100];
 		pila = new Stack<String>();
 		size=0;
+		pos=0;
 	}
 	
 	public void addPolaco(int elem){
@@ -86,6 +87,13 @@ public class PolacaInversa {
 		return (op=="+"||op=="-"||op=="/"||op=="*"||op=="="||op=="<"||op==">"||op=="<="||op==">="||op=="!="
 				||op==CONDICION||op=="==");
 	}
+	
+	public void FinCondicion(){
+		addPolaco("");
+		pila.push(size+"");
+		addPolaco(BRANCH_FALSO);
+	}
+	
 	
 }
 

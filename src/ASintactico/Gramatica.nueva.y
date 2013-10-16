@@ -79,7 +79,7 @@ sentencia_comp	: sentencia_if
 				| sentencia_loop 
 				;	
 				
-sentencia_if 	: IF '('cond')'{Estructuras.addLog("Línea "+Al.LineasContadas+": Sentencia 'if'");}  THEN bloque_IF 
+sentencia_if 	: IF '('cond')'{Estructuras.addLog("Línea "+Al.LineasContadas+": Sentencia 'if'"); PI.FinCondion();}  THEN bloque_IF 
 				| sentencia_if_error
 				;
 				
