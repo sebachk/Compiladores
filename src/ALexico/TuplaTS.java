@@ -3,10 +3,12 @@ package ALexico;
 public class TuplaTS {
 	
 	public String valor;
+	public String tipo;
+	public String uso;
 	
 	public String print(){
 		String print="";
-		print+=valor;
+		print+=valor+" "+tipo+" "+uso;
 		return print;
 	}
 }

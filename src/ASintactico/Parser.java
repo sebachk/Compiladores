@@ -524,9 +524,14 @@ final static String yyrule[] = {
 
 //#line 164 "Gramatica.nueva.y"
 
+<<<<<<< HEAD
+AnalizadorLexico Al = new ALexico.AnalizadorLexico(new File("Docs/errores.txt"));
+int contador=1;
+=======
 AnalizadorLexico Al = new ALexico.AnalizadorLexico(new File("Docs/codigo.txt"));
 PolacaInversa PI = new PolacaInversa();
 
+>>>>>>> d2ebec3b395378a268d34b08a135d8cba793d51f
 
 
 int yylex(){
@@ -535,6 +540,7 @@ int yylex(){
 	while(val==this.YYERRCODE){
 		t = Al.GetToken();
 		if(t!=null){
+			ALexico.Estructuras.addLog("Token "+ contador++ +" = " + ALexico.Estructuras.getStringToken(t.getIdentif_tt()));
 			val =t.getIdentif_tt();
 			if(val!=this.YYERRCODE){
 				yylval= new ParserVal();
@@ -622,7 +628,11 @@ public void run()
   Estructuras.PrintTablaS();
   PI.ImprimirPolaca();
 }
+<<<<<<< HEAD
+//#line 510 "Parser.java"
+=======
 //#line 555 "Parser.java"
+>>>>>>> d2ebec3b395378a268d34b08a135d8cba793d51f
 //###############################################################
 // method: yylexdebug : check lexer state
 //###############################################################
@@ -892,6 +902,9 @@ case 87:
 //#line 143 "Gramatica.nueva.y"
 {Estructuras.addLog("Linea "+Al.LineasContadas+": Sentencia de asignacion");}
 break;
+<<<<<<< HEAD
+//#line 751 "Parser.java"
+=======
 case 88:
 //#line 143 "Gramatica.nueva.y"
 {PI.addPolaco(val_peek(3).sval); PI.addPolaco("=");}
@@ -921,6 +934,7 @@ case 96:
 {PI.addPolaco(val_peek(0).sval);}
 break;
 //#line 848 "Parser.java"
+>>>>>>> d2ebec3b395378a268d34b08a135d8cba793d51f
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####

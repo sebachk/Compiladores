@@ -162,9 +162,14 @@ tipo 	:uint
 		;
 %%
 
+<<<<<<< HEAD
+AnalizadorLexico Al = new ALexico.AnalizadorLexico(new File("Docs/errores.txt"));
+int contador=1;
+=======
 AnalizadorLexico Al = new ALexico.AnalizadorLexico(new File("Docs/codigo.txt"));
 PolacaInversa PI = new PolacaInversa();
 
+>>>>>>> d2ebec3b395378a268d34b08a135d8cba793d51f
 
 
 int yylex(){
@@ -173,6 +178,7 @@ int yylex(){
 	while(val==this.YYERRCODE){
 		t = Al.GetToken();
 		if(t!=null){
+			ALexico.Estructuras.addLog("Token"+ contador++ +" = " + ALexico.Estructuras.getStringToken(t.getIdentif_tt()));
 			val =t.getIdentif_tt();
 			if(val!=this.YYERRCODE){
 				yylval= new ParserVal();
