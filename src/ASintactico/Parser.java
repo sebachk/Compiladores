@@ -487,7 +487,7 @@ final static String yyrule[] = {
 //#line 165 "Gramatica.nueva.y"
 
 AnalizadorLexico Al = new ALexico.AnalizadorLexico(new File("Docs/errores.txt"));
-
+int contador=1;
 
 
 int yylex(){
@@ -496,6 +496,7 @@ int yylex(){
 	while(val==this.YYERRCODE){
 		t = Al.GetToken();
 		if(t!=null){
+			ALexico.Estructuras.addLog("Token "+ contador++ +" = " + ALexico.Estructuras.getStringToken(t.getIdentif_tt()));
 			val =t.getIdentif_tt();
 			if(val!=this.YYERRCODE){
 				yylval.ival=t.getIndice_ts();
@@ -578,7 +579,7 @@ public void run()
   System.out.println(yyparse());
   Estructuras.PrintTablaS();
 }
-//#line 509 "Parser.java"
+//#line 510 "Parser.java"
 //###############################################################
 // method: yylexdebug : check lexer state
 //###############################################################
@@ -824,7 +825,7 @@ case 87:
 //#line 144 "Gramatica.nueva.y"
 {Estructuras.addLog("Linea "+Al.LineasContadas+": Sentencia de asignacion");}
 break;
-//#line 750 "Parser.java"
+//#line 751 "Parser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####

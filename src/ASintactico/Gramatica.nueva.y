@@ -164,7 +164,7 @@ tipo 	:uint
 %%
 
 AnalizadorLexico Al = new ALexico.AnalizadorLexico(new File("Docs/errores.txt"));
-
+int contador=1;
 
 
 int yylex(){
@@ -173,6 +173,7 @@ int yylex(){
 	while(val==this.YYERRCODE){
 		t = Al.GetToken();
 		if(t!=null){
+			ALexico.Estructuras.addLog("Token"+ contador++ +" = " + ALexico.Estructuras.getStringToken(t.getIdentif_tt()));
 			val =t.getIdentif_tt();
 			if(val!=this.YYERRCODE){
 				yylval.ival=t.getIndice_ts();
