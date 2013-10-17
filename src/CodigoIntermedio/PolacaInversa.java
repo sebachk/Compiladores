@@ -8,7 +8,7 @@ public class PolacaInversa {
 	
 	public static final String SENT="#sentencia";
 	public static final String BRANCH_FALSO="#BF";
-	public static final String BRNCH_INC="#BI";
+	public static final String BRANCH_INC="#BI";
 	public static final String CUERPO_IF="#cpoif";
 	public static final String CUERPO_LOOP="#cpoloop";
 	public static final String CONDICION="#condicion";
@@ -32,10 +32,9 @@ public class PolacaInversa {
 		addPolaco(""+elem);
 	}
 	public void addPolaco(String elem){
-		
-		polaca[size]=elem;
+		polaca[size++]=elem;
 		SalvarRebalse();
-		size++;
+		//size++;
 	}
 	
 	public void addPolaco(String elem, int pos){
@@ -45,7 +44,8 @@ public class PolacaInversa {
 	}
 	
 	public void SalvarRebalse(){
-		if(size==polaca.length){
+		if(size>=polaca.length){
+			//System.out.println("HOLA MUNDO");
 			String aux[]= new String[size*2];
 			for(int i=0;i<size;i++){
 				aux[i]=polaca[i];
@@ -75,7 +75,7 @@ public class PolacaInversa {
 	
 	public void ImprimirPolaca(){
 		for(int i=0; i<size;i++){
-			System.out.println(polaca[i]);
+			System.out.println("pos "+i+"= "+polaca[i]);
 		}
 	}
 	
@@ -89,11 +89,38 @@ public class PolacaInversa {
 	}
 	
 	public void FinCondicion(){
-		addPolaco("");
 		pila.push(size+"");
+		addPolaco("");
 		addPolaco(BRANCH_FALSO);
 	}
 	
+	public void FinThenElse(){
+		String ptr=pila.pop();
+		pila.push(size+"");
+		addPolaco("");
+		addPolaco(BRANCH_INC);
+		addPolaco(size+"-saltobi",Integer.parseInt(ptr));	
+	}
+	
+	public void FinIf(){
+		String ptr=pila.pop();
+		addPolaco(size+"-saltofin",Integer.parseInt(ptr));
+	}
+	
+	public void InicLoop(){
+		pila.push(size+"");
+		System.out.println("PUTO");
+		
+	}
+	
+	public void FinLoop(){
+		System.out.println("REPUTO");
+		String ptr=pila.pop();
+		addPolaco((size+4)+"-saltobfWhile");			
+		addPolaco(BRANCH_FALSO);
+		addPolaco(Integer.parseInt(ptr));
+		addPolaco(BRANCH_INC);
+	}
 	
 }
 

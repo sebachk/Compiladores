@@ -348,6 +348,7 @@ public class AnalizadorLexico {
 			}
 			if(caracter == -1){fin_de_arch=true;}
 		} // END WHILE
+		System.out.println(tc.GetToken());
 		return tc.GetToken();
 	}
 	

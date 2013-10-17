@@ -79,7 +79,7 @@ sentencia_comp	: sentencia_if
 				| sentencia_loop 
 				;	
 				
-sentencia_if 	: IF '('cond')'{Estructuras.addLog("Línea "+Al.LineasContadas+": Sentencia 'if'"); PI.FinCondion();}  THEN bloque_IF 
+sentencia_if 	: IF '('cond')'{Estructuras.addLog("Línea "+Al.LineasContadas+": Sentencia 'if'"); PI.FinCondicion();}  THEN bloque_IF 
 				| sentencia_if_error
 				;
 				
@@ -90,10 +90,10 @@ sentencia_if_error	: IF THEN {Estructuras.addError("syntax error en línea "+Al.L
 					| IF '('cond')'  {Estructuras.addError("syntax error en línea "+Al.LineasContadas+": Falta la palabra THEN");} bloque_IF 
 					| IF error {Estructuras.addError("syntax error en línea "+Al.LineasContadas+": errores múltiples en IF");} bloque_IF 
 				;
-sentencia_loop: LOOP {Estructuras.addLog("Línea "+Al.LineasContadas+": Sentencia de iteracion");} bloque_loop 
+sentencia_loop: LOOP {Estructuras.addLog("Línea "+Al.LineasContadas+": Sentencia de iteracion");} {PI.InicLoop();} bloque_loop 
 				
 				
-bloque_loop	: bloque_sent UNTIL cond	
+bloque_loop	:bloque_sent UNTIL cond{PI.FinLoop();}	
 			|loop_error			
 			;	
 
@@ -112,9 +112,9 @@ lista_var	:ID ','lista_var
 			;
 
 		
-bloque_IF 	: bloque_sent %prec ELSE  	
-			| bloque_sent ELSE bloque_sent
-			| ID bloque_IF
+bloque_IF 	: bloque_sent  {PI.FinIf();} %prec  ELSE  
+			| bloque_sent  ELSE {PI.FinThenElse();} bloque_sent {PI.FinIf();}
+			| ID bloque_IF {Estructuras.addError("syntax error en línea "+Al.LineasContadas+": Then mal escrito");}
 			;
 	
 	
@@ -162,15 +162,10 @@ tipo 	:uint
 		;
 %%
 
-<<<<<<< HEAD
-AnalizadorLexico Al = new ALexico.AnalizadorLexico(new File("Docs/errores.txt"));
-int contador=1;
-=======
+
 AnalizadorLexico Al = new ALexico.AnalizadorLexico(new File("Docs/codigo.txt"));
 PolacaInversa PI = new PolacaInversa();
-
->>>>>>> d2ebec3b395378a268d34b08a135d8cba793d51f
-
+int contador=1;
 
 int yylex(){
 	ALexico.Token t; 
