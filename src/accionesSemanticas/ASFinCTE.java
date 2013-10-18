@@ -23,7 +23,7 @@ public class ASFinCTE implements AccionSemantica{
 					tc.createToken(Estructuras.ERROR,pos);
 				}
 				else{
-					int posicion=Estructuras.addTupla(cadena);
+					int posicion=Estructuras.addTupla(cadena,Estructuras.UINT,Estructuras.USO_CONST);
 					tc.createToken(Estructuras.CTE,posicion);
 				}
 				

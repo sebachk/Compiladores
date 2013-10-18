@@ -1,5 +1,8 @@
 package CodigoIntermedio;
 
+import ALexico.AnalizadorLexico;
+import ALexico.Estructuras;
+
 public class ManejadorAmbitos {
 
 	private String ambitos[];
@@ -49,13 +52,42 @@ public class ManejadorAmbitos {
 	}
 	
 	public String getName(){
+		return getName(cant_ambitos);
+	}
+	
+	protected String getName(int size){
 		String result="_";
-		for(int i=0;i<cant_ambitos;i++){
+		for(int i=0;i<size;i++){
 			result+=ambitos[i]+"_";
 		}
 		result=result.substring(0, result.length()-1);
 		return result;
+	
 	}
+	
+	public static boolean isDeclarada (String var){
+		int size= getInstance().cant_ambitos;
+		String mangling= getInstance().getName();
+		while(size>0){
+			if(Estructuras.enTupla(var+mangling)!=-1){
+				return true;
+			}
+			size--;
+			mangling=getInstance().getName(size);
+		}
+		
+		Estructuras.addError("Error Semantico en Línea "+AnalizadorLexico.LineasContadas+": La variable "+var+" no fue declarada");
+		return false;
+	}
+	
+	public static boolean PuedoDeclarar (String var){
+		if(Estructuras.enTupla(var+ getInstance().getName())!=-1){
+			Estructuras.addError("Error Semantico en Línea "+AnalizadorLexico.LineasContadas+": La variable "+var+" ya fue declarada");
+			return false;
+		}
+		return true;
+	}
+	
 	
 	public void FinAmbito(){
 		cant_ambitos--;

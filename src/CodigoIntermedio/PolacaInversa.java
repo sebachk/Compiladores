@@ -3,6 +3,7 @@ package CodigoIntermedio;
 import java.util.Stack;
 
 import ALexico.Estructuras;
+import ALexico.TuplaTS;
 
 public class PolacaInversa {
 	
@@ -18,14 +19,14 @@ public class PolacaInversa {
 	
 	String []polaca;
 	int size;
-	int pos;
+	int lector;
 	Stack<String> pila;
 	
 	public PolacaInversa(){
 		polaca = new String[100];
 		pila = new Stack<String>();
 		size=0;
-		pos=0;
+		lector=0;
 	}
 	
 	public void addPolaco(int elem){
@@ -55,13 +56,13 @@ public class PolacaInversa {
 	}
 	
 	public void readPolaco(){
-		int i=Estructuras.getValorToken(polaca[pos]);
-		if(i==257||i==258||polaca[pos].contains("p("))//ID
-			pila.push(polaca[pos]);
+		int i=Estructuras.getValorToken(polaca[lector]);
+		if(i==257||i==258||polaca[lector].contains("p("))//ID
+			pila.push(polaca[lector]);
 		else{
-			if(polaca[pos]=="#BI"){
+			if(polaca[lector]=="#BI"){
 				String op=pila.pop();
-				pos= Integer.parseInt(op);
+				lector= Integer.parseInt(op);
 			}
 			else{
 				String op2=pila.pop();
@@ -74,8 +75,26 @@ public class PolacaInversa {
 	}
 	
 	public void ImprimirPolaca(){
+		System.out.println("Posicion | Valor | IndiceTS");
 		for(int i=0; i<size;i++){
-			System.out.println("pos "+i+"= "+polaca[i]);
+		/*	boolean pudo=true;
+			int index=0;
+			try {
+				index=Integer.parseInt( polaca[i]);
+			} catch (Exception e) {
+				// TODO: handle exception
+				pudo=false;
+			}
+			if(pudo){
+				TuplaTS t=Estructuras.Tabla_Simbolos.elementAt(index);
+				//int index=t.valor.indexOf("_");
+			
+				System.out.println(i+", "+t.valor+", "+polaca[i]);
+			}
+			else{*/
+				System.out.println(i+", "+polaca[i]+", null");
+				
+			
 		}
 	}
 	
@@ -109,12 +128,10 @@ public class PolacaInversa {
 	
 	public void InicLoop(){
 		pila.push(size+"");
-		System.out.println("PUTO");
-		
+	
 	}
 	
 	public void FinLoop(){
-		System.out.println("REPUTO");
 		String ptr=pila.pop();
 		addPolaco((size+4)+"-saltobfWhile");			
 		addPolaco(BRANCH_FALSO);

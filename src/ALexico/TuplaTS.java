@@ -5,6 +5,7 @@ public class TuplaTS {
 	public String valor;
 	public String tipo;
 	public String uso;
+	public int referencia;
 	
 	public String print(){
 		String print="";

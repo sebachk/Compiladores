@@ -42,6 +42,11 @@ public class Estructuras {
 	public static final String CADENA="CADENA";
 	public static final String ERROR="ERROR";
 	public static final String WARNING="WARNING";
+	public static final String USO_VAR="VARIABLE";
+	public static final String USO_CONST="CONSTANTE";
+	
+
+
 	
 	public static final Hashtable<String, Integer> Tabla_Token=new Hashtable<>();
 	
@@ -122,11 +127,26 @@ public class Estructuras {
 	}
 	
 	public static int addTupla(String cadena){
+		return addTupla(cadena,"NaN","NaN",-1);
+	}
+	
+	public static int addTupla(String var,String tipo,String uso){
+		return addTupla(var, tipo, uso, -1);
+	}
+	
+	public static int addTupla(String var,String tipo,String uso,int referencia){
 		TuplaTS nueva= new TuplaTS();
-		nueva.valor=cadena;
+		nueva.valor=var;
+		nueva.tipo=tipo;
+		nueva.uso=uso;
+		nueva.referencia=referencia;
 		Tabla_Simbolos.add(nueva);
 		return Tabla_Simbolos.size()-1;
+	
 	}
+	
+	
+	
 	
 	public static void PrintTablaS(){
 		System.out.println("Tabla de simbolos:");
