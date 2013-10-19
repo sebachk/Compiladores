@@ -118,12 +118,12 @@ public class PolacaInversa {
 		pila.push(size+"");
 		addPolaco("");
 		addPolaco(BRANCH_INC);
-		addPolaco(size+"-saltobi",Integer.parseInt(ptr));	
+		addPolaco("PI("+size+")"+"-saltobi",Integer.parseInt(ptr));	
 	}
 	
 	public void FinIf(){
 		String ptr=pila.pop();
-		addPolaco(size+"-saltofin",Integer.parseInt(ptr));
+		addPolaco("PI("+size+")"+"-saltofin",Integer.parseInt(ptr));
 	}
 	
 	public void InicLoop(){
@@ -133,9 +133,9 @@ public class PolacaInversa {
 	
 	public void FinLoop(){
 		String ptr=pila.pop();
-		addPolaco((size+4)+"-saltobfWhile");			
+		addPolaco("PI("+(size+4)+")-saltobfWhile");			
 		addPolaco(BRANCH_FALSO);
-		addPolaco(Integer.parseInt(ptr));
+		addPolaco("PI("+ptr+")");
 		addPolaco(BRANCH_INC);
 	}
 	
