@@ -25,8 +25,8 @@ declaracion	: sentencia_declar_funcion {Estructuras.addLog("Linea "+Al.LineasCon
 			| {ManejadorAmbitos.NewAmbito("Main");}bloque_sent{ManejadorAmbitos.EndAmbito();}
 			;
 
-sentencia_declar_funcion 	:FUNCTION ID '('{if(ManejadorAmbitos.PuedoDeclarar($2.sval)) $2.ival=Estructuras.addTupla($2.sval+ManejadorAmbitos.getInstance().getName(),Estructuras.UINT,Estructuras.FUNCTION);ManejadorAmbitos.NewAmbito($2.sval); PI.beginFunction($2.sval);} parametros')'  bloque_funcion {PI.endFunction($2.sval);ManejadorAmbitos.EndAmbito(); }
-							|FUNCTION ID '('')' {if(ManejadorAmbitos.PuedoDeclarar($2.sval))  $2.ival=Estructuras.addTupla($2.sval+ManejadorAmbitos.getInstance().getName(),Estructuras.UINT,Estructuras.FUNCTION);  ManejadorAmbitos.NewAmbito($2.sval);} bloque_funcion {ManejadorAmbitos.EndAmbito();}
+sentencia_declar_funcion 	:FUNCTION ID '('{if(ManejadorAmbitos.PuedoDeclarar($2.sval)) $2.ival=Estructuras.addTupla($2.sval+ManejadorAmbitos.getInstance().getName(),Estructuras.UINT,Estructuras.FUNCTION);ManejadorAmbitos.NewAmbito($2.sval); PI.beginFunction($2.sval);} parametros')'  bloque_funcion {/*PI.endFunction();*/ManejadorAmbitos.EndAmbito(); }
+							|FUNCTION ID '('')' {if(ManejadorAmbitos.PuedoDeclarar($2.sval))  $2.ival=Estructuras.addTupla($2.sval+ManejadorAmbitos.getInstance().getName(),Estructuras.UINT,Estructuras.FUNCTION);  ManejadorAmbitos.NewAmbito($2.sval);} bloque_funcion {/*PI.endFunction();*/ManejadorAmbitos.EndAmbito();}
 							|FUNCTION error ')'
 							|FUNCTION error bloque_funcion
 							;
@@ -70,9 +70,9 @@ sentencia_simple: sent_correcta
 				| ';'
 				;
 				
-sent_abierta 	: PRINT {Estructuras.addLog("Línea "+Al.LineasContadas+": Sentencia 'print'");} '('cadena')' 
+sent_abierta 	: PRINT {Estructuras.addLog("Línea "+Al.LineasContadas+": Sentencia 'print'");} '('cadena')' {PI.callPrint();}
 				| llamada_funcion {Estructuras.addLog("Línea "+Al.LineasContadas+": Sentencia de llamado de funcion");}
-				| RETURN {Estructuras.addLog("Línea "+Al.LineasContadas+": Sentencia 'return'");} expresion 
+				| RETURN {Estructuras.addLog("Línea "+Al.LineasContadas+": Sentencia 'return'");} expresion {PI.endFunction();}
 				| asignacion
 				;
 				

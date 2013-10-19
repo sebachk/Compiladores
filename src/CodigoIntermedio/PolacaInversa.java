@@ -14,7 +14,7 @@ public class PolacaInversa {
 	public static final String CALL="#CALL";
 	public static final String RETURN="#RET";
 	public static final String CONDICION="#condicion";
-	
+	public static final String PRINT="#print";
 	
 	
 	
@@ -36,9 +36,9 @@ public class PolacaInversa {
 		funciones.put(key, (Integer)size);
 	}
 	
-	public void endFunction(String key){
+	public void endFunction(){//String key){
 		addPolaco(RETURN);
-		addPolaco(key);
+		//addPolaco(key);
 	}
 	
 	public void callFunction(String key){
@@ -75,6 +75,10 @@ public class PolacaInversa {
 			}
 			polaca=aux;
 		}
+	}
+	
+	public void callPrint(){
+		addPolaco(PRINT);
 	}
 	
 	public void readPolaco(){

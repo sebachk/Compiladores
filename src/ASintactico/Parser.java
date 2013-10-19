@@ -836,7 +836,7 @@ case 11:
 break;
 case 12:
 //#line 28 "Gramatica.nueva.y"
-{PI.endFunction(val_peek(5).sval);ManejadorAmbitos.EndAmbito(); }
+{/*PI.endFunction();*/ManejadorAmbitos.EndAmbito(); }
 break;
 case 13:
 //#line 29 "Gramatica.nueva.y"
@@ -844,7 +844,7 @@ case 13:
 break;
 case 14:
 //#line 29 "Gramatica.nueva.y"
-{ManejadorAmbitos.EndAmbito();}
+{/*PI.endFunction();*/ManejadorAmbitos.EndAmbito();}
 break;
 case 20:
 //#line 39 "Gramatica.nueva.y"
@@ -878,6 +878,10 @@ case 44:
 //#line 73 "Gramatica.nueva.y"
 {Estructuras.addLog("Línea "+Al.LineasContadas+": Sentencia 'print'");}
 break;
+case 45:
+//#line 73 "Gramatica.nueva.y"
+{PI.callPrint();}
+break;
 case 46:
 //#line 74 "Gramatica.nueva.y"
 {Estructuras.addLog("Línea "+Al.LineasContadas+": Sentencia de llamado de funcion");}
@@ -885,6 +889,10 @@ break;
 case 47:
 //#line 75 "Gramatica.nueva.y"
 {Estructuras.addLog("Línea "+Al.LineasContadas+": Sentencia 'return'");}
+break;
+case 48:
+//#line 75 "Gramatica.nueva.y"
+{PI.endFunction();}
 break;
 case 54:
 //#line 87 "Gramatica.nueva.y"
@@ -1038,7 +1046,7 @@ case 106:
 //#line 162 "Gramatica.nueva.y"
 {PI.addPolaco("TS("+val_peek(0).ival+")");}
 break;
-//#line 964 "Parser.java"
+//#line 972 "Parser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####
