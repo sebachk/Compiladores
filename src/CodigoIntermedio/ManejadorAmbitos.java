@@ -65,7 +65,7 @@ public class ManejadorAmbitos {
 	
 	}
 	
-	public static boolean isDeclarada (String var){
+/*	public static boolean isDeclarada (String var){
 		int size= getInstance().cant_ambitos;
 		String mangling= getInstance().getName();
 		while(size>0){
@@ -78,7 +78,7 @@ public class ManejadorAmbitos {
 		
 		Estructuras.addError("Error Semantico en Línea "+AnalizadorLexico.LineasContadas+": La variable "+var+" no fue declarada");
 		return false;
-	}
+	}*/
 	
 	public static boolean PuedoDeclarar (String var){
 		if(Estructuras.enTupla(var+ getInstance().getName())!=-1){
@@ -92,6 +92,24 @@ public class ManejadorAmbitos {
 	public void FinAmbito(){
 		cant_ambitos--;
 	}
+	
+	public static int isDeclarada (String var){
+		int size= getInstance().cant_ambitos;
+		String mangling= getInstance().getName();
+		int resultado=-1;
+		while(size>0){
+			resultado=Estructuras.enTupla(var+mangling);
+			if(resultado!=-1){
+				return resultado;
+			}
+			size--;
+			mangling=getInstance().getName(size);
+		}
+		
+		Estructuras.addError("Error Semantico en Línea "+AnalizadorLexico.LineasContadas+": La variable "+var+" no fue declarada");
+		return resultado;
+	}
+	
 	
 	public static void NewAmbito(String name){
 		getInstance().NuevoAmbito(name);

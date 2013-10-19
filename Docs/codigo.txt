@@ -1,4 +1,5 @@
 begin
+	uint a;
 	function promedio(uint a, uint b)
 	begin
 		uint g;
@@ -7,7 +8,7 @@ begin
 		return g;
 	end
 	
-	function promedio()
+	function promedio2()
 	begin
 		print('esta es una funcino sin parametros');
 	end
@@ -20,7 +21,7 @@ begin
 	uint d;
 	a=8;
 	
-	b = promedio (a+25*c,promedio(8,12));
+	b = promedio (a,b);
 	if(d<b) then
 		a=9;
 	

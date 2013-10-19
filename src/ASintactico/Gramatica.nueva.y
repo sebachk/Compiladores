@@ -25,8 +25,8 @@ declaracion	: sentencia_declar_funcion {Estructuras.addLog("Linea "+Al.LineasCon
 			| {ManejadorAmbitos.NewAmbito("Main");}bloque_sent{ManejadorAmbitos.EndAmbito();}
 			;
 
-sentencia_declar_funcion 	:FUNCTION ID '('parametros')'{if(ManejadorAmbitos.PuedoDeclarar($2.sval)) Estructuras.addTupla($2.sval+ManejadorAmbitos.getInstance().getName(),Estructuras.UINT,Estructuras.FUNCTION);  ManejadorAmbitos.NewAmbito($2.sval);} bloque_funcion {ManejadorAmbitos.EndAmbito(); }
-							|FUNCTION ID '('')' {if(ManejadorAmbitos.PuedoDeclarar($2.sval)) Estructuras.addTupla($2.sval+ManejadorAmbitos.getInstance().getName(),Estructuras.UINT,Estructuras.FUNCTION);  ManejadorAmbitos.NewAmbito($2.sval);} bloque_funcion {ManejadorAmbitos.EndAmbito();}
+sentencia_declar_funcion 	:FUNCTION ID '('{if(ManejadorAmbitos.PuedoDeclarar($2.sval)) $2.ival=Estructuras.addTupla($2.sval+ManejadorAmbitos.getInstance().getName(),Estructuras.UINT,Estructuras.FUNCTION);ManejadorAmbitos.NewAmbito($2.sval); PI.beginFunction($2.sval);} parametros')'  bloque_funcion {PI.endFunction($2.sval);ManejadorAmbitos.EndAmbito(); }
+							|FUNCTION ID '('')' {if(ManejadorAmbitos.PuedoDeclarar($2.sval))  $2.ival=Estructuras.addTupla($2.sval+ManejadorAmbitos.getInstance().getName(),Estructuras.UINT,Estructuras.FUNCTION);  ManejadorAmbitos.NewAmbito($2.sval);} bloque_funcion {ManejadorAmbitos.EndAmbito();}
 							|FUNCTION error ')'
 							|FUNCTION error bloque_funcion
 							;
@@ -107,13 +107,13 @@ loop_error	: bloque_sent cond {Estructuras.addError("syntax error en línea "+Al.
 			| bloque_sent error {Estructuras.addError("syntax error en línea "+Al.LineasContadas+": Se olvido del UNTIL?");}
 			;			
 				
-llamada_funcion :ID '('{ManejadorAmbitos.isDeclarada($1.sval);}lista_parametros')'
-				|ID '('')'{ManejadorAmbitos.isDeclarada($1.sval);}
+llamada_funcion :ID '('{ManejadorAmbitos.isDeclarada($1.sval); PI.callFunction($1.sval);}lista_parametros')'
+				|ID '('')'{ManejadorAmbitos.isDeclarada($1.sval);PI.callFunction($1.sval);}
 				;
 
 
-lista_var	:ID ',' {if(ManejadorAmbitos.PuedoDeclarar($1.sval)) Estructuras.addTupla($1.sval+ManejadorAmbitos.getInstance().getName(),Estructuras.UINT,Estructuras.USO_VAR);} lista_var 
-			|ID	{if(ManejadorAmbitos.PuedoDeclarar($1.sval)) Estructuras.addTupla($1.sval+ManejadorAmbitos.getInstance().getName(),Estructuras.UINT,Estructuras.USO_VAR);}
+lista_var	:ID ',' {if(ManejadorAmbitos.PuedoDeclarar($1.sval))  $1.ival=Estructuras.addTupla($1.sval+ManejadorAmbitos.getInstance().getName(),Estructuras.UINT,Estructuras.USO_VAR);} lista_var 
+			|ID	{if(ManejadorAmbitos.PuedoDeclarar($1.sval))  $1.ival=Estructuras.addTupla($1.sval+ManejadorAmbitos.getInstance().getName(),Estructuras.UINT,Estructuras.USO_VAR);}
 			;
 
 		
@@ -131,8 +131,8 @@ cond 	: expresion '<'  expresion {PI.addPolaco("<");}
 		| expresion DIST expresion {PI.addPolaco("!=");}
 		;		
 							
-parametros	: tipo ID
-			| tipo ID ',' parametros
+parametros	: tipo ID {if(ManejadorAmbitos.PuedoDeclarar($2.sval)) $2.ival=Estructuras.addTupla($2.sval+ManejadorAmbitos.getInstance().getName(),Estructuras.UINT,Estructuras.USO_VAR);}
+			| tipo ID ','{if(ManejadorAmbitos.PuedoDeclarar($2.sval)) $2.ival=Estructuras.addTupla($2.sval+ManejadorAmbitos.getInstance().getName(),Estructuras.UINT,Estructuras.USO_VAR);} parametros
 			;
 
 
@@ -145,7 +145,7 @@ parametro 	:  ID {ManejadorAmbitos.isDeclarada($1.sval);}
 
 
 
-asignacion 	: ID {ManejadorAmbitos.isDeclarada($1.sval);} '='expresion {Estructuras.addLog("Linea "+Al.LineasContadas+": Sentencia de asignacion");} {PI.addPolaco($1.ival); PI.addPolaco("=");}
+asignacion 	: ID  '='expresion {int pos= ManejadorAmbitos.isDeclarada($1.sval); Estructuras.addLog("Linea "+Al.LineasContadas+": Sentencia de asignacion"); PI.addPolaco("TS("+pos+")"); PI.addPolaco("=");}
 			;
 		
 expresion 	: expresion '+' termino {PI.addPolaco("+");}
@@ -158,8 +158,8 @@ termino 	: termino '*' factor {PI.addPolaco("*");}
 			| factor
 			;
 
-factor 	: ID {PI.addPolaco($1.ival);ManejadorAmbitos.isDeclarada($1.sval);}
-		| CTE{PI.addPolaco($1.ival);}
+factor 	: ID {int pos = ManejadorAmbitos.isDeclarada($1.sval); PI.addPolaco("TS("+pos+")");}
+		| CTE{PI.addPolaco("TS("+$1.ival+")");}
 		| llamada_funcion
 		;
 

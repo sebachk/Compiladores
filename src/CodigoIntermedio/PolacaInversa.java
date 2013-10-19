@@ -1,5 +1,6 @@
 package CodigoIntermedio;
 
+import java.util.Hashtable;
 import java.util.Stack;
 
 import ALexico.Estructuras;
@@ -10,14 +11,15 @@ public class PolacaInversa {
 	public static final String SENT="#sentencia";
 	public static final String BRANCH_FALSO="#BF";
 	public static final String BRANCH_INC="#BI";
-	public static final String CUERPO_IF="#cpoif";
-	public static final String CUERPO_LOOP="#cpoloop";
+	public static final String CALL="#CALL";
+	public static final String RETURN="#RET";
 	public static final String CONDICION="#condicion";
 	
 	
 	
 	
 	String []polaca;
+	Hashtable<String, Integer> funciones;
 	int size;
 	int lector;
 	Stack<String> pila;
@@ -27,6 +29,26 @@ public class PolacaInversa {
 		pila = new Stack<String>();
 		size=0;
 		lector=0;
+		funciones= new Hashtable<String,Integer>();
+	}
+	
+	public void beginFunction(String key){
+		funciones.put(key, (Integer)size);
+	}
+	
+	public void endFunction(String key){
+		addPolaco(RETURN);
+		addPolaco(key);
+	}
+	
+	public void callFunction(String key){
+		int pos = funciones.get(key);
+		addPolaco("PI("+pos+")");
+		addPolaco(CALL);
+	}
+	
+	public int getFunction(String key){
+		return funciones.get(key);
 	}
 	
 	public void addPolaco(int elem){
@@ -77,29 +99,25 @@ public class PolacaInversa {
 	public void ImprimirPolaca(){
 		System.out.println("Posicion | Valor | IndiceTS");
 		for(int i=0; i<size;i++){
-		/*	boolean pudo=true;
-			int index=0;
-			try {
-				index=Integer.parseInt( polaca[i]);
-			} catch (Exception e) {
-				// TODO: handle exception
-				pudo=false;
+			int finpar=0;
+			if(polaca[i].indexOf("TS")!=-1){
+				finpar=polaca[i].indexOf(")");
+				TuplaTS tupla = Estructuras.Tabla_Simbolos.elementAt(Integer.parseInt(polaca[i].substring(3,finpar)));
+				System.out.println(i+"   |  "+tupla.valor+"   |  "+ polaca[i].substring(3,finpar));
 			}
-			if(pudo){
-				TuplaTS t=Estructuras.Tabla_Simbolos.elementAt(index);
-				//int index=t.valor.indexOf("_");
-			
-				System.out.println(i+", "+t.valor+", "+polaca[i]);
-			}
-			else{*/
-				System.out.println(i+", "+polaca[i]+", null");
+			else if(polaca[i].indexOf("PI")!=-1){
+				finpar=polaca[i].indexOf(")");
+				System.out.println(i+"   |  "+polaca[i].substring(3,finpar)+"   |  "+"null");
 				
-			
+			}
+			else
+				System.out.println(i+"   |  "+polaca[i]+"   |   null");
+				
 		}
 	}
 	
 	public boolean opUnario(String op){
-		return (op==SENT || op==BRANCH_FALSO || op==CUERPO_LOOP);
+		return (op==SENT || op==BRANCH_FALSO);
 	}
 	
 	public boolean opBinario(String op){

@@ -346,9 +346,9 @@ public class AnalizadorLexico {
 				acc.Execute(lector, (char)caracter, tc);
 				return tc.GetToken();				
 			}
+			
 			if(caracter == -1){fin_de_arch=true;}
 		} // END WHILE
-		System.out.println(tc.GetToken());
 		return tc.GetToken();
 	}
 	
