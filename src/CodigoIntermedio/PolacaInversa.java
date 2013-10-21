@@ -77,7 +77,9 @@ public class PolacaInversa {
 		}
 	}
 	
-	public void callPrint(){
+	public void callPrint(String cadena){
+		System.out.println("PUCHA CHE"+cadena);
+		addPolaco(cadena);
 		addPolaco(PRINT);
 	}
 	
