@@ -880,7 +880,7 @@ case 44:
 break;
 case 45:
 //#line 73 "Gramatica.nueva.y"
-{PI.callPrint(val_peek(1).sval);}
+{PI.callPrint(val_peek(1).ival);}
 break;
 case 46:
 //#line 74 "Gramatica.nueva.y"

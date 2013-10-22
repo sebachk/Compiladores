@@ -70,7 +70,7 @@ sentencia_simple: sent_correcta
 				| ';'
 				;
 				
-sent_abierta 	: PRINT {Estructuras.addLog("Línea "+Al.LineasContadas+": Sentencia 'print'");} '('cadena')' {PI.callPrint($4.sval);}
+sent_abierta 	: PRINT {Estructuras.addLog("Línea "+Al.LineasContadas+": Sentencia 'print'");} '('cadena')' {PI.callPrint($4.ival);}
 				| llamada_funcion {Estructuras.addLog("Línea "+Al.LineasContadas+": Sentencia de llamado de funcion");}
 				| RETURN {Estructuras.addLog("Línea "+Al.LineasContadas+": Sentencia 'return'");} expresion {PI.endFunction();}
 				| asignacion
