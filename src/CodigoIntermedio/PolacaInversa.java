@@ -8,15 +8,11 @@ import ALexico.TuplaTS;
 
 public class PolacaInversa {
 	
-	public static final String SENT="#sentencia";
 	public static final String BRANCH_FALSO="#BF";
 	public static final String BRANCH_INC="#BI";
 	public static final String CALL="#CALL";
 	public static final String RETURN="#RET";
-	public static final String CONDICION="#condicion";
 	public static final String PRINT="#print";
-	
-	
 	
 	String []polaca;
 	Hashtable<String, Integer> funciones;
@@ -36,9 +32,12 @@ public class PolacaInversa {
 		funciones.put(key, (Integer)size);
 	}
 	
-	public void endFunction(){//String key){
+	public void retorno(){
 		addPolaco(RETURN);
-		//addPolaco(key);
+	}
+	
+	public void endFunction(String name){
+		addPolaco(name);
 	}
 	
 	public void callFunction(String key){
@@ -82,23 +81,19 @@ public class PolacaInversa {
 		addPolaco(PRINT);
 	}
 	
-	public void readPolaco(){
-		int i=Estructuras.getValorToken(polaca[lector]);
-		if(i==257||i==258||polaca[lector].contains("p("))//ID
-			pila.push(polaca[lector]);
-		else{
-			if(polaca[lector]=="#BI"){
-				String op=pila.pop();
-				lector= Integer.parseInt(op);
-			}
-			else{
-				String op2=pila.pop();
-				String op1=pila.pop();
-				
-			}
+	public String readPolaco(){
+		String ts = polaca[lector++];
+		int finpar;
+		if(ts.indexOf("TS") != -1){ //Es un valor de la Tabla de simbolos
+			finpar=ts.indexOf(")");
+			TuplaTS tupla = Estructuras.Tabla_Simbolos.elementAt(Integer.parseInt(ts.substring(3,finpar)));
+			return tupla.valor;
 		}
-		
-				
+		else	if(ts.indexOf("PI")!=-1){ //es un valor de posicion de la polaca
+					finpar=ts.indexOf(")");
+					return ts.substring(3,finpar);
+				}
+		return ts;		// es un operador o tag
 	}
 	
 	public void ImprimirPolaca(){

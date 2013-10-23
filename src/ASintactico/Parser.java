@@ -836,7 +836,7 @@ case 11:
 break;
 case 12:
 //#line 28 "Gramatica.nueva.y"
-{/*PI.endFunction();*/ManejadorAmbitos.EndAmbito(); }
+{PI.endFunction(val_peek(5).sval);ManejadorAmbitos.EndAmbito(); }
 break;
 case 13:
 //#line 29 "Gramatica.nueva.y"
@@ -844,7 +844,7 @@ case 13:
 break;
 case 14:
 //#line 29 "Gramatica.nueva.y"
-{/*PI.endFunction();*/ManejadorAmbitos.EndAmbito();}
+{PI.endFunction(val_peek(4).sval);ManejadorAmbitos.EndAmbito();}
 break;
 case 20:
 //#line 39 "Gramatica.nueva.y"
@@ -892,7 +892,7 @@ case 47:
 break;
 case 48:
 //#line 75 "Gramatica.nueva.y"
-{PI.endFunction();}
+{PI.retorno();}
 break;
 case 54:
 //#line 87 "Gramatica.nueva.y"
