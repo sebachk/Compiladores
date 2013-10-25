@@ -9,6 +9,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Stack;
 
+import operaciones.Divi;
+import operaciones.Multi;
+import operaciones.OpBinario;
+import operaciones.Resta;
+import operaciones.Suma;
+
 import ALexico.Estructuras;
 import CodigoIntermedio.PolacaInversa;
 
@@ -16,10 +22,18 @@ public class Ensamblador {
 	private ManejadorRegistros mr;
 	private Stack<String> pila;
 	private BufferedWriter escritor;
-	private String[] variables;
-	private final int tamanio = 100;
+	
+	
+	private OpBinario suma;
+	private OpBinario resta;
+	private OpBinario multi;
+	private OpBinario divi;
 	
 	public Ensamblador(){
+		suma = new Suma();
+		resta = new Resta();
+		multi = new Multi();
+		divi = new Divi();
 		mr = new ManejadorRegistros();
 		pila = new Stack<String>();
 		escritor = null;
@@ -30,7 +44,6 @@ public class Ensamblador {
 			e.printStackTrace();
 		}
 		
-		variables = new String [tamanio];
 		
 	}
 	
@@ -52,6 +65,7 @@ public class Ensamblador {
 		if(s.equals(PolacaInversa.PRINT)){}
 		if(s.equals(PolacaInversa.CALL)){}
 		if(s.equals(PolacaInversa.RETURN)){}
+		return false;
 	}
 	
 

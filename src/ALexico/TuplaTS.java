@@ -9,7 +9,7 @@ public class TuplaTS {
 	
 	public String print(){
 		String print="";
-		print+=valor+" "+tipo+" "+uso;
+		print+=valor+"	"+tipo+"	"+uso;
 		return print;
 	}
 }

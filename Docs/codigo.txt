@@ -3,8 +3,9 @@ begin
 	function promedio(uint a, uint b)
 	begin
 		uint g;
-		g=a+b;
-		g=g/2;
+		g=a+b+2;
+		b = a+c;
+		g=g/+2;
 		return g;
 	end
 	
@@ -25,6 +26,7 @@ begin
 	if(d<b) then
 		a=9;
 	
+	
 	print('cadena1');
 	
 	loop b=b+1; until b ==30
@@ -37,7 +39,7 @@ begin
 					c = b*4;
 					b=b+1;
 				end
-			until a>400;
+			until a>400 
 		end
 		
 	end

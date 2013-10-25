@@ -110,6 +110,8 @@ public class Estructuras {
 	
 	public static Vector<String> log_general = new Vector<String>();
 	
+	public static Vector<String> log_token = new Vector<String>();
+	
 	public static int enTupla(String cadena){
 		for(int i=0;i<Tabla_Simbolos.size();i++){
 			if(Tabla_Simbolos.get(i).valor.equals(cadena))
@@ -125,6 +127,11 @@ public class Estructuras {
 	public static void addLog(String s){
 		log_general.add(s);
 	}
+	
+	public static void addToken(String s){
+		log_token.add(s);
+	}
+	
 	
 	public static int addTupla(String cadena){
 		return addTupla(cadena,"NaN","NaN",-1);
@@ -145,15 +152,18 @@ public class Estructuras {
 	
 	}
 	
+	public static boolean HayErrores(){
+		return log_Sintactico.size()>0;
+	}
 	
 	
 	
 	public static void PrintTablaS(){
 		System.out.println("Tabla de simbolos:");
 		System.out.println("ииииииииииииииииии");
-		System.out.println("Nombre");
+		System.out.println("pos	|Nombre	|Tipo	|Uso	");
 		for(int i =0;i<Tabla_Simbolos.size();i++){
-			System.out.println(i+": "+Tabla_Simbolos.elementAt(i).print());
+			System.out.println(i+"	"+Tabla_Simbolos.elementAt(i).print());
 		}
 		System.out.println();
 		System.out.println();
@@ -172,6 +182,16 @@ public class Estructuras {
 		System.out.println("иииииииииииииииииии");
 		for(int i =0;i<log_general.size();i++){
 			System.out.println(log_general.elementAt(i));
+			System.out.println("**********************");
+		}
+		
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println("Tokens:");
+		System.out.println("иииииииииииииииииии");
+		for(int i =0;i<log_token.size();i++){
+			System.out.println(log_token.elementAt(i));
 			System.out.println("**********************");
 		}
 		

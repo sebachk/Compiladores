@@ -117,12 +117,12 @@ public class PolacaInversa {
 	}
 	
 	public boolean opUnario(String op){
-		return (op==SENT || op==BRANCH_FALSO);
+		return false;//eturn (op==SENT || op==BRANCH_FALSO);
 	}
 	
 	public boolean opBinario(String op){
 		return (op=="+"||op=="-"||op=="/"||op=="*"||op=="="||op=="<"||op==">"||op=="<="||op==">="||op=="!="
-				||op==CONDICION||op=="==");
+				);
 	}
 	
 	public void FinCondicion(){
