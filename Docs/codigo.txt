@@ -3,9 +3,7 @@ begin
 	function promedio(uint a, uint b)
 	begin
 		uint g;
-		g=a+b+2;
-		b = a+c;
-		g=g/+2;
+		g=a+b*2;
 		return g;
 	end
 	

@@ -49,16 +49,26 @@ public class Ensamblador {
 	
 	public void ensamblar(PolacaInversa pi){
 		String elem = pi.readPolaco();
-		if (!doOperacion(elem)){
-			pila.push(elem);
-		}	
+			
+		while(elem != null){
+			if (!doOperacion(elem)){
+				pila.push(elem);
+			}	
+			elem = pi.readPolaco();
+			}
+		
+		try {
+			escritor.flush();
+			escritor.close();
+		} catch (IOException e) {e.printStackTrace();}
 	}
+		
 	
 	public boolean doOperacion(String s){
-		if(s.equals("+")){suma.execute(escritor,pila);}
-		if(s.equals("-")){resta.execute(escritor,pila);}
-		if(s.equals("*")){multi.execute(escritor,pila);}
-		if(s.equals("/")){divi.execute(escritor,pila);}
+		if(s.equals("+")){return(suma.execute(escritor,pila,mr,true));} //el boolean es para determinar conmutatividad
+		if(s.equals("-")){return(resta.execute(escritor,pila,mr,false));}
+		if(s.equals("*")){return(multi.execute(escritor,pila,mr,true));}
+		if(s.equals("/")){return(divi.execute(escritor,pila,mr,false));}
 		
 		if(s.equals(PolacaInversa.BRANCH_FALSO)){}
 		if(s.equals(PolacaInversa.BRANCH_INC)){}

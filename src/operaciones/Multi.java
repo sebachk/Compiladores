@@ -9,13 +9,5 @@ public class Multi extends OpBinario {
 		// TODO Auto-generated method stub
 		return MUL;
 	}
-	
-	@Override
-	public OpBinario getInstance(){
-		if(this.Instance==null){
-			Instance=new Multi();
-		}
-		return Instance;
-	}
 
 }

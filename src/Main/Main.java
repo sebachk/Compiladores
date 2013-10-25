@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import ALexico.Estructuras;
 import ASintactico.Parser;
+import Assembler.Ensamblador;
 
 public class Main {
 
@@ -16,6 +17,8 @@ public class Main {
 		Estructuras tablas = new Estructuras();
 		Parser p = new Parser();
 		p.run();
+		Ensamblador elCapo = new Ensamblador();
+		elCapo.ensamblar(p.getPolaca());
 		System.out.println("Presione una tecla para finalizar");
 		try {
 			char a = (char)System.in.read();

@@ -1,0 +1,4 @@
+begin
+	uint a,c,b;
+	a = b+c;
+end

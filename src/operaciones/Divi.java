@@ -9,11 +9,4 @@ public class Divi extends OpBinario {
 		return DIV;
 	}
 	
-	@Override
-	public OpBinario getInstance(){
-		if(this.Instance==null){
-			Instance=new Divi();
-		}
-		return Instance;
-	}
 }

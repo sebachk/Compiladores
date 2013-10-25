@@ -1,0 +1,13 @@
+MOV R1, _b_Programa_promedio
+MUL R1, _2
+ADD R1, _a_Programa_promedio
+MOV R2, _b_Programa_Main
+ADD R2, _1
+MOV R3, _a_Programa_Main
+MUL R3, _b_Programa_Main
+MOV R4, _c_Programa_Main
+SUB R4, _2
+MOV R0, _b_Programa_Main
+MUL R0, _4
+MOV R0, _b_Programa_Main
+ADD R0, _1

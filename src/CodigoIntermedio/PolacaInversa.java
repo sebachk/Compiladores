@@ -24,7 +24,7 @@ public class PolacaInversa {
 		polaca = new String[100];
 		pila = new Stack<String>();
 		size=0;
-		lector=0;
+		lector=-1;
 		funciones= new Hashtable<String,Integer>();
 	}
 	
@@ -82,18 +82,24 @@ public class PolacaInversa {
 	}
 	
 	public String readPolaco(){
-		String ts = polaca[lector++];
-		int finpar;
-		if(ts.indexOf("TS") != -1){ //Es un valor de la Tabla de simbolos
-			finpar=ts.indexOf(")");
-			TuplaTS tupla = Estructuras.Tabla_Simbolos.elementAt(Integer.parseInt(ts.substring(3,finpar)));
-			return tupla.valor;
+		lector++;
+		if(lector<size){
+			String ts = polaca[lector];
+			
+			int finpar;
+			if(ts.indexOf("TS") != -1){ //Es un valor de la Tabla de simbolos
+				finpar=ts.indexOf(")");
+				TuplaTS tupla = Estructuras.Tabla_Simbolos.elementAt(Integer.parseInt(ts.substring(3,finpar)));
+				return tupla.valor;
+			}
+			else	if(ts.indexOf("PI")!=-1){ //es un valor de posicion de la polaca
+						finpar=ts.indexOf(")");
+						return ts.substring(3,finpar);
+					}
+			return ts;		// es un operador o tag
 		}
-		else	if(ts.indexOf("PI")!=-1){ //es un valor de posicion de la polaca
-					finpar=ts.indexOf(")");
-					return ts.substring(3,finpar);
-				}
-		return ts;		// es un operador o tag
+		else 
+			return null;
 	}
 	
 	public void ImprimirPolaca(){
@@ -114,15 +120,6 @@ public class PolacaInversa {
 				System.out.println(i+"   |  "+polaca[i]+"   |   null");
 				
 		}
-	}
-	
-	public boolean opUnario(String op){
-		return false;//eturn (op==SENT || op==BRANCH_FALSO);
-	}
-	
-	public boolean opBinario(String op){
-		return (op=="+"||op=="-"||op=="/"||op=="*"||op=="="||op=="<"||op==">"||op=="<="||op==">="||op=="!="
-				);
 	}
 	
 	public void FinCondicion(){

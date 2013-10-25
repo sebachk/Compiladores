@@ -199,6 +199,12 @@ int yylex(){
 	return 0;
 }
 
+//**********************************
+public PolacaInversa getPolaca(){
+return PI;
+}
+//**********************************
+
 String yyBaseError(String e){
 	String err=e+" en línea "+Al.LineasContadas+": ";
 	return err;
