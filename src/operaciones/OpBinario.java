@@ -11,6 +11,7 @@ public class OpBinario {
 	protected String Operador;
 
 	
+ 
 	
 	public OpBinario(String Op){
 		Operador=Op;
@@ -54,12 +55,14 @@ public class OpBinario {
 		if(!pila.empty()){
 		String primero = pila.pop();
 		if (primero.startsWith("#")){ //PRIMERO ES REGISTRO
+ 
 			OpReg1(file,pila,mr,primero,segundo);
 		}
 		else 
 			if(segundo.startsWith("#")){ //SEGUNDO ES REG y PRIMER VAR
 				if(conmut){ // ES CONMUTATIVA
 					try {
+ 
 						file.write(this.operacion()+" "+mr.getRegAss(Integer.parseInt(segundo.substring(2))-1)+", _"+primero);
 						file.newLine();
 						pila.push(segundo);
@@ -69,6 +72,7 @@ public class OpBinario {
 				else{ // NO CONMUTATIVA
 					int pos = mr.cargar(primero);
 					try {
+ 
 						file.write("MOV "+mr.getRegAss(pos)+", _"+primero);
 						file.newLine();
 						file.write(this.operacion()+" "+mr.getRegAss(pos)+", "+mr.getRegAss(Integer.parseInt(segundo.substring(2))-1));
@@ -79,6 +83,7 @@ public class OpBinario {
 				}
 			}
 			else{ // AMBAS VARS
+ 
 					Op2Var(file,pila,mr,primero,segundo);
 				}
 			}

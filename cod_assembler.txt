@@ -1,26 +1,4 @@
-.data
-_a_Programa DW ?
-_a_Programa_promedio DW ?
-_b_Programa_promedio DW ?
-_g_Programa_promedio DW ?
-cadena1 DW "'esta es una funcino sin parametros'"
-_a_Programa_Main DW ?
-_b_Programa_Main DW ?
-_c_Programa_Main DW ?
-_d_Programa_Main DW ?
-cadena2 DW "'cadena1'"
-.code
-MOV ax, _a_Programa_promedio
-ADD ax, _b_Programa_promedio
-ADD ax, _2
-MOV _g_Programa_promedio, ax
-MOV ax, _a_Programa_promedio
-ADD ax, _3
-MOV _b_Programa_promedio, ax
-MOV ax, _g_Programa_promedio
-DIV ax, _2
-MOV _g_Programa_promedio, ax
-MOV ax, _g_Programa_promedio
+
 ADD ax, _3
 MOV bx, _a_Programa_promedio
 MUL bx, _5
@@ -47,3 +25,18 @@ MOV _c_Programa_Main, bx
 MOV bx, _b_Programa_Main
 ADD bx, _1
 MOV _b_Programa_Main, bx
+=======
+MOV R1, _b_Programa_promedio
+MUL R1, _2
+ADD R1, _a_Programa_promedio
+MOV R2, _b_Programa_Main
+ADD R2, _1
+MOV R3, _a_Programa_Main
+MUL R3, _b_Programa_Main
+MOV R4, _c_Programa_Main
+SUB R4, _2
+MOV R0, _b_Programa_Main
+MUL R0, _4
+MOV R0, _b_Programa_Main
+ADD R0, _1
+>>>>>>> 7a93bd62e623bf4912f2da96caa9a0849772e350

@@ -182,6 +182,7 @@ final static short yylhs[] = {                           -1,
     2,    3,    0,    1,    1,    4,    4,    6,    9,    6,
    11,    7,   13,    7,    7,    7,    8,    8,   12,   16,
    12,   17,   12,   15,   15,    5,    5,   19,   19,   23,
+ 
    19,   24,   19,   25,   19,   18,   18,   14,   14,   26,
    29,   26,   30,   26,   26,   31,   28,   28,   34,   28,
    28,   22,   22,   27,   27,   39,   36,   36,   42,   41,
@@ -195,6 +196,7 @@ final static short yylen[] = {                            2,
     0,    0,    5,    1,    2,    1,    2,    1,    0,    2,
     0,    7,    0,    6,    3,    3,    1,    1,    3,    0,
     4,    0,    4,    1,    2,    2,    1,    3,    3,    0,
+ 
     4,    0,    4,    0,    4,    2,    1,    1,    1,    1,
     0,    3,    0,    3,    1,    0,    5,    1,    0,    3,
     1,    2,    2,    1,    1,    0,    7,    1,    0,    4,
@@ -254,6 +256,7 @@ final static short yyrindex[] = {                         0,
     0,    0,  257,    0,    0,    0,    0,  257,  170,    0,
     0,  190,    0,    0,    0,    0,    0,    0,    0,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+ 
     0,    0, -136,    0,    0,    0,    0,    0,    0,    0,
   143, -170,    0,    0, -102,    0,    0,  -91,    0,    0,
   -41,    0,    0,    0,    0,    0,  -92,  -21,    0,    0,
@@ -267,7 +270,9 @@ final static short yyrindex[] = {                         0,
    -1,   19,    0,    0,    0,    0,    0,    0,    0,    0,
     0,    0,    0,    0,    0,  132,    0,    0,    0,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+    0,    0,    0,  128,    0,    0,    0,    0,    0,    0,
     0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+ 
 };
 final static short yygindex[] = {                         0,
     0,    0,    0,  114,    2,    0,  -65,   -3,    0,  -10,
@@ -336,6 +341,7 @@ yytable = new short[]{                        107,
    25,    0,    9,    9,    0,    0,    9,    0,    0,    9,
     9,    0,    9,    0,    9,    0,   19,   20,    0,    0,
    21,    0,    0,   22,   23,    0,    0,   55,   25,    0,
+ 
   100,  100,   55,    0,  100,    0,    0,  100,  100,   55,
     0,    0,  100,    0,   50,   50,    0,    0,   50,    0,
     0,   50,   50,    0,    0,    0,   50,    0,    0,    0,
@@ -351,6 +357,7 @@ static short yycheck[];
 static { yycheck(); }
 static void yycheck() {
 yycheck = new short[] {                         41,
+ 
    42,   43,   59,   45,   14,   47,   77,   11,   41,   75,
    40,  266,   49,   12,  260,   54,   24,   59,   60,   41,
    62,   43,  268,   45,   61,   24,  256,  257,  258,  256,
@@ -391,6 +398,7 @@ yycheck = new short[] {                         41,
   258,   -1,  260,  261,  262,  263,  264,  265,  266,  267,
   268,  269,  256,  257,   -1,   -1,  260,   -1,   -1,  263,
   264,   -1,  266,   -1,  268,  256,  257,  258,  256,  257,
+ 
   261,   -1,   -1,   -1,   -1,  263,  264,  265,   -1,  256,
   257,  258,  270,  260,   -1,   -1,  263,  264,  265,  266,
   267,  268,  269,   -1,   -1,  256,  257,   -1,   -1,  260,
@@ -408,6 +416,7 @@ yycheck = new short[] {                         41,
   256,  257,   54,   -1,  260,   -1,   -1,  263,  264,   61,
    -1,   -1,  268,   -1,  256,  257,   -1,   -1,  260,   -1,
    -1,  263,  264,   -1,   -1,   -1,  268,   -1,   -1,   -1,
+ 
    -1,   -1,   84,   85,   86,   87,   88,   89,   90,   91,
    -1,   -1,   94,   95,   -1,   -1,   -1,   -1,   -1,   -1,
    -1,  103,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
@@ -474,6 +483,7 @@ final static String yyrule[] = {
 "sentencia_declarativa_tipo : tipo lista_var $$8 sent_correcta",
 "$$9 :",
 "sentencia_declarativa_tipo : tipo lista_var $$9 sentencia_declarativa_tipo",
+ 
 "$$10 :",
 "sentencia_declarativa_tipo : tipo lista_var $$10 sentencia_declar_funcion",
 "lista_sent_ejec : sentencia_ejec lista_sent_ejec",
@@ -481,6 +491,7 @@ final static String yyrule[] = {
 "sentencia_ejec : sentencia_simple",
 "sentencia_ejec : sentencia_comp",
 "sentencia_simple : sent_correcta",
+ 
 "$$11 :",
 "sentencia_simple : sent_abierta $$11 sent_correcta",
 "$$12 :",
@@ -496,6 +507,7 @@ final static String yyrule[] = {
 "sent_correcta : error ';'",
 "sentencia_comp : sentencia_if",
 "sentencia_comp : sentencia_loop",
+ 
 "$$15 :",
 "sentencia_if : IF '(' cond ')' $$15 THEN bloque_IF",
 "sentencia_if : sentencia_if_error",
@@ -518,6 +530,7 @@ final static String yyrule[] = {
 "loop_error : bloque_sent cond",
 "loop_error : bloque_sent UNTIL error",
 "loop_error : bloque_sent error",
+ 
 "$$23 :",
 "llamada_funcion : ID '(' $$23 lista_parametros ')'",
 "llamada_funcion : ID '(' ')'",
@@ -535,6 +548,7 @@ final static String yyrule[] = {
 "cond : expresion IGUAL expresion",
 "cond : expresion DIST expresion",
 "parametros : tipo ID",
+ 
 "$$26 :",
 "parametros : tipo ID ',' $$26 parametros",
 "lista_parametros : parametro ',' lista_parametros",
@@ -553,6 +567,7 @@ final static String yyrule[] = {
 "tipo : uint",
 };
 
+ 
 //#line 170 "Gramatica.nueva.y"
 
 
@@ -667,6 +682,7 @@ public void run()
 
 
 
+ 
 //#line 598 "Parser.java"
 //###############################################################
 // method: yylexdebug : check lexer state
@@ -877,6 +893,7 @@ case 32:
 //#line 54 "Gramatica.nueva.y"
 {Estructuras.addError("syntax error en línea "+(Al.LineasContadas-1)+": falta el ;");}
 break;
+ 
 case 34:
 //#line 55 "Gramatica.nueva.y"
 {Estructuras.addError("syntax error en línea "+(Al.LineasContadas-1)+": falta el ;");}
@@ -987,6 +1004,7 @@ case 84:
 break;
 case 85:
 //#line 122 "Gramatica.nueva.y"
+ 
 {PI.FinThenElse();}
 break;
 case 86:

@@ -25,7 +25,7 @@ public class PolacaInversa {
 		polaca = new String[100];
 		pila = new Stack<String>();
 		size=0;
-		lector=0;
+		lector=-1;
 		funciones= new Hashtable<String,Integer>();
 	}
 	
@@ -85,6 +85,7 @@ public class PolacaInversa {
 	}
 	
 	public String readPolaco(){
+ 
 		if(lector<size){
 			String ts = polaca[lector++];
 			

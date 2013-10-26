@@ -53,6 +53,7 @@ public class Ensamblador {
 		
 		ensamblarVariables();
 		String elem = pi.readPolaco();
+ 
 	
 		while(elem != null){
 			if (!doOperacion(elem)){
@@ -65,6 +66,7 @@ public class Ensamblador {
 			escritor.flush();
 			escritor.close();
 		} catch (IOException e) {e.printStackTrace();}
+ 
 	}
 		
 	
@@ -96,12 +98,14 @@ public class Ensamblador {
 		
 		
 	}
+		
 	
 	public boolean doOperacion(String s){
 		if(s.equals("+")){return(suma.execute(escritor,pila,mr,true));} //el boolean es para determinar conmutatividad
 		if(s.equals("-")){return(resta.execute(escritor,pila,mr,false));}
 		if(s.equals("*")){return(multi.execute(escritor,pila,mr,true));}
 		if(s.equals("/")){return(divi.execute(escritor,pila,mr,false));}
+ 
 		if(s.equals("=")){return(asig.execute(escritor,pila,mr,false));}
 		
 		
