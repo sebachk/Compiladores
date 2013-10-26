@@ -6,27 +6,83 @@ import java.util.Stack;
 
 import Assembler.ManejadorRegistros;
 
-public abstract class OpBinario {
+public class OpBinario {
 	
-	protected OpBinario Instance;
+	protected String Operador;
 
 	
-	public abstract String operacion();
-	public void execute(BufferedWriter file,Stack<String> pila,ManejadorRegistros mr){
-		String segundo = pila.pop();
-		String primero = pila.pop();
-		int pos = mr.cargar(primero);
-		if(pos == -1){ //Si hubo carga fallida
-			
-		}
+	
+	public OpBinario(String Op){
+		Operador=Op;
+	}
+	public String operacion(){
+		return Operador;
+	}
+	
+	public void OpReg1(BufferedWriter file,Stack<String> pila,ManejadorRegistros mr,String primero,String segundo){
 		try {
-			file.write("MOV R"+(pos+1)+", _"+primero);
-			file.write(this.operacion()+" "+(pos+1)+", _"+segundo);
-			pila.push("R"+(pos+1));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+			if (segundo.startsWith("#")){
+				file.write(this.operacion()+" "+mr.getRegAss(Integer.parseInt(primero.substring(2))-1)+", "+mr.getRegAss(Integer.parseInt(segundo.substring(2))-1));
+				mr.liberar(Integer.parseInt(segundo.substring(2))-1);
+			}
+			else{
+				file.write(this.operacion()+" "+mr.getRegAss(Integer.parseInt(primero.substring(2))-1)+", _"+segundo);
+				
+			}
+			file.newLine();
+			pila.push(primero);
 		
+		} catch (IOException e) {e.printStackTrace();}
+		 //PRIMERO REG y SEG REG
+		
+	}
+	
+	public void Op2Var(BufferedWriter file,Stack<String> pila,ManejadorRegistros mr,String primero,String segundo){
+		int pos = mr.cargar(primero);
+		try {
+			file.write("MOV "+mr.getRegAss(pos)+", _"+primero);
+			file.newLine();
+			file.write(this.operacion()+" "+mr.getRegAss(pos)+", _"+segundo);
+			file.newLine();
+			pila.push("#R"+(pos+1));
+			} catch (IOException e) {e.printStackTrace();}
+	}
+	
+	public boolean execute(BufferedWriter file,Stack<String> pila,ManejadorRegistros mr,boolean conmut){
+		if(!pila.empty()){
+		String segundo = pila.pop();
+		if(!pila.empty()){
+		String primero = pila.pop();
+		if (primero.startsWith("#")){ //PRIMERO ES REGISTRO
+			OpReg1(file,pila,mr,primero,segundo);
+		}
+		else 
+			if(segundo.startsWith("#")){ //SEGUNDO ES REG y PRIMER VAR
+				if(conmut){ // ES CONMUTATIVA
+					try {
+						file.write(this.operacion()+" "+mr.getRegAss(Integer.parseInt(segundo.substring(2))-1)+", _"+primero);
+						file.newLine();
+						pila.push(segundo);
+					} catch (IOException e) {e.printStackTrace();}
+					
+				}
+				else{ // NO CONMUTATIVA
+					int pos = mr.cargar(primero);
+					try {
+						file.write("MOV "+mr.getRegAss(pos)+", _"+primero);
+						file.newLine();
+						file.write(this.operacion()+" "+mr.getRegAss(pos)+", "+mr.getRegAss(Integer.parseInt(segundo.substring(2))-1));
+						file.newLine();
+						pila.push("#R"+(pos+1));
+						mr.liberar(Integer.parseInt(segundo.substring(2))-1);
+						} catch (IOException e) {e.printStackTrace();}
+				}
+			}
+			else{ // AMBAS VARS
+					Op2Var(file,pila,mr,primero,segundo);
+				}
+			}
+		}
+		return true;
 	}
 }

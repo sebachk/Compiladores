@@ -52,6 +52,7 @@ sentencia_declarativa_tipo	: tipo lista_var';' {Estructuras.addLog("Linea "+Al.L
 							| tipo error';'
 							| tipo lista_var {Estructuras.addError("syntax error en línea "+(Al.LineasContadas-1)+": falta el ;");} sent_correcta   
 							| tipo lista_var {Estructuras.addError("syntax error en línea "+(Al.LineasContadas-1)+": falta el ;");} sentencia_declarativa_tipo  
+							| tipo lista_var {Estructuras.addError("syntax error en línea "+(Al.LineasContadas-1)+": falta el ;");} sentencia_declar_funcion 
 							;
 
 					
@@ -112,8 +113,8 @@ llamada_funcion :ID '('{ManejadorAmbitos.isDeclarada($1.sval); PI.callFunction($
 				;
 
 
-lista_var	:ID ',' {if(ManejadorAmbitos.PuedoDeclarar($1.sval))  $1.ival=Estructuras.addTupla($1.sval+ManejadorAmbitos.getInstance().getName(),Estructuras.UINT,Estructuras.USO_VAR);} lista_var 
-			|ID	{if(ManejadorAmbitos.PuedoDeclarar($1.sval))  $1.ival=Estructuras.addTupla($1.sval+ManejadorAmbitos.getInstance().getName(),Estructuras.UINT,Estructuras.USO_VAR);}
+lista_var	:ID ',' {if(ManejadorAmbitos.PuedoDeclarar($1.sval)){  $1.ival=Estructuras.addTupla($1.sval+ManejadorAmbitos.getInstance().getName(),Estructuras.UINT,Estructuras.USO_VAR);}} lista_var 
+			|ID	{if(ManejadorAmbitos.PuedoDeclarar($1.sval)) { $1.ival=Estructuras.addTupla($1.sval+ManejadorAmbitos.getInstance().getName(),Estructuras.UINT,Estructuras.USO_VAR);}}
 			;
 
 		
@@ -198,6 +199,12 @@ int yylex(){
 	yylval.ival=0;
 	return 0;
 }
+
+//**********************************
+public PolacaInversa getPolaca(){
+return PI;
+}
+//**********************************
 
 String yyBaseError(String e){
 	String err=e+" en línea "+Al.LineasContadas+": ";

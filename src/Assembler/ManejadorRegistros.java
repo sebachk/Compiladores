@@ -26,6 +26,18 @@ public class ManejadorRegistros {
 		return -1;  //Valor de carga fallida
 	}
 	
+	public String getRegAss(int pos){
+		switch(pos){
+		
+			case 0:return "ax";
+			case 1:return "bx";
+			case 2:return "cx";
+			case 3:return "dx";
+			default:return "ax";
+		}
+		
+	}
+	
 	public String getValor(int pos){
 		return registros.elementAt(pos).getValor();
 	}
