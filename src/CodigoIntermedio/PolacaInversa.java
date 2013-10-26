@@ -1,5 +1,6 @@
 package CodigoIntermedio;
 
+import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Stack;
 import java.util.Vector;
@@ -14,6 +15,7 @@ public class PolacaInversa {
 	public static final String CALL="#CALL";
 	public static final String RETURN="#RET";
 	public static final String PRINT="#print";
+	public static final String FUNC_LABEL="Func_";
 	
 	String []polaca;
 	Hashtable<String, Integer> funciones;
@@ -25,12 +27,13 @@ public class PolacaInversa {
 		polaca = new String[100];
 		pila = new Stack<String>();
 		size=0;
-		lector=-1;
+		lector=0;
 		funciones= new Hashtable<String,Integer>();
 	}
 	
 	public void beginFunction(String key){
 		funciones.put(key, (Integer)size);
+		addPolaco(FUNC_LABEL+key);
 	}
 	
 	public void retorno(){
@@ -38,7 +41,7 @@ public class PolacaInversa {
 	}
 	
 	public void endFunction(String name){
-		addPolaco(name);
+		retorno();
 	}
 	
 	public void callFunction(String key){
@@ -47,8 +50,20 @@ public class PolacaInversa {
 		addPolaco(CALL);
 	}
 	
-	public int getFunction(String key){
-		return funciones.get(key);
+	public String getFunction(int pos){
+		if(pos>=size)
+			return polaca[pos];
+		return "";
+//		Enumeration<String> g=funciones.keys();
+//		String key;
+//		while(g.hasMoreElements()){
+//			key=g.nextElement();
+//			if(funciones.get(key)==pos){
+//				return FUNC_LABEL+key;
+//			}
+//		}
+//		return "";
+//	
 	}
 	
 	public void addPolaco(int elem){
@@ -137,16 +152,19 @@ public class PolacaInversa {
 		addPolaco("");
 		addPolaco(BRANCH_INC);
 		addPolaco("PI("+size+")"+"-saltobi",Integer.parseInt(ptr));	
+		addPolaco("Label"+size);
 	}
 	
 	public void FinIf(){
 		String ptr=pila.pop();
 		addPolaco("PI("+size+")"+"-saltofin",Integer.parseInt(ptr));
+		addPolaco("Label"+size);
 	}
 	
 	public void InicLoop(){
 		pila.push(size+"");
-	
+		addPolaco("Label"+size);
+		
 	}
 	
 	public void FinLoop(){
@@ -155,6 +173,8 @@ public class PolacaInversa {
 		addPolaco(BRANCH_FALSO);
 		addPolaco("PI("+ptr+")");
 		addPolaco(BRANCH_INC);
+		addPolaco("Label"+size);
+		
 	}
 	
 }
