@@ -13,20 +13,34 @@ public class Asignacion extends OpBinario {
 	}
 	public void OpReg1(BufferedWriter file,Stack<String> pila,ManejadorRegistros mr,String primero,String segundo){
 		try {
-			file.write(this.operacion()+" _"+segundo+", "+mr.getRegAss(Integer.parseInt(primero.substring(2))-1));
+			String sp= esParametro(file, segundo, mr);
+			file.write(this.operacion()+" "+sp+", "+primero.substring(1,primero.length()));
 			file.newLine();
+			if(!segundo.equals(sp))
+				mr.liberar(sp);
 		} catch (IOException e) {e.printStackTrace();}
-		mr.liberar(Integer.parseInt(primero.substring(2))-1);
+		
+		mr.liberar(primero);
 		
 	}
 	
 	public void Op2Var(BufferedWriter file,Stack<String> pila,ManejadorRegistros mr,String primero,String segundo){
 		int pos = mr.cargar(primero);
 		try {
-			file.write("MOV "+mr.getRegAss(pos)+", _"+primero);
+			String pp= esParametro(file, primero, mr);
+			file.write("MOV "+mr.getRegAss(pos)+", "+pp);
 			file.newLine();
-			file.write(this.operacion()+"_"+segundo+",  "+mr.getRegAss(pos));
+			if(!pp.equals(primero)){
+				mr.liberar(pp);
+			}
+			String sp= esParametro(file, segundo, mr);
+			
+			file.write(this.operacion()+" "+sp+", "+mr.getRegAss(pos));
 			file.newLine();
+			if(!sp.equals(segundo)){
+				mr.liberar(sp);
+			}
+			
 			} 
 		catch (IOException e) {e.printStackTrace();}
 		mr.liberar(pos);

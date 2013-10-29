@@ -3,13 +3,15 @@ begin
 	function promedio(uint a, uint b)
 	begin
 		uint g;
-		g=a+b+2;
-		b=a+3;
+		g=a+b-a; 
+		b=a+3; 
 		g=g/2;
 		b= g+3-a*5/2;
 		return g;
 	end
 	
+	
+
 	function promedio2()
 	begin
 		print('esta es una funcino sin parametros');

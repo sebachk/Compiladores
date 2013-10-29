@@ -10,66 +10,73 @@ _c_Programa_Main DW ?
 _d_Programa_Main DW ?
 cadena2 DW "'cadena1'"
 .code
-Func_promedio
-MOV ax, _a_Programa_promedio
-ADD ax, _b_Programa_promedio
-ADD ax, _2
-MOV _g_Programa_promedio, ax
-MOV ax, _a_Programa_promedio
-ADD ax, _3
-MOV _b_Programa_promedio, ax
+Func_promedio:
+MOV ecx, _a_Programa_promedio
+MOV bx, [ecx]
+MOV ecx, _b_Programa_promedio
+ADD bx, [ecx]
+MOV ecx, _a_Programa_promedio
+SUB bx, [ecx]
+MOV _g_Programa_promedio, bx
+MOV edx, _a_Programa_promedio
+MOV bx, [edx]
+ADD bx, 3
+MOV edx, _b_Programa_promedio
+MOV [edx], bx
+MOV bx, _g_Programa_promedio
+DIV bx, 2
+MOV _g_Programa_promedio, bx
+MOV bx, _g_Programa_promedio
+ADD bx, 3
+MOV eax, _a_Programa_promedio
+MOV dx, [eax]
+MUL dx, 5
+DIV dx, 2
+SUB bx, dx
+MOV edx, _b_Programa_promedio
+MOV [edx], bx
 MOV ax, _g_Programa_promedio
-DIV ax, _2
-MOV _g_Programa_promedio, ax
-MOV ax, _g_Programa_promedio
-ADD ax, _3
-MOV bx, _a_Programa_promedio
-MUL bx, _5
-DIV bx, _2
-SUB ax, bx
-MOV _b_Programa_promedio, ax
 RET
 RET
-invoke StdOut, addr cadena1
+Func_promedio2:
+invoke StdOut, addr [_cadena1]
 RET
-MOV ax, _8
-MOV_a_Programa_Main,  ax
-CALL 
-MOV ax, _g_Programa_promedio
-MOV_b_Programa_Main,  ax
-MOV ax, _d_Programa_Main
-CMP_b_Programa_Main,  ax
-JB Label50
-MOV ax, _9
-MOV_a_Programa_Main,  ax
-Label50
-invoke StdOut, addr cadena2
-Label53
-MOV ax, _b_Programa_Main
-ADD ax, _1
-MOV _b_Programa_Main, ax
-MOV ax, _b_Programa_Main
-CMP_30,  ax
-JE Label66
-JMP Label53
-Label66
-MOV ax, _a_Programa_Main
-MUL ax, _b_Programa_Main
-CMP _230, ax
-JE Label98
-Label74
-MOV ax, _c_Programa_Main
-SUB ax, _2
-MOV _a_Programa_Main, ax
-MOV ax, _b_Programa_Main
-MUL ax, _4
-MOV _c_Programa_Main, ax
-MOV ax, _b_Programa_Main
-ADD ax, _1
-MOV _b_Programa_Main, ax
-MOV ax, _a_Programa_Main
-CMP_400,  ax
-JNBE Label97
-JMP Label74
-Label97
-Label98
+MOV bx, 8
+MOV _a_Programa_Main, bx
+CALL Func_promedio
+MOV bx, _d_Programa_Main
+CMP _b_Programa_Main, bx
+JB Label51
+MOV bx, 9
+MOV _a_Programa_Main, bx
+Label51:
+invoke StdOut, addr [_cadena2]
+Label54:
+MOV bx, _b_Programa_Main
+ADD bx, 1
+MOV _b_Programa_Main, bx
+MOV bx, _b_Programa_Main
+CMP 30, bx
+JE Label67
+JMP Label54
+Label67:
+MOV bx, _a_Programa_Main
+MUL bx, _b_Programa_Main
+CMP 230, bx
+JE Label99
+Label75:
+MOV bx, _c_Programa_Main
+SUB bx, 2
+MOV _a_Programa_Main, bx
+MOV bx, _b_Programa_Main
+MUL bx, 4
+MOV _c_Programa_Main, bx
+MOV bx, _b_Programa_Main
+ADD bx, 1
+MOV _b_Programa_Main, bx
+MOV bx, _a_Programa_Main
+CMP 400, bx
+JNBE Label98
+JMP Label75
+Label98:
+Label99:

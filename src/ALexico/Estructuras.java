@@ -44,6 +44,8 @@ public class Estructuras {
 	public static final String WARNING="WARNING";
 	public static final String USO_VAR="VARIABLE";
 	public static final String USO_CONST="CONSTANTE";
+	public static final String PUNT="PUNTERO";
+	public static final String USO_REF="REFERENCIA";
 	
 
 

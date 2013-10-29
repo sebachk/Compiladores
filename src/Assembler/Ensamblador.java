@@ -83,7 +83,7 @@ public class Ensamblador {
 			escritor.write(".data");
 			escritor.newLine();
 		for(TuplaTS tupla:Estructuras.Tabla_Simbolos){
-			if(tupla.valor.contains("_") && tupla.uso.equals(Estructuras.USO_VAR)){//Si tiene ambito, es variable
+			if(tupla.uso.equals(Estructuras.USO_REF) || tupla.uso.equals(Estructuras.USO_VAR)){//Si tiene ambito, es variable
 				escritor.write("_"+tupla.valor+" DW ?");
 				escritor.newLine();
 			}
@@ -134,6 +134,15 @@ public class Ensamblador {
 				escritor.write("CALL "+pi.getFunction(pos));
 			}
 			else{
+				if(!pila.isEmpty()){
+					String param=pila.pop();
+					String operator = asig.esParametro(escritor, param, mr);
+					if(param.equals(operator))
+						escritor.write("MOV ax, "+ operator);
+					else
+						escritor.write("MOV eax, "+ operator);
+					escritor.newLine();
+				}
 				escritor.write("RET");
 			}
 			escritor.newLine();

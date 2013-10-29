@@ -23,11 +23,12 @@ public class OpBinario {
 	public void OpReg1(BufferedWriter file,Stack<String> pila,ManejadorRegistros mr,String primero,String segundo){
 		try {
 			if (segundo.startsWith("#")){
-				file.write(this.operacion()+" "+mr.getRegAss(Integer.parseInt(primero.substring(2))-1)+", "+mr.getRegAss(Integer.parseInt(segundo.substring(2))-1));
-				mr.liberar(Integer.parseInt(segundo.substring(2))-1);
+				file.write(this.operacion()+" "+primero.substring(1,primero.length())+", "+segundo.substring(1,segundo.length()));
+				mr.liberar(segundo);
 			}
 			else{
-				file.write(this.operacion()+" "+mr.getRegAss(Integer.parseInt(primero.substring(2))-1)+", _"+segundo);
+				String param=esParametro(file, segundo, mr);
+				file.write(this.operacion()+" "+primero.substring(1,primero.length())+", "+param);
 				
 			}
 			file.newLine();
@@ -39,15 +40,42 @@ public class OpBinario {
 	}
 	
 	public void Op2Var(BufferedWriter file,Stack<String> pila,ManejadorRegistros mr,String primero,String segundo){
+		
 		int pos = mr.cargar(primero);
 		try {
-			file.write("MOV "+mr.getRegAss(pos)+", _"+primero);
+			String pp= esParametro(file, primero, mr);
+			file.write("MOV "+mr.getRegAss(pos)+", "+pp);
 			file.newLine();
-			file.write(this.operacion()+" "+mr.getRegAss(pos)+", _"+segundo);
+			if(!pp.equals(primero))
+				mr.liberar(pp);
+			String sp = esParametro(file, segundo, mr);
+			file.write(this.operacion()+" "+mr.getRegAss(pos)+", "+sp);
 			file.newLine();
-			pila.push("#R"+(pos+1));
+			if(!sp.equals(segundo))
+				mr.liberar(sp);
+			
+			
+			pila.push("#"+mr.getRegAss(pos));
 			} catch (IOException e) {e.printStackTrace();}
 	}
+	
+	public String esParametro(BufferedWriter file,String param,ManejadorRegistros mr){
+		
+		if(param.contains("[")){
+			try {
+				int pos = mr.cargar(param);
+				String pelado = param.substring(1,param.length()-1);
+				file.write("MOV e"+ mr.getRegAss(pos)+", "+pelado);
+				file.newLine();
+				return "[e"+mr.getRegAss(pos)+"]";
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+		}
+		return param;
+		
+	}
+	
 	
 	public boolean execute(BufferedWriter file,Stack<String> pila,ManejadorRegistros mr,boolean conmut){
 		if(!pila.empty()){
@@ -55,15 +83,16 @@ public class OpBinario {
 		if(!pila.empty()){
 		String primero = pila.pop();
 		if (primero.startsWith("#")){ //PRIMERO ES REGISTRO
- 
+
 			OpReg1(file,pila,mr,primero,segundo);
 		}
 		else 
 			if(segundo.startsWith("#")){ //SEGUNDO ES REG y PRIMER VAR
+				String pp = esParametro(file, primero, mr);
+				
 				if(conmut){ // ES CONMUTATIVA
 					try {
- 
-						file.write(this.operacion()+" "+mr.getRegAss(Integer.parseInt(segundo.substring(2))-1)+", _"+primero);
+						file.write(this.operacion()+" "+segundo.substring(1,segundo.length())+", "+pp);
 						file.newLine();
 						pila.push(segundo);
 					} catch (IOException e) {e.printStackTrace();}
@@ -72,15 +101,19 @@ public class OpBinario {
 				else{ // NO CONMUTATIVA
 					int pos = mr.cargar(primero);
 					try {
- 
-						file.write("MOV "+mr.getRegAss(pos)+", _"+primero);
+						
+						file.write("MOV "+mr.getRegAss(pos)+", "+pp);
 						file.newLine();
-						file.write(this.operacion()+" "+mr.getRegAss(pos)+", "+mr.getRegAss(Integer.parseInt(segundo.substring(2))-1));
+						file.write(this.operacion()+" "+mr.getRegAss(pos)+", "+segundo.substring(1,segundo.length()));
 						file.newLine();
-						pila.push("#R"+(pos+1));
-						mr.liberar(Integer.parseInt(segundo.substring(2))-1);
+						pila.push("#"+mr.getRegAss(pos));
+						mr.liberar(segundo);
 						} catch (IOException e) {e.printStackTrace();}
 				}
+				if(!pp.equals(primero)){
+					mr.liberar(pp);
+				}
+				
 			}
 			else{ // AMBAS VARS
  

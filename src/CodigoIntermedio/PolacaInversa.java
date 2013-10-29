@@ -51,7 +51,7 @@ public class PolacaInversa {
 	}
 	
 	public String getFunction(int pos){
-		if(pos>=size)
+		if(pos<=size)
 			return polaca[pos];
 		return "";
 //		Enumeration<String> g=funciones.keys();
@@ -108,7 +108,12 @@ public class PolacaInversa {
 			if(ts.indexOf("TS") != -1){ //Es un valor de la Tabla de simbolos
 				finpar=ts.indexOf(")");
 				TuplaTS tupla = Estructuras.Tabla_Simbolos.elementAt(Integer.parseInt(ts.substring(3,finpar)));
-				return tupla.valor;
+				if(tupla.uso.equals(Estructuras.USO_CONST))
+					return tupla.valor;
+				if(tupla.uso.equals(Estructuras.USO_VAR))
+					return "_"+tupla.valor;
+				
+				return "[_"+tupla.valor+"]";
 			}
 			else	if(ts.indexOf("PI")!=-1){ //es un valor de posicion de la polaca
 						finpar=ts.indexOf(")");
