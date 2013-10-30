@@ -1,6 +1,8 @@
 package ALexico;
 import java.util.*;
 
+import CodigoIntermedio.ManejadorAmbitos;
+
 /** Esta clase contiene todas las estructuras globales que se necesitan
  * Tabla de simbolos y tabla de tokens
  * **/
@@ -120,6 +122,19 @@ public class Estructuras {
 				return i;
 		}
 		return -1;
+	}
+	
+	public static void SumAmbito(ManejadorAmbitos ma, String agregado){
+		for(TuplaTS t:Tabla_Simbolos){
+			if(t.valor.endsWith(ma.getName()))
+				t.valor+=agregado;
+		}
+		
+		String amb=ma.lastAmbito();
+		ma.FinAmbito();
+		ma.NuevoAmbito(amb+agregado);
+		
+		
 	}
 	
 	public static void addError(String s){

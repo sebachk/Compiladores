@@ -16,12 +16,23 @@ public class ManejadorAmbitos {
 		this(10);
 	}
 	
+	public String lastAmbito(){
+		return ambitos[cant_ambitos-1];
+	}
+	
 	public ManejadorAmbitos(int max){
 		max_amb=max;
 		ambitos = new String[max];
 		cant_ambitos=0;
 		anonimos=1;
 	}
+	
+	public String FirstAmbito(){
+		if(cant_ambitos>0)
+			return ambitos[0];
+		return "";
+	}
+	
 	
 	public static ManejadorAmbitos getInstance(){
 		if(instance==null)

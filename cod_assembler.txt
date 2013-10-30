@@ -1,8 +1,16 @@
+.386 
+.model flat, stdcall 
+option casemap :none
+include \masm32\include\windows.inc 
+include \masm32\include\kernel32.inc 
+include \masm32\include\user32.inc 
+includelib \masm32\lib\kernel32.lib 
+includelib \masm32\lib\user32.lib
 .data
 _a_Programa DW ?
-_a_Programa_promedio DW ?
-_b_Programa_promedio DW ?
-_g_Programa_promedio DW ?
+_a_Programa_promedio2 DW ?
+_b_Programa_promedio2 DW ?
+_g_Programa_promedio2 DW ?
 cadena1 DW "'esta es una funcino sin parametros'"
 _a_Programa_Main DW ?
 _b_Programa_Main DW ?
@@ -10,35 +18,36 @@ _c_Programa_Main DW ?
 _d_Programa_Main DW ?
 cadena2 DW "'cadena1'"
 .code
+start:
 Func_promedio:
-MOV ecx, _a_Programa_promedio
+MOV ecx, _a_Programa_promedio2
 MOV bx, [ecx]
-MOV ecx, _b_Programa_promedio
+MOV ecx, _b_Programa_promedio2
 ADD bx, [ecx]
-MOV ecx, _a_Programa_promedio
+MOV ecx, _a_Programa_promedio2
 SUB bx, [ecx]
-MOV _g_Programa_promedio, bx
-MOV edx, _a_Programa_promedio
+MOV _g_Programa_promedio2, bx
+MOV edx, _a_Programa_promedio2
 MOV bx, [edx]
 ADD bx, 3
-MOV edx, _b_Programa_promedio
+MOV edx, _b_Programa_promedio2
 MOV [edx], bx
-MOV bx, _g_Programa_promedio
+MOV bx, _g_Programa_promedio2
 DIV bx, 2
-MOV _g_Programa_promedio, bx
-MOV bx, _g_Programa_promedio
+MOV _g_Programa_promedio2, bx
+MOV bx, _g_Programa_promedio2
 ADD bx, 3
-MOV eax, _a_Programa_promedio
+MOV eax, _a_Programa_promedio2
 MOV dx, [eax]
 MUL dx, 5
 DIV dx, 2
 SUB bx, dx
-MOV edx, _b_Programa_promedio
+MOV edx, _b_Programa_promedio2
 MOV [edx], bx
-MOV ax, _g_Programa_promedio
+MOV ax, _g_Programa_promedio2
 RET
 RET
-Func_promedio2:
+Func_promedio:
 invoke StdOut, addr [_cadena1]
 RET
 MOV bx, 8
@@ -80,3 +89,5 @@ JNBE Label98
 JMP Label75
 Label98:
 Label99:
+invoke ExitProcess, 0
+end start

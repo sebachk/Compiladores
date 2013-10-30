@@ -12,7 +12,7 @@ begin
 	
 	
 
-	function promedio2()
+	function promedio()
 	begin
 		print('esta es una funcino sin parametros');
 	end
@@ -25,7 +25,7 @@ begin
 	uint d;
 	a=8;
 	
-	b = promedio (a,b);
+	b = promedio2 (a,b);
 	if(d<b) then
 		a=9;
 	

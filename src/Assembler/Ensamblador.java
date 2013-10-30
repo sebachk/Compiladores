@@ -69,6 +69,10 @@ public class Ensamblador {
 			}
 		
 		try {
+			
+			escritor.write("invoke ExitProcess, 0");
+			escritor.newLine();
+			escritor.write("end start");
 			escritor.flush();
 			escritor.close();
 		} catch (IOException e) {e.printStackTrace();}
@@ -80,7 +84,8 @@ public class Ensamblador {
 		Vector<String> variables = new Vector<String>();
 		int i=1;
 		try{
-			escritor.write(".data");
+			escritor.write(".386 \n.model flat, stdcall \noption casemap :none\ninclude \\masm32\\include\\windows.inc \ninclude \\masm32\\include\\kernel32.inc \ninclude \\masm32\\include\\user32.inc \nincludelib \\masm32\\lib\\kernel32.lib \nincludelib \\masm32\\lib\\user32.lib");
+			escritor.write("\n.data");
 			escritor.newLine();
 		for(TuplaTS tupla:Estructuras.Tabla_Simbolos){
 			if(tupla.uso.equals(Estructuras.USO_REF) || tupla.uso.equals(Estructuras.USO_VAR)){//Si tiene ambito, es variable
@@ -97,7 +102,8 @@ public class Ensamblador {
 		}
 		escritor.write(".code");
 		escritor.newLine();
-		
+		escritor.write ("start:");
+		escritor.newLine();
 		}
 		catch(IOException e){e.printStackTrace();}
 		

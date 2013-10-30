@@ -25,7 +25,9 @@ declaracion	: sentencia_declar_funcion {Estructuras.addLog("Linea "+Al.LineasCon
 			| {ManejadorAmbitos.NewAmbito("Main");}bloque_sent{ManejadorAmbitos.EndAmbito();}
 			;
 
-sentencia_declar_funcion 	:FUNCTION ID '('{if(ManejadorAmbitos.PuedoDeclarar($2.sval)) $2.ival=Estructuras.addTupla($2.sval+ManejadorAmbitos.getInstance().getName(),Estructuras.UINT,Estructuras.FUNCTION);ManejadorAmbitos.NewAmbito($2.sval); PI.beginFunction($2.sval);} parametros')'  bloque_funcion {PI.endFunction($2.sval);ManejadorAmbitos.EndAmbito(); }
+sentencia_declar_funcion 	:FUNCTION ID '('{if(ManejadorAmbitos.PuedoDeclarar($2.sval)) $2.ival=Estructuras.addTupla($2.sval+ManejadorAmbitos.getInstance().getName(),Estructuras.UINT,Estructuras.FUNCTION);ManejadorAmbitos.NewAmbito($2.sval); PI.beginFunction($2.sval);} parametros{
+							Estructuras.Tabla_Simbolos.elementAt($2.ival).valor=$2.sval+cant_param+ManejadorAmbitos.getInstance().FirstAmbito();
+							Estructuras.SumAmbito(ManejadorAmbitos.getInstance(),cant_param+"");}')'  bloque_funcion {PI.endFunction($2.sval);ManejadorAmbitos.EndAmbito(); }
 							|FUNCTION ID '('')' {if(ManejadorAmbitos.PuedoDeclarar($2.sval))  $2.ival=Estructuras.addTupla($2.sval+ManejadorAmbitos.getInstance().getName(),Estructuras.UINT,Estructuras.FUNCTION);  ManejadorAmbitos.NewAmbito($2.sval);PI.beginFunction($2.sval);} bloque_funcion {PI.endFunction($2.sval);ManejadorAmbitos.EndAmbito();}
 							|FUNCTION error ')'
 							|FUNCTION error bloque_funcion
@@ -108,7 +110,7 @@ loop_error	: bloque_sent cond {Estructuras.addError("syntax error en línea "+Al.
 			| bloque_sent error {Estructuras.addError("syntax error en línea "+Al.LineasContadas+": Se olvido del UNTIL?");}
 			;			
 				
-llamada_funcion :ID '('{ManejadorAmbitos.isDeclarada($1.sval); PI.callFunction($1.sval);}lista_parametros')'
+llamada_funcion :ID '('{cant_param=0;}lista_parametros{ManejadorAmbitos.isDeclarada($1.sval+cant_param); PI.callFunction($1.sval);}')'
 				|ID '('')'{ManejadorAmbitos.isDeclarada($1.sval);PI.callFunction($1.sval);}
 				;
 
@@ -132,13 +134,13 @@ cond 	: expresion '<'  expresion {PI.addPolaco("<");}
 		| expresion DIST expresion {PI.addPolaco("!=");}
 		;		
 							
-parametros	: tipo ID {if(ManejadorAmbitos.PuedoDeclarar($2.sval)) $2.ival=Estructuras.addTupla($2.sval+ManejadorAmbitos.getInstance().getName(),Estructuras.PUNT,Estructuras.USO_REF);}
-			| tipo ID ','{if(ManejadorAmbitos.PuedoDeclarar($2.sval)) $2.ival=Estructuras.addTupla($2.sval+ManejadorAmbitos.getInstance().getName(),Estructuras.PUNT,Estructuras.USO_REF);} parametros
+parametros	: tipo ID {if(ManejadorAmbitos.PuedoDeclarar($2.sval)) $2.ival=Estructuras.addTupla($2.sval+ManejadorAmbitos.getInstance().getName(),Estructuras.PUNT,Estructuras.USO_REF); cant_param++;}
+			| tipo ID ','{if(ManejadorAmbitos.PuedoDeclarar($2.sval)) $2.ival=Estructuras.addTupla($2.sval+ManejadorAmbitos.getInstance().getName(),Estructuras.PUNT,Estructuras.USO_REF);cant_param++;} parametros
 			;
 
 
-lista_parametros 	: parametro ',' lista_parametros
-					| parametro 
+lista_parametros 	: parametro ',' lista_parametros{cant_param++;}
+					| parametro {cant_param++;}
 					;
 
 parametro 	:  ID {ManejadorAmbitos.isDeclarada($1.sval);}
@@ -172,6 +174,7 @@ tipo 	:uint
 AnalizadorLexico Al = new ALexico.AnalizadorLexico(new File("Docs/codigo.txt"));
 PolacaInversa PI = new PolacaInversa();
 int contador=1;
+int cant_param=0;
 
 int yylex(){
 	ALexico.Token t; 
