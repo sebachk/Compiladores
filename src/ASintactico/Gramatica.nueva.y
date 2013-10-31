@@ -26,8 +26,8 @@ declaracion	: sentencia_declar_funcion {Estructuras.addLog("Linea "+Al.LineasCon
 			;
 
 sentencia_declar_funcion 	:FUNCTION ID '('{if(ManejadorAmbitos.PuedoDeclarar($2.sval)) $2.ival=Estructuras.addTupla($2.sval+ManejadorAmbitos.getInstance().getName(),Estructuras.UINT,Estructuras.FUNCTION);ManejadorAmbitos.NewAmbito($2.sval); PI.beginFunction($2.sval);} parametros{
-							Estructuras.Tabla_Simbolos.elementAt($2.ival).valor=$2.sval+cant_param+"_"+ManejadorAmbitos.getInstance().FirstAmbito();
-							Estructuras.SumAmbito(ManejadorAmbitos.getInstance(),cant_param+"");}')'  bloque_funcion {PI.endFunction($2.sval);ManejadorAmbitos.EndAmbito(); }
+							Estructuras.Tabla_Simbolos.elementAt($2.ival).valor=$2.sval+"_"cant_param+"_"+ManejadorAmbitos.getInstance().FirstAmbito();
+							Estructuras.SumAmbito(ManejadorAmbitos.getInstance(),"_"+cant_param+"");}')'  bloque_funcion {PI.endFunction($2.sval);ManejadorAmbitos.EndAmbito(); }
 							|FUNCTION ID '('')' {if(ManejadorAmbitos.PuedoDeclarar($2.sval))  $2.ival=Estructuras.addTupla($2.sval+ManejadorAmbitos.getInstance().getName(),Estructuras.UINT,Estructuras.FUNCTION);  ManejadorAmbitos.NewAmbito($2.sval);PI.beginFunction($2.sval);} bloque_funcion {PI.endFunction($2.sval);ManejadorAmbitos.EndAmbito();}
 							|FUNCTION error ')'
 							|FUNCTION error bloque_funcion
@@ -110,7 +110,7 @@ loop_error	: bloque_sent cond {Estructuras.addError("syntax error en línea "+Al.
 			| bloque_sent error {Estructuras.addError("syntax error en línea "+Al.LineasContadas+": Se olvido del UNTIL?");}
 			;			
 				
-llamada_funcion :ID '('{cant_param=0;}lista_parametros{ManejadorAmbitos.isDeclarada($1.sval+cant_param); PI.callFunction($1.sval);}')'
+llamada_funcion :ID '('{cant_param=0;}lista_parametros{ManejadorAmbitos.isDeclarada($1.sval+"_"+cant_param); PI.callFunction($1.sval);}')'
 				|ID '('')'{ManejadorAmbitos.isDeclarada($1.sval);PI.callFunction($1.sval);}
 				;
 

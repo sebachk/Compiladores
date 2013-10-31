@@ -27,8 +27,10 @@ begin
 	
 	b = promedio (a,b);
 	if(d<b) then
-		a=9;
 	
+		a=9;
+	else
+		a=10;
 	
 	print('cadena1');
 	

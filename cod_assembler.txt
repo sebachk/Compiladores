@@ -55,25 +55,29 @@ MOV _a_Programa_Main, bx
 CALL Func_promedio
 MOV bx, _d_Programa_Main
 CMP _b_Programa_Main, bx
-JB Label51
+JB Label53
 MOV bx, 9
 MOV _a_Programa_Main, bx
-Label51:
+JMP Label57
+Label53:
+MOV bx, 10
+MOV _a_Programa_Main, bx
+Label57:
 invoke StdOut, addr [_cadena2]
-Label54:
+Label60:
 MOV bx, _b_Programa_Main
 ADD bx, 1
 MOV _b_Programa_Main, bx
 MOV bx, _b_Programa_Main
 CMP 30, bx
-JE Label67
-JMP Label54
-Label67:
+JE Label73
+JMP Label60
+Label73:
 MOV bx, _a_Programa_Main
 MUL bx, _b_Programa_Main
 CMP 230, bx
-JE Label99
-Label75:
+JE Label105
+Label81:
 MOV bx, _c_Programa_Main
 SUB bx, 2
 MOV _a_Programa_Main, bx
@@ -85,9 +89,9 @@ ADD bx, 1
 MOV _b_Programa_Main, bx
 MOV bx, _a_Programa_Main
 CMP 400, bx
-JNBE Label98
-JMP Label75
-Label98:
-Label99:
+JNBE Label104
+JMP Label81
+Label104:
+Label105:
 invoke ExitProcess, 0
 end start
