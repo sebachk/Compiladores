@@ -25,7 +25,7 @@ begin
 	uint d;
 	a=8;
 	
-	b = promedio2 (a,b);
+	b = promedio (a,b);
 	if(d<b) then
 		a=9;
 	

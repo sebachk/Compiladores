@@ -844,7 +844,7 @@ break;
 case 12:
 //#line 28 "Gramatica.nueva.y"
 {
-							Estructuras.Tabla_Simbolos.elementAt(val_peek(3).ival).valor=val_peek(3).sval+cant_param+ManejadorAmbitos.getInstance().FirstAmbito();
+							Estructuras.Tabla_Simbolos.elementAt(val_peek(3).ival).valor=val_peek(3).sval+cant_param+"_"+ManejadorAmbitos.getInstance().FirstAmbito();
 							Estructuras.SumAmbito(ManejadorAmbitos.getInstance(),cant_param+"");}
 break;
 case 13:

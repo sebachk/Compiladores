@@ -26,7 +26,7 @@ declaracion	: sentencia_declar_funcion {Estructuras.addLog("Linea "+Al.LineasCon
 			;
 
 sentencia_declar_funcion 	:FUNCTION ID '('{if(ManejadorAmbitos.PuedoDeclarar($2.sval)) $2.ival=Estructuras.addTupla($2.sval+ManejadorAmbitos.getInstance().getName(),Estructuras.UINT,Estructuras.FUNCTION);ManejadorAmbitos.NewAmbito($2.sval); PI.beginFunction($2.sval);} parametros{
-							Estructuras.Tabla_Simbolos.elementAt($2.ival).valor=$2.sval+cant_param+ManejadorAmbitos.getInstance().FirstAmbito();
+							Estructuras.Tabla_Simbolos.elementAt($2.ival).valor=$2.sval+cant_param+"_"+ManejadorAmbitos.getInstance().FirstAmbito();
 							Estructuras.SumAmbito(ManejadorAmbitos.getInstance(),cant_param+"");}')'  bloque_funcion {PI.endFunction($2.sval);ManejadorAmbitos.EndAmbito(); }
 							|FUNCTION ID '('')' {if(ManejadorAmbitos.PuedoDeclarar($2.sval))  $2.ival=Estructuras.addTupla($2.sval+ManejadorAmbitos.getInstance().getName(),Estructuras.UINT,Estructuras.FUNCTION);  ManejadorAmbitos.NewAmbito($2.sval);PI.beginFunction($2.sval);} bloque_funcion {PI.endFunction($2.sval);ManejadorAmbitos.EndAmbito();}
 							|FUNCTION error ')'
