@@ -31,9 +31,14 @@ public class PolacaInversa {
 		funciones= new Hashtable<String,Integer>();
 	}
 	
-	public void beginFunction(String key){
-		funciones.put(key, (Integer)size);
-		addPolaco(FUNC_LABEL+key);
+	public void beginFunction(){
+		addPolaco("");
+	}
+	
+	public void finParam(String key,int cant_param){
+		funciones.put(key+"_"+cant_param, (Integer)size);
+		addPolaco(FUNC_LABEL+key+"_"+cant_param,size-cant_param-1);
+		addPolaco("Func_#PARAM");
 	}
 	
 	public void retorno(){
@@ -44,9 +49,14 @@ public class PolacaInversa {
 		retorno();
 	}
 	
-	public void callFunction(String key){
-		int pos = funciones.get(key);
-		addPolaco("PI("+pos+")");
+	public void beginCall(){
+		addPolaco("");
+		
+	}
+	
+	public void endcall(String key,int param){
+		int pos = funciones.get(key+"_"+param);
+		addPolaco("PI("+pos+")",size-param-1);
 		addPolaco(CALL);
 	}
 	

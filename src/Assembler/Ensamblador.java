@@ -124,8 +124,8 @@ public class Ensamblador {
 			return comp.execute(escritor, pila, mr, false);
 		}
 		
-		if(s.contains("Label")||s.contains("Func")){ return WriteS(s);}
-		
+		if(s.contains("Label")){ return WriteS(s);}
+		if(s.contains("Func")){return CargaFunc(s);}
 		if(s.equals(PolacaInversa.BRANCH_FALSO)){return AddJump();}
 		if(s.equals(PolacaInversa.BRANCH_INC)){ return JumpInc();}
 		if(s.equals(PolacaInversa.PRINT)){return Print();}
@@ -133,11 +133,43 @@ public class Ensamblador {
 		if(s.equals(PolacaInversa.RETURN)){return CallReturn(false);}
 		return false;
 	}
+	
+	public boolean CargaFunc(String s){
+		if(s.contains("#PARAM")){
+			Stack<String> param=new Stack<String>();
+			while(!pila.empty())
+				param.push(pila.pop());
+			try {
+			while(!param.empty()){	
+				String pop=param.pop();
+					escritor.write("pop "+pop.substring(1,pop.length()-1)+"\n");
+			}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		else
+			WriteS(s);
+		return true;
+	}
+	
+	
+	
 	public boolean CallReturn(boolean call){
 		try {
 			if(call){
+				Stack<String> parametros=new Stack<String>();
+				while(pila.peek().contains("_"))
+					parametros.push(pila.pop());
+				while(!parametros.empty()){
+					escritor.write("push ["+parametros.pop()+"] \n");
+				}
 				int pos=Integer.parseInt(pila.pop());
+				
 				escritor.write("CALL "+pi.getFunction(pos));
+				
+				
 			}
 			else{
 				if(!pila.isEmpty()){

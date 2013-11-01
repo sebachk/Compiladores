@@ -25,7 +25,6 @@ begin
 	uint d;
 	a=8;
 	
-	b = promedio (a,b);
 	if(d<b) then
 	
 		a=9;
@@ -46,7 +45,11 @@ begin
 				end
 			until a>400 
 		end
-		
+	
+	b = promedio (a,b);
+	
 	end
+
+
 
 end

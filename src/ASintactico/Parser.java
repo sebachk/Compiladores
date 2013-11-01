@@ -839,12 +839,12 @@ case 10:
 break;
 case 11:
 //#line 28 "Gramatica.nueva.y"
-{if(ManejadorAmbitos.PuedoDeclarar(val_peek(1).sval)) val_peek(1).ival=Estructuras.addTupla(val_peek(1).sval+ManejadorAmbitos.getInstance().getName(),Estructuras.UINT,Estructuras.FUNCTION);ManejadorAmbitos.NewAmbito(val_peek(1).sval); PI.beginFunction(val_peek(1).sval);}
+{cant_param=0;if(ManejadorAmbitos.PuedoDeclarar(val_peek(1).sval)) val_peek(1).ival=Estructuras.addTupla(val_peek(1).sval+ManejadorAmbitos.getInstance().getName(),Estructuras.UINT,Estructuras.FUNCTION);ManejadorAmbitos.NewAmbito(val_peek(1).sval); PI.beginFunction();}
 break;
 case 12:
 //#line 28 "Gramatica.nueva.y"
-{
-							Estructuras.Tabla_Simbolos.elementAt(val_peek(3).ival).valor=val_peek(3).sval+"_"cant_param+"_"+ManejadorAmbitos.getInstance().FirstAmbito();
+{PI.finParam(val_peek(3).sval,cant_param);
+							Estructuras.Tabla_Simbolos.elementAt(val_peek(3).ival).valor=val_peek(3).sval+"_"+cant_param+"_"+ManejadorAmbitos.getInstance().FirstAmbito();
 							Estructuras.SumAmbito(ManejadorAmbitos.getInstance(),"_"+cant_param+"");}
 break;
 case 13:
@@ -853,7 +853,7 @@ case 13:
 break;
 case 14:
 //#line 31 "Gramatica.nueva.y"
-{if(ManejadorAmbitos.PuedoDeclarar(val_peek(2).sval))  val_peek(2).ival=Estructuras.addTupla(val_peek(2).sval+ManejadorAmbitos.getInstance().getName(),Estructuras.UINT,Estructuras.FUNCTION);  ManejadorAmbitos.NewAmbito(val_peek(2).sval);PI.beginFunction(val_peek(2).sval);}
+{cant_param=0;if(ManejadorAmbitos.PuedoDeclarar(val_peek(2).sval))  val_peek(2).ival=Estructuras.addTupla(val_peek(2).sval+ManejadorAmbitos.getInstance().getName(),Estructuras.UINT,Estructuras.FUNCTION);  ManejadorAmbitos.NewAmbito(val_peek(2).sval);PI.beginFunction();PI.finParam(val_peek(2).sval,cant_param);}
 break;
 case 15:
 //#line 31 "Gramatica.nueva.y"
@@ -969,15 +969,15 @@ case 78:
 break;
 case 79:
 //#line 113 "Gramatica.nueva.y"
-{cant_param=0;}
+{cant_param=0;PI.beginCall();}
 break;
 case 80:
 //#line 113 "Gramatica.nueva.y"
-{ManejadorAmbitos.isDeclarada(val_peek(3).sval+"_"+cant_param); PI.callFunction(val_peek(3).sval);}
+{ManejadorAmbitos.isDeclarada(val_peek(3).sval+"_"+cant_param); PI.endcall(val_peek(3).sval,cant_param);}
 break;
 case 82:
 //#line 114 "Gramatica.nueva.y"
-{ManejadorAmbitos.isDeclarada(val_peek(2).sval);PI.callFunction(val_peek(2).sval);}
+{cant_param=0;ManejadorAmbitos.isDeclarada(val_peek(2).sval);PI.beginCall();PI.endcall(val_peek(2).sval,cant_param);}
 break;
 case 83:
 //#line 118 "Gramatica.nueva.y"
@@ -1029,11 +1029,11 @@ case 95:
 break;
 case 96:
 //#line 137 "Gramatica.nueva.y"
-{if(ManejadorAmbitos.PuedoDeclarar(val_peek(0).sval)) val_peek(0).ival=Estructuras.addTupla(val_peek(0).sval+ManejadorAmbitos.getInstance().getName(),Estructuras.PUNT,Estructuras.USO_REF); cant_param++;}
+{if(ManejadorAmbitos.PuedoDeclarar(val_peek(0).sval)) val_peek(0).ival=Estructuras.addTupla(val_peek(0).sval+ManejadorAmbitos.getInstance().getName(),Estructuras.PUNT,Estructuras.USO_REF); cant_param++;PI.addPolaco("TS("+val_peek(0).ival+")");}
 break;
 case 97:
 //#line 138 "Gramatica.nueva.y"
-{if(ManejadorAmbitos.PuedoDeclarar(val_peek(1).sval)) val_peek(1).ival=Estructuras.addTupla(val_peek(1).sval+ManejadorAmbitos.getInstance().getName(),Estructuras.PUNT,Estructuras.USO_REF);cant_param++;}
+{if(ManejadorAmbitos.PuedoDeclarar(val_peek(1).sval)) val_peek(1).ival=Estructuras.addTupla(val_peek(1).sval+ManejadorAmbitos.getInstance().getName(),Estructuras.PUNT,Estructuras.USO_REF);cant_param++;PI.addPolaco("TS("+val_peek(1).ival+")");}
 break;
 case 99:
 //#line 142 "Gramatica.nueva.y"
@@ -1045,7 +1045,7 @@ case 100:
 break;
 case 101:
 //#line 146 "Gramatica.nueva.y"
-{ManejadorAmbitos.isDeclarada(val_peek(0).sval);}
+{ val_peek(0).ival=ManejadorAmbitos.isDeclarada(val_peek(0).sval); if(val_peek(0).ival!=-1)PI.addPolaco("TS("+val_peek(0).ival+")");}
 break;
 case 102:
 //#line 151 "Gramatica.nueva.y"
