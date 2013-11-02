@@ -29,23 +29,22 @@ ADD bx, [ecx]
 MOV ecx, _a_Programa_promedio_2
 SUB bx, [ecx]
 MOV _g_Programa_promedio_2, bx
-MOV edx, _a_Programa_promedio_2
-MOV bx, [edx]
+MOV ecx, _a_Programa_promedio_2
+MOV bx, [ecx]
 ADD bx, 3
-MOV edx, _b_Programa_promedio_2
-MOV [edx], bx
-MOV bx, _g_Programa_promedio_2
-DIV bx, 2
-MOV _g_Programa_promedio_2, bx
+MOV ecx, _b_Programa_promedio_2
+MOV [ecx], bx
 MOV bx, _g_Programa_promedio_2
 ADD bx, 3
-MOV eax, _a_Programa_promedio_2
-MOV dx, [eax]
-MUL dx, 5
-DIV dx, 2
-SUB bx, dx
-MOV edx, _b_Programa_promedio_2
-MOV [edx], bx
+MOV ecx, _a_Programa_promedio_2
+MOV ax, [ecx]
+MOV cx 5
+MUL cx
+jo overflow
+DIV ax, 2
+SUB bx, ax
+MOV ecx, _b_Programa_promedio_2
+MOV [ecx], bx
 MOV ax, _g_Programa_promedio_2
 RET
 RET
@@ -56,44 +55,47 @@ MOV bx, 8
 MOV _a_Programa_Main, bx
 MOV bx, _d_Programa_Main
 CMP _b_Programa_Main, bx
-JB Label53
+JB Label48
 MOV bx, 9
 MOV _a_Programa_Main, bx
-JMP Label57
-Label53:
+JMP Label52
+Label48:
 MOV bx, 10
 MOV _a_Programa_Main, bx
-Label57:
+Label52:
 invoke StdOut, addr [_cadena2]
-Label60:
+Label55:
 MOV bx, _b_Programa_Main
 ADD bx, 1
 MOV _b_Programa_Main, bx
 MOV bx, _b_Programa_Main
 CMP 30, bx
-JE Label73
-JMP Label60
-Label73:
-MOV bx, _a_Programa_Main
-MUL bx, _b_Programa_Main
-CMP 230, bx
-JE Label105
-Label81:
+JE Label68
+JMP Label55
+Label68:
+MOV ax, _a_Programa_Main
+MUL _b_Programa_Main
+jo overflow
+CMP 230, ax
+JE Label100
+Label76:
 MOV bx, _c_Programa_Main
 SUB bx, 2
 MOV _a_Programa_Main, bx
-MOV bx, _b_Programa_Main
-MUL bx, 4
-MOV _c_Programa_Main, bx
+MOV ax, _b_Programa_Main
+MOV bx 4
+MUL bx
+jo overflow
+MOV _c_Programa_Main, ax
 MOV bx, _b_Programa_Main
 ADD bx, 1
 MOV _b_Programa_Main, bx
 MOV bx, _a_Programa_Main
 CMP 400, bx
-JNBE Label104
-JMP Label81
-Label104:
-Label105:
+JNBE Label99
+JMP Label76
+Label99:
+Label100:
 push [_a_Programa_Main] 
 push [_b_Programa_Main] 
 CALL Func_#PARAM

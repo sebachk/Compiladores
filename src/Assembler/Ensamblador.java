@@ -9,7 +9,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Stack;
 import java.util.Vector;
-
+import operaciones.Mult;
 import operaciones.Asignacion;
 import operaciones.OpBinario;
 
@@ -35,7 +35,7 @@ public class Ensamblador {
 	public Ensamblador(){
 		suma = new OpBinario("ADD");
 		resta = new OpBinario("SUB");
-		multi = new OpBinario("MUL");
+		multi = new Mult("MUL");
 		divi = new OpBinario("DIV");
 		asig = new Asignacion("MOV");
 		comp = new Asignacion("CMP");

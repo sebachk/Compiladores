@@ -1,5 +1,6 @@
 package Assembler;
 
+import java.io.BufferedWriter;
 import java.util.Vector;
 
 public class ManejadorRegistros {
@@ -30,6 +31,38 @@ public class ManejadorRegistros {
 			return 0;
 		}
 		return -1;  //Valor de carga fallida
+	}
+	
+	public boolean cargar(int pos){
+		if(!registros.elementAt(pos).isOcupado()){
+			registros.elementAt(pos).setOcupado(true);
+		return true;	
+		}
+		return false;
+	}
+	
+	public String MudarReg(int pos){
+		for(int i=1;i<registros.size();i++){
+			Registro r=registros.elementAt(i);
+			if(!r.isOcupado()){
+				r.setOcupado(true);
+				liberar(pos);
+				return this.getRegAss(i);
+			}
+		}
+		return "";
+	}
+	
+	public String UtilizarReg(int pos){
+		int pp=pos;
+		if(registros.elementAt(pos).isOcupado()){
+			pp=cargar("");
+			if(pp==-1)
+				return "";
+			liberar(pos);
+		}
+		return getRegAss(pp);
+		
 	}
 	
 	public String getRegAss(int pos){

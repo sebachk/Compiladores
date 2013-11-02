@@ -29,7 +29,8 @@ public class OpBinario {
 			else{
 				String param=esParametro(file, segundo, mr);
 				file.write(this.operacion()+" "+primero.substring(1,primero.length())+", "+param);
-				
+				if(!param.equals(segundo))
+					mr.liberar(param);
 			}
 			file.newLine();
 			pila.push(primero);
@@ -76,6 +77,27 @@ public class OpBinario {
 		
 	}
 	
+	public void VarRegConm(BufferedWriter file,String segundo,Stack<String> pila,String pp){
+		try {
+			file.write(this.operacion()+" "+segundo.substring(1,segundo.length())+", "+pp);
+			file.newLine();
+			pila.push(segundo);
+		} catch (IOException e) {e.printStackTrace();}
+		
+	}
+	
+	public void VarRegnoConm(BufferedWriter file,String segundo,Stack<String> pila,String pp,ManejadorRegistros mr,String primero){
+		int pos = mr.cargar(primero);
+		try {
+			
+			file.write("MOV "+mr.getRegAss(pos)+", "+pp);
+			file.newLine();
+			file.write(this.operacion()+" "+mr.getRegAss(pos)+", "+segundo.substring(1,segundo.length()));
+			file.newLine();
+			pila.push("#"+mr.getRegAss(pos));
+			mr.liberar(segundo);
+			} catch (IOException e) {e.printStackTrace();}
+	}
 	
 	public boolean execute(BufferedWriter file,Stack<String> pila,ManejadorRegistros mr,boolean conmut){
 		if(!pila.empty()){
@@ -91,24 +113,10 @@ public class OpBinario {
 				String pp = esParametro(file, primero, mr);
 				
 				if(conmut){ // ES CONMUTATIVA
-					try {
-						file.write(this.operacion()+" "+segundo.substring(1,segundo.length())+", "+pp);
-						file.newLine();
-						pila.push(segundo);
-					} catch (IOException e) {e.printStackTrace();}
-					
+					VarRegConm(file, segundo, pila, pp);
 				}
 				else{ // NO CONMUTATIVA
-					int pos = mr.cargar(primero);
-					try {
-						
-						file.write("MOV "+mr.getRegAss(pos)+", "+pp);
-						file.newLine();
-						file.write(this.operacion()+" "+mr.getRegAss(pos)+", "+segundo.substring(1,segundo.length()));
-						file.newLine();
-						pila.push("#"+mr.getRegAss(pos));
-						mr.liberar(segundo);
-						} catch (IOException e) {e.printStackTrace();}
+					VarRegnoConm(file, segundo, pila, pp, mr, primero);
 				}
 				if(!pp.equals(primero)){
 					mr.liberar(pp);
