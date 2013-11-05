@@ -9,6 +9,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Stack;
 import java.util.Vector;
+
+import operaciones.Comparacion;
+import operaciones.Divisor;
 import operaciones.Mult;
 import operaciones.Asignacion;
 import operaciones.OpBinario;
@@ -36,16 +39,16 @@ public class Ensamblador {
 		suma = new OpBinario("ADD");
 		resta = new OpBinario("SUB");
 		multi = new Mult("MUL");
-		divi = new OpBinario("DIV");
+		divi = new Divisor();
 		asig = new Asignacion("MOV");
-		comp = new Asignacion("CMP");
+		comp = new Comparacion();
 		
 		mr = new ManejadorRegistros();
 		pila = new Stack<String>();
 		escritor = null;
 		comparadorUsado="";
 		try {
-			escritor = new BufferedWriter(new FileWriter(new File("cod_assembler.txt")));
+			escritor = new BufferedWriter(new FileWriter(new File("salida.asm")));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -72,9 +75,16 @@ public class Ensamblador {
 			
 			escritor.write("invoke ExitProcess, 0");
 			escritor.newLine();
+			escritor.write("overflow: invoke StdOut, addr errorOverflow\n");
+			escritor.write("invoke ExitProcess, 0\n");
+			escritor.write("signo: invoke StdOut, addr errorSigno\n");
+			escritor.write("invoke ExitProcess, 0\n");
 			escritor.write("end start");
 			escritor.flush();
 			escritor.close();
+			
+			if(!pila.isEmpty())
+				System.err.println("FALLOOOOOOOOOOOOOOOO");
 		} catch (IOException e) {e.printStackTrace();}
  
 	}
@@ -84,33 +94,50 @@ public class Ensamblador {
 		Vector<String> variables = new Vector<String>();
 		int i=1;
 		try{
-			escritor.write(".386 \n.model flat, stdcall \noption casemap :none\ninclude \\masm32\\include\\windows.inc \ninclude \\masm32\\include\\kernel32.inc \ninclude \\masm32\\include\\user32.inc \nincludelib \\masm32\\lib\\kernel32.lib \nincludelib \\masm32\\lib\\user32.lib");
+			escritor.write(".386 \n.model flat, stdcall \noption casemap :none\ninclude \\masm32\\include\\windows.inc \ninclude \\masm32\\include\\masm32.inc\ninclude \\masm32\\include\\kernel32.inc \ninclude \\masm32\\include\\user32.inc \nincludelib \\masm32\\lib\\kernel32.lib \nincludelib \\masm32\\lib\\user32.lib\nincludelib \\masm32\\lib\\masm32.lib");
+			
 			escritor.write("\n.data");
 			escritor.newLine();
+			escritor.write("sysout db 'var para mostrar por pantalla'\n");
 		for(TuplaTS tupla:Estructuras.Tabla_Simbolos){
-			if(tupla.uso.equals(Estructuras.USO_REF) || tupla.uso.equals(Estructuras.USO_VAR)){//Si tiene ambito, es variable
-				escritor.write("_"+tupla.valor+" DW ?");
+			if(tupla.uso.equals(Estructuras.USO_REF)){//Si tiene ambito, es variable
+				escritor.write("_"+tupla.valor+" DD ?, 0");
 				escritor.newLine();
 			}
-			if(tupla.valor.contains("'")){
+			if(tupla.uso.equals(Estructuras.USO_VAR)){
+				escritor.write("_"+tupla.valor+" DW ?");
+				escritor.newLine();
+			
+			}
+			if(tupla.uso.equals(Estructuras.USO_CADENA)){
 				String nvalor="cadena"+i++;
-				escritor.write(""+nvalor+" DW "+"\""+tupla.valor+"\"");
+				escritor.write(""+nvalor+" DB "+"\""+tupla.valor+"\", 0");
 				escritor.newLine();
 				tupla.valor=nvalor;
 			}
 			
 		}
+		escritor.write("errorOverflow DB \" Hubo overflow al realizar una miltplicacion o suma, resultado mayor a 65535\" ,0\n");
+		escritor.write("errorSigno DB \" El resultado de la resta es menor a 0, queda fuera de rango\" ,0\n");
+		
 		escritor.write(".code");
 		escritor.newLine();
 		escritor.write ("start:");
 		escritor.newLine();
 		}
 		catch(IOException e){e.printStackTrace();}
-		
-		
-		
+			
 	}
 		
+	public void imprimirVar(String op){
+		try{
+			escritor.write("invoke dwtoa, "+op+", addr sysout \n invoke StdOut, addr sysout\n");
+		}
+		catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+	
 	
 	public boolean doOperacion(String s){
 		if(s.equals("+")){return(suma.execute(escritor,pila,mr,true));} //el boolean es para determinar conmutatividad

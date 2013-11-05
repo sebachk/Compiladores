@@ -48,6 +48,7 @@ public class Estructuras {
 	public static final String USO_CONST="CONSTANTE";
 	public static final String PUNT="PUNTERO";
 	public static final String USO_REF="REFERENCIA";
+	public static final String USO_CADENA="CADENA_USO";
 	
 
 

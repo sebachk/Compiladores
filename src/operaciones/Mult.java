@@ -24,12 +24,13 @@ public class Mult extends OpBinario {
 			if(!sp.startsWith("_")){ //el segundo es una CTE
 				int pos=mr.cargar("");
 				if(pos!=-1){
-					file.write("MOV "+mr.getRegAss(pos)+" "+sp+"\n");
+					file.write("MOV "+mr.getRegAss(pos)+", "+sp+"\n");
 					file.write(this.operacion()+" "+mr.getRegAss(pos)+"\n");
 					mr.liberar(pos);
 				}
 				else{
 					System.err.println("MACHO, TE QUEDASTE SIN REGISTROS");
+					file.write("ACA HUBO ERROR\n");
 					//TODO me quedo sin registros
 					}
 				}
@@ -64,7 +65,7 @@ public class Mult extends OpBinario {
 					try{
 					String nuevo= mr.UtilizarReg(0);
 					if(!nuevo.equals(mr.getRegAss(0))){
-						file.write("MOV "+nuevo+" ax\n");
+						file.write("MOV "+nuevo+", ax\n");
 						mr.liberar("ax");
 					}
 					
@@ -101,8 +102,8 @@ public class Mult extends OpBinario {
 				String nuevo=mr.UtilizarReg(0);
 				if(!nuevo.equals("")){//habia un reg libre
 					if((!nuevo.equals(mr.getRegAss(0))))//AX estaba ocupado
-						file.write("MOV "+nuevo+" ax\n");
-					file.write("MOV ax "+primero);
+						file.write("MOV "+nuevo+", ax\n");
+					file.write("MOV ax, "+primero);
 					mr.cargar(0);
 					mr.liberar(primero);
 					PrimeroRAX(sp, file, mr);

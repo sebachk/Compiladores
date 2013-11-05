@@ -36,7 +36,7 @@ public class PolacaInversa {
 	}
 	
 	public void finParam(String key,int cant_param){
-		funciones.put(key+"_"+cant_param, (Integer)size);
+		funciones.put(key+"_"+cant_param, (Integer)(size-cant_param-1));
 		addPolaco(FUNC_LABEL+key+"_"+cant_param,size-cant_param-1);
 		addPolaco("Func_#PARAM");
 	}
@@ -118,10 +118,12 @@ public class PolacaInversa {
 			if(ts.indexOf("TS") != -1){ //Es un valor de la Tabla de simbolos
 				finpar=ts.indexOf(")");
 				TuplaTS tupla = Estructuras.Tabla_Simbolos.elementAt(Integer.parseInt(ts.substring(3,finpar)));
-				if(tupla.uso.equals(Estructuras.USO_CONST))
+				if(tupla.uso.equals(Estructuras.USO_CONST)||tupla.uso.equals(Estructuras.USO_CADENA))
 					return tupla.valor;
 				if(tupla.uso.equals(Estructuras.USO_VAR))
 					return "_"+tupla.valor;
+				
+					
 				
 				return "[_"+tupla.valor+"]";
 			}

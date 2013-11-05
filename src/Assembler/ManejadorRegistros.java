@@ -1,6 +1,4 @@
 package Assembler;
-
-import java.io.BufferedWriter;
 import java.util.Vector;
 
 public class ManejadorRegistros {
@@ -13,6 +11,10 @@ public class ManejadorRegistros {
 		registros.add(new Registro());
 		registros.add(new Registro());
 		registros.add(new Registro());
+	}
+	
+	public boolean usado(int pos){
+		return registros.elementAt(pos).isOcupado();
 	}
 	
 	/**Carga un registro y devuelve la posicion del registro cargado**/
@@ -40,7 +42,11 @@ public class ManejadorRegistros {
 		}
 		return false;
 	}
-	
+	/**
+	 * Cambia de lugar el registro que se quiere
+	 * @param pos: el registro que se quiere dejar libre
+	 * @return retorna el registro que fue ocupado
+	 */
 	public String MudarReg(int pos){
 		for(int i=1;i<registros.size();i++){
 			Registro r=registros.elementAt(i);
