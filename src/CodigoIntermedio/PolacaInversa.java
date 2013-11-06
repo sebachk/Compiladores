@@ -12,7 +12,9 @@ public class PolacaInversa {
 	
 	public static final String BRANCH_FALSO="#BF";
 	public static final String BRANCH_INC="#BI";
-	public static final String CALL="#CALL";
+	public static final String CALL="#VOID";
+	public static final String CALLRET="#CALL";
+	
 	public static final String RETURN="#RET";
 	public static final String PRINT="#print";
 	public static final String FUNC_LABEL="Func_";
@@ -58,6 +60,10 @@ public class PolacaInversa {
 		int pos = funciones.get(key+"_"+param);
 		addPolaco("PI("+pos+")",size-param-1);
 		addPolaco(CALL);
+	}
+	
+	public void CallConRet(){
+		polaca[size-1]=CALLRET;
 	}
 	
 	public String getFunction(int pos){

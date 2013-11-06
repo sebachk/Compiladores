@@ -831,7 +831,7 @@ case 8:
 break;
 case 9:
 //#line 25 "Gramatica.nueva.y"
-{ManejadorAmbitos.NewAmbito("Main");}
+{ManejadorAmbitos.NewAmbito("Main");PI.addPolaco("Label_main");}
 break;
 case 10:
 //#line 25 "Gramatica.nueva.y"
@@ -1075,7 +1075,11 @@ case 110:
 //#line 165 "Gramatica.nueva.y"
 {PI.addPolaco("TS("+val_peek(0).ival+")");}
 break;
-//#line 1001 "Parser.java"
+case 111:
+//#line 166 "Gramatica.nueva.y"
+{PI.CallConRet();Estructuras.addLog("Línea "+Al.LineasContadas+": Sentencia de llamado de funcion");}
+break;
+//#line 1005 "Parser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####

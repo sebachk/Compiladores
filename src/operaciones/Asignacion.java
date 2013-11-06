@@ -18,6 +18,7 @@ public class Asignacion extends OpBinario {
 			file.newLine();
 			if(!segundo.equals(sp))
 				mr.liberar(sp);
+			
 		} catch (IOException e) {e.printStackTrace();}
 		
 		mr.liberar(primero);

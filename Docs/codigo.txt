@@ -4,15 +4,17 @@ begin
 	begin
 		uint g;
 		g= a+b;
-		g=g/2;
+		g= g/2;
 		return g;
 	end
 	
 	
 
-	function promedio()
+	function promedio2(uint a,uint b)
 	begin
-		return 0;
+		a=a+b;
+		a=a/2;
+		
 	end
 	
 	begin
@@ -20,12 +22,16 @@ begin
 	comentario multilinea*)
 	
 	uint a,b,c;
-	uint d;
 	a=4;
 	b=6;
-	promedio(a,b);
+	
+	c=promedio(a,b);
+	
+	promedio2(a,b);
+	
+	if(a==c)  then
+		print('funco');
+	else
+		print('no funco');
 	end
-
-
-
 end

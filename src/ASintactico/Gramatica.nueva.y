@@ -22,7 +22,7 @@ lista_declaraciones	: declaracion
 					;
 
 declaracion	: sentencia_declar_funcion {Estructuras.addLog("Linea "+Al.LineasContadas+": Sentencia declarativa de funcion");}
-			| {ManejadorAmbitos.NewAmbito("Main");}bloque_sent{ManejadorAmbitos.EndAmbito();}
+			| {ManejadorAmbitos.NewAmbito("Main");PI.addPolaco("Label_main");}bloque_sent{ManejadorAmbitos.EndAmbito();}
 			;
 
 sentencia_declar_funcion 	:FUNCTION ID '('{cant_param=0;if(ManejadorAmbitos.PuedoDeclarar($2.sval)) $2.ival=Estructuras.addTupla($2.sval+ManejadorAmbitos.getInstance().getName(),Estructuras.UINT,Estructuras.FUNCTION);ManejadorAmbitos.NewAmbito($2.sval); PI.beginFunction();} parametros{PI.finParam($2.sval,cant_param);
@@ -163,7 +163,7 @@ termino 	: termino '*' factor {PI.addPolaco("*");}
 
 factor 	: ID {int pos = ManejadorAmbitos.isDeclarada($1.sval); PI.addPolaco("TS("+pos+")");}
 		| CTE{PI.addPolaco("TS("+$1.ival+")");}
-		| llamada_funcion
+		| llamada_funcion{PI.CallConRet();Estructuras.addLog("Línea "+Al.LineasContadas+": Sentencia de llamado de funcion");}
 		;
 
 tipo 	:uint

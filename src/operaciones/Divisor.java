@@ -88,7 +88,8 @@ public class Divisor extends OpBinario {
 					file.write("MOV "+nuevo+", ax\n");
 					}
 				file.write("MOV ax, "+pp+"\n");
-				mr.liberar(pp);
+				if(pp.startsWith("#"))
+					mr.liberar(pp);
 				PrimeroRAX( file, segundo, mr);
 				
 			}
