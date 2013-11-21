@@ -34,6 +34,7 @@ public class Asignacion extends OpBinario {
 			if(!pp.equals(primero)){
 				mr.liberar(pp);
 			}
+			
 			String sp= esParametro(file, segundo, mr);
 			
 			file.write(this.operacion()+" "+sp+", "+mr.getRegAss(pos));

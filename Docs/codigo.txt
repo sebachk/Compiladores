@@ -5,7 +5,9 @@ begin
 		uint g;
 		g= a+b;
 		g= g/2;
+		g= a;
 		return g;
+		a=a/2;
 	end
 	
 	
@@ -17,21 +19,44 @@ begin
 		
 	end
 	
+	function prueba()
+	begin
+	 a=10;
+	end
+	
 	begin
 	(*aca comienza el programa
 	comentario multilinea*)
 	
-	uint a,b,c;
-	a=4;
-	b=6;
+	uint b,c,d,e;
 	
-	c=promedio(a,b);
+	b=5;
+	c=10;
 	
-	promedio2(a,b);
+	d=b*2;
 	
-	if(a==c)  then
-		print('funco');
+	if(d==c)  then
+		print('La multiplicacion anda');
 	else
-		print('no funco');
+		print('la mult no anda');
+	
+	e=20;
+	d=e/2;
+	a=6553;
+	b=10-a;
+	if(d==c)  then
+		print('La division anda bien');
+	else
+		print('la division no anda');
+	
+	a=0;
+	loop 
+		a=a+1 ;
+		until a>5
+	 
+	
+	
+	(*Prueba de overflow*)
+	
 	end
 end

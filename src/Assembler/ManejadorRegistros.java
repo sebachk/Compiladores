@@ -96,7 +96,6 @@ public class ManejadorRegistros {
 		else if(reg.contains("dx")) {liberar(3);return;}
 		
 		
-		System.out.println("No libero "+ reg);
 	}
 	
 }

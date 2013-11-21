@@ -28,7 +28,9 @@ declaracion	: sentencia_declar_funcion {Estructuras.addLog("Linea "+Al.LineasCon
 sentencia_declar_funcion 	:FUNCTION ID '('{cant_param=0;if(ManejadorAmbitos.PuedoDeclarar($2.sval)) $2.ival=Estructuras.addTupla($2.sval+ManejadorAmbitos.getInstance().getName(),Estructuras.UINT,Estructuras.FUNCTION);ManejadorAmbitos.NewAmbito($2.sval); PI.beginFunction();} parametros{PI.finParam($2.sval,cant_param);
 							Estructuras.Tabla_Simbolos.elementAt($2.ival).valor=$2.sval+"_"+cant_param+"_"+ManejadorAmbitos.getInstance().FirstAmbito();
 							Estructuras.SumAmbito(ManejadorAmbitos.getInstance(),"_"+cant_param+"");}')'  bloque_funcion {PI.endFunction($2.sval);ManejadorAmbitos.EndAmbito(); }
-							|FUNCTION ID '('')' {cant_param=0;if(ManejadorAmbitos.PuedoDeclarar($2.sval))  $2.ival=Estructuras.addTupla($2.sval+ManejadorAmbitos.getInstance().getName(),Estructuras.UINT,Estructuras.FUNCTION);  ManejadorAmbitos.NewAmbito($2.sval);PI.beginFunction();PI.finParam($2.sval,cant_param);} bloque_funcion {PI.endFunction($2.sval);ManejadorAmbitos.EndAmbito();}
+							|FUNCTION ID '('')' {cant_param=0;if(ManejadorAmbitos.PuedoDeclarar($2.sval))  $2.ival=Estructuras.addTupla($2.sval+ManejadorAmbitos.getInstance().getName(),Estructuras.UINT,Estructuras.FUNCTION);  ManejadorAmbitos.NewAmbito($2.sval);PI.beginFunction();PI.finParam($2.sval,cant_param);
+							Estructuras.Tabla_Simbolos.elementAt($2.ival).valor=$2.sval+"_"+cant_param+"_"+ManejadorAmbitos.getInstance().FirstAmbito();
+							Estructuras.SumAmbito(ManejadorAmbitos.getInstance(),"_"+cant_param+"");} bloque_funcion {PI.endFunction($2.sval);ManejadorAmbitos.EndAmbito();}
 							|FUNCTION error ')'
 							|FUNCTION error bloque_funcion
 							;
@@ -59,7 +61,8 @@ sentencia_declarativa_tipo	: tipo lista_var';' {Estructuras.addLog("Linea "+Al.L
 
 					
 lista_sent_ejec	: sentencia_ejec lista_sent_ejec
-				| sentencia_ejec
+				| sentencia_ejec %prec error
+				| sentencia_ejec error 
 				;
 			
 			
@@ -91,12 +94,12 @@ sentencia_if 	: IF '('cond')'{Estructuras.addLog("Línea "+Al.LineasContadas+": S
 				| sentencia_if_error
 				;
 				
-sentencia_if_error	: IF THEN {Estructuras.addError("syntax error en línea "+Al.LineasContadas+": Falta la condicion del IF");}  bloque_IF 
-					| IF cond')'{Estructuras.addError("syntax error en línea "+Al.LineasContadas+": Falta abrir parentesis");} THEN bloque_IF 
-					| IF '('cond  {Estructuras.addError("syntax error en línea "+Al.LineasContadas+": Falta cerrar parentesis");}THEN bloque_IF 
-					| IF cond {Estructuras.addError("syntax error en línea "+Al.LineasContadas+": Falta  parentesis");} THEN bloque_IF 
-					| IF '('cond')'  {Estructuras.addError("syntax error en línea "+Al.LineasContadas+": Falta la palabra THEN");} bloque_IF 
-					| IF error {Estructuras.addError("syntax error en línea "+Al.LineasContadas+": errores múltiples en IF");} bloque_IF 
+sentencia_if_error	: IF THEN {Estructuras.addError("syntax error en línea "+Al.LineasContadas+": Falta la condicion del IF");PI.FinCondicion();}  bloque_IF 
+					| IF cond')'{Estructuras.addError("syntax error en línea "+Al.LineasContadas+": Falta abrir parentesis");PI.FinCondicion();} THEN bloque_IF 
+					| IF '('cond  {Estructuras.addError("syntax error en línea "+Al.LineasContadas+": Falta cerrar parentesis");PI.FinCondicion();}THEN bloque_IF 
+					| IF cond {Estructuras.addError("syntax error en línea "+Al.LineasContadas+": Falta  parentesis");PI.FinCondicion();} THEN bloque_IF 
+					| IF '('cond')'  {Estructuras.addError("syntax error en línea "+Al.LineasContadas+": Falta la palabra THEN");PI.FinCondicion();} bloque_IF 
+					| IF error {Estructuras.addError("syntax error en línea "+Al.LineasContadas+": errores múltiples en IF");PI.FinCondicion();} bloque_IF 
 				;
 sentencia_loop: LOOP {Estructuras.addLog("Línea "+Al.LineasContadas+": Sentencia de iteracion");PI.InicLoop();ManejadorAmbitos.NewAmbito();} bloque_loop {ManejadorAmbitos.EndAmbito();}
 				
@@ -111,7 +114,7 @@ loop_error	: bloque_sent cond {Estructuras.addError("syntax error en línea "+Al.
 			;			
 				
 llamada_funcion :ID '('{cant_param=0;PI.beginCall();}lista_parametros{ManejadorAmbitos.isDeclarada($1.sval+"_"+cant_param); PI.endcall($1.sval,cant_param);}')'
-				|ID '('')'{cant_param=0;ManejadorAmbitos.isDeclarada($1.sval);PI.beginCall();PI.endcall($1.sval,cant_param);}
+				|ID '('')'{cant_param=0;ManejadorAmbitos.isDeclarada($1.sval+"_"+cant_param);PI.beginCall();PI.endcall($1.sval,cant_param);}
 				;
 
 
@@ -171,7 +174,7 @@ tipo 	:uint
 %%
 
 
-AnalizadorLexico Al = new ALexico.AnalizadorLexico(new File("Docs/codigo.txt"));
+AnalizadorLexico Al;
 PolacaInversa PI = new PolacaInversa();
 int contador=1;
 int cant_param=0;
@@ -179,10 +182,9 @@ int cant_param=0;
 int yylex(){
 	ALexico.Token t; 
 	int val= this.YYERRCODE;
-	while(val==this.YYERRCODE){
 		t = Al.GetToken();
 		if(t!=null){
-			ALexico.Estructuras.addToken("Token"+ contador++ +" = " + ALexico.Estructuras.getStringToken(t.getIdentif_tt()));
+		//	ALexico.Estructuras.addToken("Token"+ contador++ +" = " + ALexico.Estructuras.getStringToken(t.getIdentif_tt()));
 			val =t.getIdentif_tt();
 			if(val!=this.YYERRCODE){
 				yylval= new ParserVal();
@@ -194,11 +196,10 @@ int yylex(){
 			}
 			else{
 				yyBaseError("Error lexico");
-				
+				return YYERRCODE;
 			}
 		}
-		else break;
-	}
+	
 	yylval.ival=0;
 	return 0;
 }
@@ -273,11 +274,10 @@ void yyerror(String e){
 public void run()
 {
   yyparse();
-  Estructuras.PrintTablaS();
-  	
-  if(!Estructuras.HayErrores()){
-  	PI.ImprimirPolaca();
-  }
+  
+}
+public void setFuente(String s){
+	Al= new AnalizadorLexico(new File(s));
 }
 
 

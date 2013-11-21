@@ -48,12 +48,13 @@ public class ASFinCTE implements AccionSemantica{
 		
 		//La cadena tiene 5 digitos;
 		int max[]={6,5,5,3,5};
-		
 		for(int i=0;i<max.length;i++){
-			if((int)cadena.charAt(i)>max[i])
+			if(Integer.parseInt(cadena.charAt(i)+"")>max[i]){
 				return false;
-			if((int)cadena.charAt(i)>max[i])
+				}
+			if(Integer.parseInt(cadena.charAt(i)+"")<max[i]){
 				return true;
+				}
 		}
 		return true;
 	}

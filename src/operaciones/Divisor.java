@@ -32,14 +32,14 @@ public class Divisor extends OpBinario {
 		}
 		else if(!pp.contains("_") && !pp.contains("#")){//pp es constante
 			int pos=mr.cargar("");
-			if(pos==3)System.err.println("TE LA COMISTE; AGARRO DX");
+			if(pos==3)System.err.println("AGARRO DX");
 			file.write("MOV "+mr.getRegAss(pos)+", "+pp+"\n");
 			file.write(this.operacion()+" "+mr.getRegAss(pos)+"\n");
 			mr.liberar(pos);
 		}
 		else{
 			file.write(this.operacion()+" "+pp.substring(1,pp.length())+"\n");
-		mr.liberar(pp);
+			mr.liberar(pp);
 		}
 		}
 		catch (Exception e) {
@@ -88,7 +88,7 @@ public class Divisor extends OpBinario {
 					file.write("MOV "+nuevo+", ax\n");
 					}
 				file.write("MOV ax, "+pp+"\n");
-				if(pp.startsWith("#"))
+				if(!pp.equals(primero))
 					mr.liberar(pp);
 				PrimeroRAX( file, segundo, mr);
 				

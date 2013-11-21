@@ -101,7 +101,6 @@ public class PolacaInversa {
 	
 	public void SalvarRebalse(){
 		if(size>=polaca.length){
-			//System.out.println("HOLA MUNDO");
 			String aux[]= new String[size*2];
 			for(int i=0;i<size;i++){
 				aux[i]=polaca[i];
@@ -143,7 +142,11 @@ public class PolacaInversa {
 			return null;
 	}
 	
+	
 	public void ImprimirPolaca(){
+		System.out.println("Polaca Inversa: ");
+		System.out.println("ииииииииииииииии");
+		
 		System.out.println("Posicion | Valor | IndiceTS");
 		for(int i=0; i<size;i++){
 			int finpar=0;
@@ -170,7 +173,9 @@ public class PolacaInversa {
 	}
 	
 	public void FinThenElse(){
-		String ptr=pila.pop();
+		String ptr="0";
+		if(!pila.empty())
+			ptr=pila.pop();
 		pila.push(size+"");
 		addPolaco("");
 		addPolaco(BRANCH_INC);
@@ -179,7 +184,9 @@ public class PolacaInversa {
 	}
 	
 	public void FinIf(){
-		String ptr=pila.pop();
+		String ptr="0";
+		if(!pila.empty())
+			ptr=pila.pop();
 		addPolaco("PI("+size+")"+"-saltofin",Integer.parseInt(ptr));
 		addPolaco("Label"+size);
 	}
@@ -191,10 +198,12 @@ public class PolacaInversa {
 	}
 	
 	public void FinLoop(){
-		String ptr=pila.pop();
-		addPolaco("PI("+(size+4)+")-saltobfWhile");			
-		addPolaco(BRANCH_FALSO);
+		String ptr="";
+		if(!pila.empty())
+			ptr=pila.pop();
 		addPolaco("PI("+ptr+")");
+		addPolaco(BRANCH_FALSO);
+		addPolaco("PI("+(size+2)+")-saltobfWhile");	
 		addPolaco(BRANCH_INC);
 		addPolaco("Label"+size);
 		

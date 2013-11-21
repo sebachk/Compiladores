@@ -77,9 +77,10 @@ public class Ensamblador {
 			
 			escritor.write("invoke ExitProcess, 0");
 			escritor.newLine();
-			escritor.write("overflow: invoke StdOut, addr errorOverflow\n");
+			
+			escritor.write("overflow: invoke StdOut, addr errorOverflow ; viene aca en caso de overflow \n" );
 			escritor.write("invoke ExitProcess, 0\n");
-			escritor.write("signo: invoke StdOut, addr errorSigno\n");
+			escritor.write("signo: invoke StdOut, addr errorSigno ; viene aca en caso de resultado negativo \n");
 			escritor.write("invoke ExitProcess, 0\n");
 			escritor.write("end start");
 			escritor.flush();
@@ -102,22 +103,22 @@ public class Ensamblador {
 			
 			escritor.write("\n.data");
 			escritor.newLine();
-			escritor.write("sysout db 'var para mostrar por pantalla'\n");
+			escritor.write("sysout db 'var para mostrar por pantalla' ; string para mostrar variables por pantalla \n");
 			escritor.write("_retorno dd ? ;variable utilizada para salvar el puntero de retorno en funciones \n");
 			
 		for(TuplaTS tupla:Estructuras.Tabla_Simbolos){
 			if(tupla.uso.equals(Estructuras.USO_REF)){//Si tiene ambito, es variable
-				escritor.write("_"+tupla.valor+" DD ?, 0");
+				escritor.write("_"+tupla.valor+" DD ?, 0 ;parametro por referencia, 32bits");
 				escritor.newLine();
 			}
 			if(tupla.uso.equals(Estructuras.USO_VAR)){
-				escritor.write("_"+tupla.valor+" DW ?");
+				escritor.write("_"+tupla.valor+" DW ? ; variables uint, 16bits");
 				escritor.newLine();
 			
 			}
 			if(tupla.uso.equals(Estructuras.USO_CADENA)){
 				String nvalor="cadena"+i++;
-				escritor.write(""+nvalor+" DB "+"\""+tupla.valor+"\", 0");
+				escritor.write(""+nvalor+" DB "+"\""+tupla.valor+"\", 0 ; cadenas, tamanio variable");
 				escritor.newLine();
 				tupla.valor=nvalor;
 			}
@@ -131,6 +132,7 @@ public class Ensamblador {
 		escritor.write ("start:");
 		escritor.newLine();
 		escritor.write("jmp main\n");
+		escribirBloque("Comienzo de programa", false);
 		}
 		catch(IOException e){e.printStackTrace();}
 			
@@ -138,6 +140,7 @@ public class Ensamblador {
 		
 	public void imprimirVar(String op){
 		try{
+			escribirBloque("Mostramos la variable "+op+" por pantalla", true);
 			escritor.write("invoke dwtoa, "+op+", addr sysout \n invoke StdOut, addr sysout\n");
 		}
 		catch (Exception e) {
@@ -147,31 +150,58 @@ public class Ensamblador {
 	
 	
 	public boolean doOperacion(String s){
-		if(s.equals("+")){return(suma.execute(escritor,pila,mr,true));} //el boolean es para determinar conmutatividad
-		if(s.equals("-")){return(resta.execute(escritor,pila,mr,false));}
-		if(s.equals("*")){return(multi.execute(escritor,pila,mr,true));}
-		if(s.equals("/")){return(divi.execute(escritor,pila,mr,false));}
-		if(s.equals("=")){return(asig.execute(escritor,pila,mr,false));}
+		boolean resultado=false;
+		if(s.equals("+")){
+			escribirBloque("Inicio Suma", true);
+			resultado=(suma.execute(escritor,pila,mr,true));
+			escribirBloque("Fin Suma", false);
+		} //el boolean es para determinar conmutatividad
+		if(s.equals("-")){
+			escribirBloque("Inicio Resta", true);
+			resultado=(resta.execute(escritor,pila,mr,false));
+			escribirBloque("Fin Resta", false);
+			}
+		if(s.equals("*")){
+			escribirBloque("Inicio Multiplicacion", true);
+			resultado=(multi.execute(escritor,pila,mr,true));
+			escribirBloque("Fin Multiplicacion", false);
+			}
+		if(s.equals("/")){
+			escribirBloque("Inicio Division", true);
+			resultado=(divi.execute(escritor,pila,mr,false));
+			escribirBloque("Fin Division", false);
+			}
+		if(s.equals("=")){
+			escribirBloque("Inicio Asignacion", true);
+			resultado=(asig.execute(escritor,pila,mr,false));
+			escribirBloque("Fin Asignacion", false);
+			}
 		if(s.equals("<")||s.equals(">")||s.equals("==")||s.equals("!=")
 				||s.equals("<=")||s.equals(">=")){
 			comparadorUsado=s;
-			return comp.execute(escritor, pila, mr, false);
+
+			escribirBloque("Sentencia de Comparacion", true);
+			resultado= comp.execute(escritor, pila, mr, false);
+			escribirBloque("Sentencia de Comparacion", false);
+			
 		}
 		
-		if(s.contains("Label")){ return WriteS(s);}
-		if(s.contains("Func")){return CargaFunc(s);}
-		if(s.equals(PolacaInversa.BRANCH_FALSO)){return AddJump();}
-		if(s.equals(PolacaInversa.BRANCH_INC)){ return JumpInc();}
-		if(s.equals(PolacaInversa.PRINT)){return Print();}
-		if(s.equals(PolacaInversa.CALL)||s.equals(PolacaInversa.CALLRET)){return CallReturn(true,s);}
-		if(s.equals(PolacaInversa.RETURN)){return CallReturn(false,null);}
-		return false;
+		if(s.contains("Label")){ resultado= WriteS(s);}
+		if(s.contains("Func")){resultado= CargaFunc(s);}
+		if(s.equals(PolacaInversa.BRANCH_FALSO)){resultado= AddJump();}
+		if(s.equals(PolacaInversa.BRANCH_INC)){ resultado= JumpInc();}
+		if(s.equals(PolacaInversa.PRINT)){resultado= Print();}
+		if(s.equals(PolacaInversa.CALL)||s.equals(PolacaInversa.CALLRET)){resultado= CallReturn(true,s);}
+		if(s.equals(PolacaInversa.RETURN)){resultado= CallReturn(false,null);}
+		return resultado;
 	}
 	
 	public boolean CargaFunc(String s){
 		if(s.contains("#PARAM")){
 			try {
 				//Salvo el puntero de retorno
+
+				escribirBloque("Pasaje de parametros", true);
 				escritor.write("pop _retorno\n");
 				while(!pila.empty()&&!pila.peek().contains("#")){	
 					String pop=pila.pop();
@@ -179,13 +209,17 @@ public class Ensamblador {
 				}
 				//vuelvo a apilar la direccion de retorno
 				escritor.write("push _retorno\n");
+				escribirBloque("Pasaje de parametros", false);
+				
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
-		else
+		else{
+			escribirBloque("Comienzo de funcion", true);
 			WriteS(s);
+			}
 		return true;
 	}
 	
@@ -194,6 +228,7 @@ public class Ensamblador {
 	public boolean CallReturn(boolean call, String s){
 		try {
 			if(call){
+				escribirBloque("Llamado a funcion  (preparacion de parametros)", true);				
 				Stack<String> parametros=new Stack<String>();
 				while(pila.peek().contains("_"))
 					parametros.push(pila.pop());
@@ -202,9 +237,10 @@ public class Ensamblador {
 				}
 				int pos=Integer.parseInt(pila.pop());
 				
-				escritor.write("CALL "+pi.getFunction(pos));
+				escritor.write("CALL "+pi.getFunction(pos)+"\n");
 				if(s.equals(PolacaInversa.CALLRET))
 					pila.push("#ax");
+				escribirBloque("Llamado a funcion  (preparacion de parametros)", false);				
 				
 			}
 			else{
@@ -215,6 +251,11 @@ public class Ensamblador {
 					if(!param.equals(operator))
 						ax="eax";
 					escritor.write("MOV "+ax+", "+ operator);
+					escritor.newLine();
+					
+				}
+				else{
+					escritor.write("MOV ax, 0");
 					escritor.newLine();
 					
 				}
@@ -256,6 +297,7 @@ public class Ensamblador {
 		
 		try {
 			if(s.contains("main")){
+				escribirBloque("", true);
 				escritor.write("main:\n");
 				return true;
 			}
@@ -305,4 +347,27 @@ public class Ensamblador {
 			return false;
 		}
 	}
+	
+	public void escribirBloque(String cadena, boolean fin){
+		
+		try{
+		if(!fin){
+			escritor.write(";"+cadena+"\n");
+		}
+		
+		for(int i=0;i<2;i++){
+			escritor.newLine();
+		}
+		
+		if(fin)
+			escritor.write(";"+cadena+"\n");
+		
+		
+		}
+		catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+	
+	
 }

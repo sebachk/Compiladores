@@ -196,22 +196,22 @@ public class Estructuras {
 		System.out.println();
 		System.out.println();
 		System.out.println();
-		System.out.println("Log del Compilador:");
-		System.out.println("иииииииииииииииииии");
-		for(int i =0;i<log_general.size();i++){
-			System.out.println(log_general.elementAt(i));
-			System.out.println("**********************");
-		}
+//		System.out.println("Log del Compilador:");
+//		System.out.println("иииииииииииииииииии");
+//		for(int i =0;i<log_general.size();i++){
+//			System.out.println(log_general.elementAt(i));
+//			System.out.println("**********************");
+//		}
 		
 		System.out.println();
 		System.out.println();
 		System.out.println();
-		System.out.println("Tokens:");
-		System.out.println("иииииииииииииииииии");
-		for(int i =0;i<log_token.size();i++){
-			System.out.println(log_token.elementAt(i));
-			System.out.println("**********************");
-		}
+//		System.out.println("Tokens:");
+//		System.out.println("иииииииииииииииииии");
+//		for(int i =0;i<log_token.size();i++){
+//			System.out.println(log_token.elementAt(i));
+//			System.out.println("**********************");
+//		}
 		
 	}
 	
