@@ -27,7 +27,8 @@ public class Divisor extends OpBinario {
 		try{
 		String pp= esParametro(file, segundo, mr);
 		if(pp.startsWith("[")){//el segundo es un parametro
-			file.write(this.operacion()+" "+pp);
+			file.write("MOV "+pp.substring(2,4)+" ,"+pp+"\n");
+			file.write(this.operacion()+" "+pp.substring(2,4)+"\n");
 			mr.liberar(pp);
 		}
 		else if(!pp.contains("_") && !pp.contains("#")){//pp es constante

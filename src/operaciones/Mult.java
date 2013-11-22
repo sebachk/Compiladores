@@ -35,8 +35,10 @@ public class Mult extends OpBinario {
 					}
 				}
 			
-			else//2do es VAR, VAR-REF
-				file.write(this.operacion()+" "+sp+"\n");		
+			else {//2do es VAR, VAR-REF
+					file.write("MOV "+sp.substring(2,4)+", "+sp+"\n");
+					file.write(this.operacion()+" "+sp.substring(2,4)+"\n");	
+			}
 		}
 		file.write("jo overflow\n");
 		}

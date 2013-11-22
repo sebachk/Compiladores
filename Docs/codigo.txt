@@ -2,10 +2,15 @@ begin
 	uint a;
 	function promedio(uint a, uint b)
 	begin
-		uint g;
+		uint g,z,c;
+		c=2;
 		g= a+b;
 		g= g/2;
 		g= a;
+		z=b*a+c*g;
+		if(z==34)then
+			print('z es 11');
+		else print ('z no es 11');
 		return g;
 		a=a/2;
 	end
