@@ -17,8 +17,8 @@ _b_Programa_promedio_2 DD ?, 0 ;parametro por referencia, 32bits
 _g_Programa_promedio_2 DW ? ; variables uint, 16bits
 _z_Programa_promedio_2 DW ? ; variables uint, 16bits
 _c_Programa_promedio_2 DW ? ; variables uint, 16bits
-cadena1 DB "'z es 11'", 0 ; cadenas, tamanio variable
-cadena2 DB "'z no es 11'", 0 ; cadenas, tamanio variable
+cadena1 DB "'no hubo problema con la division de parametros'", 0 ; cadenas, tamanio variable
+cadena2 DB "'hubo problemasss'", 0 ; cadenas, tamanio variable
 _a_Programa_promedio2_2 DD ?, 0 ;parametro por referencia, 32bits
 _b_Programa_promedio2_2 DD ?, 0 ;parametro por referencia, 32bits
 _b_Programa_Main DW ? ; variables uint, 16bits
@@ -53,28 +53,13 @@ push _retorno
 
 
 
-;Inicio Asignacion
-MOV bx, 2
-MOV _c_Programa_promedio_2, bx
-;Fin Asignacion
-
-
-
-
-;Inicio Suma
-MOV ecx, _a_Programa_promedio_2
-MOV bx, [ecx]
-MOV ecx, _b_Programa_promedio_2
-ADD bx, [ecx]
-JO overflow
-;Fin Suma
-
-
-
-
-;Inicio Asignacion
-MOV _g_Programa_promedio_2, bx
-;Fin Asignacion
+;Inicio Multiplicacion
+MOV ax, 10
+MOV ebx, _b_Programa_promedio_2
+MOV bx, [ebx]
+MUL bx
+jo overflow
+;Fin Multiplicacion
 
 
 
@@ -82,8 +67,8 @@ MOV _g_Programa_promedio_2, bx
 ;Inicio Division
 push dx 
 MOV dx, 0
-MOV ax, _g_Programa_promedio_2
-MOV bx, 2
+MOV ebx, _a_Programa_promedio_2
+MOV bx ,[ebx]
 DIV bx
 pop dx
 ;Fin Division
@@ -101,73 +86,27 @@ MOV _g_Programa_promedio_2, ax
 ;Inicio Asignacion
 MOV ecx, _a_Programa_promedio_2
 MOV bx, [ecx]
-MOV _g_Programa_promedio_2, bx
+MOV _z_Programa_promedio_2, bx
 ;Fin Asignacion
 
 
 
 
 ;Inicio Multiplicacion
+MOV ax, 10
 MOV ebx, _b_Programa_promedio_2
-MOV ax, [ebx]
-MOV ebx, _a_Programa_promedio_2
-MOV cx, [ebx]
-MUL cx
+MOV bx, [ebx]
+MUL bx
 jo overflow
 ;Fin Multiplicacion
 
 
-
-
-;Inicio Multiplicacion
-MOV cx, ax
-MOV ax, _c_Programa_promedio_2
-MUL _g_Programa_promedio_2
-jo overflow
-;Fin Multiplicacion
-
-
-
-
-;Inicio Suma
-ADD ax, ax
-JO overflow
-;Fin Suma
-
-
-
-
-;Inicio Asignacion
-MOV _z_Programa_promedio_2, ax
-;Fin Asignacion
-
-
-
-
-;Sentencia de Comparacion
-MOV dx, _z_Programa_promedio_2
-CMP dx, 34
-;Sentencia de Comparacion
-
-
-JNE Label38
-invoke StdOut, addr cadena1
-JMP Label41
-Label38:
-invoke StdOut, addr cadena2
-Label41:
-MOV ax, _g_Programa_promedio_2
-RET
 
 
 ;Inicio Division
 push dx 
 MOV dx, 0
-MOV eax, _a_Programa_promedio_2
-MOV , ax
-MOV ax, [eax]
-MOV ax, 2
-DIV ax
+DIV _z_Programa_promedio_2
 pop dx
 ;Fin Division
 
@@ -175,11 +114,24 @@ pop dx
 
 
 ;Inicio Asignacion
-MOV edx, _a_Programa_promedio_2
-MOV [edx], ax
+MOV _c_Programa_promedio_2, ax
 ;Fin Asignacion
 
 
+
+
+;Sentencia de Comparacion
+MOV bx, _g_Programa_promedio_2
+CMP bx, _c_Programa_promedio_2
+;Sentencia de Comparacion
+
+
+JNE Label30
+invoke StdOut, addr cadena1
+JMP Label33
+Label30:
+invoke StdOut, addr cadena2
+Label33:
 MOV ax, 0
 RET
 
@@ -199,10 +151,10 @@ push _retorno
 
 
 ;Inicio Suma
-MOV eax, _a_Programa_promedio2_2
-MOV dx, [eax]
-MOV eax, _b_Programa_promedio2_2
-ADD dx, [eax]
+MOV ecx, _a_Programa_promedio2_2
+MOV bx, [ecx]
+MOV ecx, _b_Programa_promedio2_2
+ADD bx, [ecx]
 JO overflow
 ;Fin Suma
 
@@ -210,8 +162,8 @@ JO overflow
 
 
 ;Inicio Asignacion
-MOV eax, _a_Programa_promedio2_2
-MOV [eax], dx
+MOV ecx, _a_Programa_promedio2_2
+MOV [ecx], bx
 ;Fin Asignacion
 
 
@@ -220,11 +172,10 @@ MOV [eax], dx
 ;Inicio Division
 push dx 
 MOV dx, 0
-MOV eax, _a_Programa_promedio2_2
-MOV , ax
-MOV ax, [eax]
-MOV ax, 2
-DIV ax
+MOV ebx, _a_Programa_promedio2_2
+MOV ax, [ebx]
+MOV bx, 2
+DIV bx
 pop dx
 ;Fin Division
 
@@ -232,8 +183,8 @@ pop dx
 
 
 ;Inicio Asignacion
-MOV edx, _a_Programa_promedio2_2
-MOV [edx], ax
+MOV ebx, _a_Programa_promedio2_2
+MOV [ebx], ax
 ;Fin Asignacion
 
 
@@ -254,8 +205,8 @@ push _retorno
 
 
 ;Inicio Asignacion
-MOV dx, 10
-MOV _a_Programa, dx
+MOV bx, 10
+MOV _a_Programa, bx
 ;Fin Asignacion
 
 
@@ -268,25 +219,35 @@ main:
 
 
 ;Inicio Asignacion
-MOV dx, 5
-MOV _b_Programa_Main, dx
+MOV bx, 5
+MOV _b_Programa_Main, bx
 ;Fin Asignacion
 
 
 
 
 ;Inicio Asignacion
-MOV dx, 10
-MOV _c_Programa_Main, dx
+MOV bx, 10
+MOV _c_Programa_Main, bx
 ;Fin Asignacion
+
+
+
+
+;Llamado a funcion  (preparacion de parametros)
+push offset _b_Programa_Main 
+push offset _c_Programa_Main 
+CALL Func_promedio_2
+;Llamado a funcion  (preparacion de parametros)
+
 
 
 
 
 ;Inicio Multiplicacion
 MOV ax, _b_Programa_Main
-MOV dx, 2
-MUL dx
+MOV bx, 2
+MUL bx
 jo overflow
 ;Fin Multiplicacion
 
@@ -301,22 +262,30 @@ MOV _d_Programa_Main, ax
 
 
 ;Sentencia de Comparacion
-MOV dx, _d_Programa_Main
-CMP dx, _c_Programa_Main
+MOV bx, _d_Programa_Main
+CMP bx, _c_Programa_Main
 ;Sentencia de Comparacion
 
 
-JNE Label92
+JNE Label81
 invoke StdOut, addr cadena3
-JMP Label95
-Label92:
+JMP Label84
+Label81:
 invoke StdOut, addr cadena4
-Label95:
+Label84:
 
 
 ;Inicio Asignacion
-MOV dx, 20
-MOV _e_Programa_Main, dx
+MOV bx, 0
+MOV _a_Programa, bx
+;Fin Asignacion
+
+
+
+
+;Inicio Asignacion
+MOV bx, 20
+MOV _e_Programa_Main, bx
 ;Fin Asignacion
 
 
@@ -326,10 +295,29 @@ MOV _e_Programa_Main, dx
 push dx 
 MOV dx, 0
 MOV ax, _e_Programa_Main
-MOV ax, 2
-DIV ax
+MOV bx, 2
+DIV bx
 pop dx
 ;Fin Division
+
+
+
+
+;Inicio Multiplicacion
+MOV bx, ax
+MOV ax, _a_Programa
+MOV cx, 4
+MUL cx
+jo overflow
+;Fin Multiplicacion
+
+
+
+
+;Inicio Suma
+ADD ax, bx
+JO overflow
+;Fin Suma
 
 
 
@@ -341,56 +329,32 @@ MOV _d_Programa_Main, ax
 
 
 
-;Inicio Asignacion
-MOV dx, 6553
-MOV _a_Programa, dx
-;Fin Asignacion
-
-
-
-
-;Inicio Resta
-MOV dx, 10
-SUB dx, _a_Programa
-JS signo
-;Fin Resta
-
-
-
-
-;Inicio Asignacion
-MOV _b_Programa_Main, dx
-;Fin Asignacion
-
-
-
-
 ;Sentencia de Comparacion
-MOV dx, _d_Programa_Main
-CMP dx, _c_Programa_Main
+MOV cx, _d_Programa_Main
+CMP cx, _c_Programa_Main
 ;Sentencia de Comparacion
 
 
-JNE Label121
+JNE Label109
 invoke StdOut, addr cadena5
-JMP Label124
-Label121:
+JMP Label112
+Label109:
 invoke StdOut, addr cadena6
-Label124:
+Label112:
 
 
 ;Inicio Asignacion
-MOV dx, 0
-MOV _a_Programa, dx
+MOV cx, 0
+MOV _a_Programa, cx
 ;Fin Asignacion
 
 
-Label128:
+Label116:
 
 
 ;Inicio Suma
-MOV dx, _a_Programa
-ADD dx, 1
+MOV cx, _a_Programa
+ADD cx, 1
 JO overflow
 ;Fin Suma
 
@@ -398,21 +362,21 @@ JO overflow
 
 
 ;Inicio Asignacion
-MOV _a_Programa, dx
+MOV _a_Programa, cx
 ;Fin Asignacion
 
 
 
 
 ;Sentencia de Comparacion
-MOV dx, _a_Programa
-CMP dx, 5
+MOV cx, _a_Programa
+CMP cx, 5
 ;Sentencia de Comparacion
 
 
-JBE Label128
-JMP Label141
-Label141:
+JBE Label116
+JMP Label129
+Label129:
 invoke ExitProcess, 0
 overflow: invoke StdOut, addr errorOverflow ; viene aca en caso de overflow 
 invoke ExitProcess, 0

@@ -38,7 +38,7 @@ public class ManejadorRegistros {
 	public boolean cargar(int pos){
 		if(!registros.elementAt(pos).isOcupado()){
 			registros.elementAt(pos).setOcupado(true);
-		return true;	
+			return true;	
 		}
 		return false;
 	}

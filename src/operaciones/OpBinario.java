@@ -96,6 +96,7 @@ public class OpBinario {
 			file.newLine();
 			pila.push("#"+mr.getRegAss(pos));
 			mr.liberar(segundo);
+		
 			} catch (IOException e) {e.printStackTrace();}
 	}
 	
@@ -130,5 +131,19 @@ public class OpBinario {
 			}
 		}
 		return true;
+	}
+	
+	
+	protected void reemplazar(String nuevo, Stack<String> pila){
+		Stack<String> aux= new Stack<String>();
+		while(!pila.empty()){
+			String e=pila.pop();
+			if(e.contains("ax"))
+				e=nuevo;
+			aux.push(e);
+		}
+		while(!aux.empty()){
+			pila.push(aux.pop());
+		}
 	}
 }

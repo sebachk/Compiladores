@@ -16,31 +16,38 @@ public class Mult extends OpBinario {
 	
 	protected void PrimeroRAX(String sp,BufferedWriter file,ManejadorRegistros mr){
 		try{
-		if(sp.startsWith("#")){ //2do es REG
-			file.write(this.operacion()+" "+sp.substring(1,sp.length())+"\n");
-			mr.liberar(sp);
-		}
-		else{
-			if(!sp.startsWith("_")){ //el segundo es una CTE
-				int pos=mr.cargar("");
-				if(pos!=-1){
-					file.write("MOV "+mr.getRegAss(pos)+", "+sp+"\n");
-					file.write(this.operacion()+" "+mr.getRegAss(pos)+"\n");
-					mr.liberar(pos);
-				}
-				else{
-					System.err.println("MACHO, TE QUEDASTE SIN REGISTROS");
-					file.write("ACA HUBO ERROR\n");
-					//TODO me quedo sin registros
+			if(sp.startsWith("#")){ //2do es REG
+				file.write(this.operacion()+" "+sp.substring(1,sp.length())+"\n");
+				mr.liberar(sp);
+			}
+			else{
+				if(!sp.startsWith("_") && !sp.startsWith("[")){ //el segundo es una CTE
+					int pos=mr.cargar("");
+					if(pos!=-1){
+						file.write("MOV "+mr.getRegAss(pos)+", "+sp+"\n");
+						file.write(this.operacion()+" "+mr.getRegAss(pos)+"\n");
+						mr.liberar(pos);
+					}
+					else{
+						System.err.println("TE QUEDASTE SIN REGISTROS");
+						file.write("ACA HUBO ERROR\n");
+						//TODO me quedo sin registros
+						}
+					}
+				
+				else {//2do es VAR, VAR-REF
+					if(sp.startsWith("[")){
+						file.write("MOV "+sp.substring(2,4)+", "+sp+"\n");
+						file.write(this.operacion()+" "+sp.substring(2,4)+"\n");
+						mr.liberar(sp);
+					}
+					else{
+						file.write(this.operacion()+" "+sp+"\n");	
+						
 					}
 				}
-			
-			else {//2do es VAR, VAR-REF
-					file.write("MOV "+sp.substring(2,4)+", "+sp+"\n");
-					file.write(this.operacion()+" "+sp.substring(2,4)+"\n");	
 			}
-		}
-		file.write("jo overflow\n");
+			file.write("jo overflow\n");
 		}
 		catch  (IOException e){
 			e.printStackTrace();
@@ -55,6 +62,7 @@ public class Mult extends OpBinario {
 			String segundo = pila.pop();
 			if(!pila.empty()){
 			String primero = pila.pop();
+			
 			if (primero.startsWith("#")){ //PRIMERO ES REGISTRO
 
 				OpReg1(file,pila,mr,primero,segundo);
@@ -65,18 +73,19 @@ public class Mult extends OpBinario {
 				}
 				else{ // AMBAS VARS
 					try{
-					String nuevo= mr.UtilizarReg(0);
-					if(!nuevo.equals(mr.getRegAss(0))){
-						file.write("MOV "+nuevo+", ax\n");
-						mr.liberar("ax");
-					}
-					
-					String pp=esParametro(file, primero, mr);
-					file.write("MOV ax, "+pp+"\n");
-					if(!pp.equals(primero))
-						mr.liberar(pp);
-					mr.cargar(0);
-					OpReg1(file, pila, mr, "#ax", segundo);
+						String nuevo= mr.UtilizarReg(0);//Devuelve el registro al cual pasar lo que hay en ax
+						if(!nuevo.equals(mr.getRegAss(0))){
+							file.write("MOV "+nuevo+", ax\n");
+							mr.liberar("ax");
+							reemplazar(nuevo, pila);
+							
+						}
+						String pp=esParametro(file, primero, mr);
+						file.write("MOV ax, "+pp+"\n");
+						if(!pp.equals(primero))
+							mr.liberar(pp);
+						mr.cargar(0);
+						OpReg1(file, pila, mr, "#ax", segundo);
 					}
 					catch (Exception e) {
 						// TODO: handle exception
@@ -89,6 +98,8 @@ public class Mult extends OpBinario {
 
 	}
 	
+	
+
 	@Override
 	public void OpReg1(BufferedWriter file, Stack<String> pila,
 			ManejadorRegistros mr, String primero, String segundo) {
@@ -103,8 +114,10 @@ public class Mult extends OpBinario {
 			if(!sp.contains("ax")){//si es una ref y tiene ax no quedan reg libres
 				String nuevo=mr.UtilizarReg(0);
 				if(!nuevo.equals("")){//habia un reg libre
-					if((!nuevo.equals(mr.getRegAss(0))))//AX estaba ocupado
+					if((!nuevo.equals(mr.getRegAss(0)))){//AX estaba ocupado
 						file.write("MOV "+nuevo+", ax\n");
+						reemplazar(nuevo, pila);
+					}
 					file.write("MOV ax, "+primero);
 					mr.cargar(0);
 					mr.liberar(primero);
@@ -124,7 +137,8 @@ public class Mult extends OpBinario {
 		catch (Exception e) {
 			// TODO: handle exception
 		}
-		
-	}
 
+	
+	}
+	
 }

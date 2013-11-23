@@ -33,14 +33,22 @@ public class Divisor extends OpBinario {
 		}
 		else if(!pp.contains("_") && !pp.contains("#")){//pp es constante
 			int pos=mr.cargar("");
-			if(pos==3)System.err.println("AGARRO DX");
+			
+			if(pos==3)System.err.println("AGARRO DX");//Esto no se da nunca
+			if(pos==0)System.err.println(pp+" AGARRO AX");//esto tmpoco
+			
 			file.write("MOV "+mr.getRegAss(pos)+", "+pp+"\n");
 			file.write(this.operacion()+" "+mr.getRegAss(pos)+"\n");
 			mr.liberar(pos);
 		}
 		else{
-			file.write(this.operacion()+" "+pp.substring(1,pp.length())+"\n");
-			mr.liberar(pp);
+			if(pp.startsWith("#")){
+				file.write(this.operacion()+" "+pp.substring(1,pp.length())+"\n");
+				mr.liberar(pp);
+			}
+			else{
+				file.write(this.operacion()+" "+pp+"\n");
+			}
 		}
 		}
 		catch (Exception e) {
@@ -77,7 +85,9 @@ public class Divisor extends OpBinario {
 					if(mr.usado(0)){//AX esta ocupado
 						String nuevo=mr.MudarReg(0);
 						file.write("MOV "+nuevo+", ax\n");
+						reemplazar(nuevo, pila);
 						}
+					mr.cargar(0);//Si ya estaba cargado no hace nada
 					file.write("MOV ax, "+pp.substring(1,pp.length())+"\n");
 					mr.liberar(pp);
 					PrimeroRAX( file, segundo, mr);
@@ -87,7 +97,9 @@ public class Divisor extends OpBinario {
 				if(mr.usado(0)){//AX esta ocupado
 					String nuevo=mr.MudarReg(0);
 					file.write("MOV "+nuevo+", ax\n");
+					reemplazar(nuevo, pila);
 					}
+				mr.cargar(0);
 				file.write("MOV ax, "+pp+"\n");
 				if(!pp.equals(primero))
 					mr.liberar(pp);

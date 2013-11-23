@@ -3,16 +3,13 @@ begin
 	function promedio(uint a, uint b)
 	begin
 		uint g,z,c;
-		c=2;
-		g= a+b;
-		g= g/2;
-		g= a;
-		z=b*a+c*g;
-		if(z==34)then
-			print('z es 11');
-		else print ('z no es 11');
-		return g;
-		a=a/2;
+		g=10*b/a;
+		z=a;
+		c=10*b/z;
+		if(g==c) then
+			print('no hubo problema con la division de parametros');
+		else
+			print('hubo problemasss');
 	end
 	
 	
@@ -37,18 +34,18 @@ begin
 	
 	b=5;
 	c=10;
-	
+	promedio(b,c);
 	d=b*2;
 	
 	if(d==c)  then
 		print('La multiplicacion anda');
 	else
 		print('la mult no anda');
-	
+	a=0;
 	e=20;
-	d=e/2;
-	a=6553;
-	b=10-a;
+	d=e/2 + a*4;
+	
+	
 	if(d==c)  then
 		print('La division anda bien');
 	else
