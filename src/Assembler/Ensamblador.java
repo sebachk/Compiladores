@@ -1,14 +1,10 @@
 package Assembler;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Stack;
-import java.util.Vector;
 
 import operaciones.Comparacion;
 import operaciones.Divisor;
@@ -96,7 +92,6 @@ public class Ensamblador {
 		
 	
 	public void ensamblarVariables(){
-		Vector<String> variables = new Vector<String>();
 		int i=1;
 		try{
 			escritor.write(".386 \n.model flat, stdcall \noption casemap :none\ninclude \\masm32\\include\\windows.inc \ninclude \\masm32\\include\\masm32.inc\ninclude \\masm32\\include\\kernel32.inc \ninclude \\masm32\\include\\user32.inc \nincludelib \\masm32\\lib\\kernel32.lib \nincludelib \\masm32\\lib\\user32.lib\nincludelib \\masm32\\lib\\masm32.lib");
@@ -192,7 +187,7 @@ public class Ensamblador {
 		if(s.equals(PolacaInversa.BRANCH_INC)){ resultado= JumpInc();}
 		if(s.equals(PolacaInversa.PRINT)){resultado= Print();}
 		if(s.equals(PolacaInversa.CALL)||s.equals(PolacaInversa.CALLRET)){resultado= CallReturn(true,s);}
-		if(s.equals(PolacaInversa.RETURN)){resultado= CallReturn(false,null);}
+		if(s.equals(PolacaInversa.RETURN) || s.equals(PolacaInversa.RETURNVOID)){resultado= CallReturn(false,s);}
 		return resultado;
 	}
 	
@@ -244,15 +239,29 @@ public class Ensamblador {
 				
 			}
 			else{
-				if(!pila.isEmpty()&&!pila.peek().contains("ax")){
-					String param=pila.pop();
-					String operator = asig.esParametro(escritor, param, mr);
-					String ax="ax";
-					if(!param.equals(operator))
-						ax="eax";
-					escritor.write("MOV "+ax+", "+ operator);
-					escritor.newLine();
-					
+				if(s.equals(PolacaInversa.RETURN)){//es un return asi que saco de la pila
+					if(!pila.isEmpty()){
+						if(!pila.peek().contains("ax")){
+							String param=pila.pop();
+							String operator = asig.esParametro(escritor, param, mr);
+							if(operator.startsWith("#")){
+								operator=operator.substring(1);
+								mr.liberar(operator);
+							}
+							if(operator.startsWith("["))
+								mr.liberar(operator);
+						
+						String ax="ax";
+						escritor.write("MOV "+ax+", "+ operator);
+						escritor.newLine();
+						}
+						else{
+							pila.pop();
+						}
+					}
+					else{
+						System.out.println("No hay nada que retornar");
+					}
 				}
 				else{
 					escritor.write("MOV ax, 0");

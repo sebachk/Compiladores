@@ -42,9 +42,9 @@ public class OpBinario {
 	
 	public void Op2Var(BufferedWriter file,Stack<String> pila,ManejadorRegistros mr,String primero,String segundo){
 		
-		int pos = mr.cargar(primero);
 		try {
 			String pp= esParametro(file, primero, mr);
+			int pos = mr.cargar(primero);
 			file.write("MOV "+mr.getRegAss(pos)+", "+pp);
 			file.newLine();
 			if(!pp.equals(primero))

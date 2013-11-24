@@ -18,6 +18,7 @@ public class PolacaInversa {
 	public static final String RETURN="#RET";
 	public static final String PRINT="#print";
 	public static final String FUNC_LABEL="Func_";
+	public static final String RETURNVOID="#RETV";
 	
 	String []polaca;
 	Hashtable<String, Integer> funciones;
@@ -48,7 +49,7 @@ public class PolacaInversa {
 	}
 	
 	public void endFunction(String name){
-		retorno();
+		addPolaco(RETURNVOID);
 	}
 	
 	public void beginCall(){

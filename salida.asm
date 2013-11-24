@@ -132,6 +132,17 @@ JMP Label33
 Label30:
 invoke StdOut, addr cadena2
 Label33:
+
+
+;Inicio Suma
+MOV bx, _c_Programa_promedio_2
+ADD bx, _z_Programa_promedio_2
+JO overflow
+;Fin Suma
+
+
+MOV ax, bx
+RET
 MOV ax, 0
 RET
 
@@ -151,10 +162,10 @@ push _retorno
 
 
 ;Inicio Suma
-MOV ecx, _a_Programa_promedio2_2
-MOV bx, [ecx]
-MOV ecx, _b_Programa_promedio2_2
-ADD bx, [ecx]
+MOV ebx, _a_Programa_promedio2_2
+MOV cx, [ebx]
+MOV ebx, _b_Programa_promedio2_2
+ADD cx, [ebx]
 JO overflow
 ;Fin Suma
 
@@ -162,8 +173,8 @@ JO overflow
 
 
 ;Inicio Asignacion
-MOV ecx, _a_Programa_promedio2_2
-MOV [ecx], bx
+MOV ebx, _a_Programa_promedio2_2
+MOV [ebx], cx
 ;Fin Asignacion
 
 
@@ -244,6 +255,13 @@ CALL Func_promedio_2
 
 
 
+;Inicio Asignacion
+MOV _d_Programa_Main, ax
+;Fin Asignacion
+
+
+
+
 ;Inicio Multiplicacion
 MOV ax, _b_Programa_Main
 MOV bx, 2
@@ -267,12 +285,12 @@ CMP bx, _c_Programa_Main
 ;Sentencia de Comparacion
 
 
-JNE Label81
+JNE Label87
 invoke StdOut, addr cadena3
-JMP Label84
-Label81:
+JMP Label90
+Label87:
 invoke StdOut, addr cadena4
-Label84:
+Label90:
 
 
 ;Inicio Asignacion
@@ -335,12 +353,12 @@ CMP cx, _c_Programa_Main
 ;Sentencia de Comparacion
 
 
-JNE Label109
+JNE Label115
 invoke StdOut, addr cadena5
-JMP Label112
-Label109:
+JMP Label118
+Label115:
 invoke StdOut, addr cadena6
-Label112:
+Label118:
 
 
 ;Inicio Asignacion
@@ -349,7 +367,7 @@ MOV _a_Programa, cx
 ;Fin Asignacion
 
 
-Label116:
+Label122:
 
 
 ;Inicio Suma
@@ -374,9 +392,9 @@ CMP cx, 5
 ;Sentencia de Comparacion
 
 
-JBE Label116
-JMP Label129
-Label129:
+JBE Label122
+JMP Label135
+Label135:
 invoke ExitProcess, 0
 overflow: invoke StdOut, addr errorOverflow ; viene aca en caso de overflow 
 invoke ExitProcess, 0

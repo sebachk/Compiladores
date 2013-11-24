@@ -10,6 +10,8 @@ begin
 			print('no hubo problema con la division de parametros');
 		else
 			print('hubo problemasss');
+			
+		return c+z;
 	end
 	
 	
@@ -34,7 +36,7 @@ begin
 	
 	b=5;
 	c=10;
-	promedio(b,c);
+	d=promedio(b,c);
 	d=b*2;
 	
 	if(d==c)  then
